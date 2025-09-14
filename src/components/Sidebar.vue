@@ -15,7 +15,7 @@ h-full
 hidden
 
 fixed top-0 start-0 bottom-0 z-60
-bg-white border-e border-gray-200 dark:bg-neutral-800 dark:border-neutral-700" role="dialog" tabindex="-1" aria-label="Sidebar" >
+bg-gray-200 border-e border-gray-200 dark:bg-neutral-800 dark:border-neutral-700" role="dialog" tabindex="-1" aria-label="Sidebar" >
   <div class="relative flex flex-col h-full max-h-full ">
       <!-- Header -->
       <header class=" p-4 flex justify-between items-center gap-x-2">
