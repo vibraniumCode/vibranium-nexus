@@ -7,8 +7,7 @@ export interface Empresa {
   cp: string;
   localidad: string;
   provincia: string;
-  Actividad: Date;
-  activa: boolean;
+  Actividad: string;
 }
 
 export enum CategoriaFiscal {
