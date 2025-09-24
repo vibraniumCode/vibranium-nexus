@@ -1,16 +1,24 @@
+// types/table.ts
+
 export interface ActionConfig {
   showDetail?: boolean;
   showEdit?: boolean;
   showDelete?: boolean;
   editLabel?: string;
-  detailLabel?: string;
-  deleteLabel?: string;
+  editType?: 'input' | 'form'; // Nuevo: tipo de edición
 }
 
-// Ahora, TableColumn define CONFIGURACIÓN de las columnas
-export interface TableColumn<T = any> {
-  key: keyof T;
+export interface TableColumn {
+  key: string;
   label: string;
-  sortable?: boolean;
-  width?: string;
+}
+
+// Opcional: tipos para los campos del formulario
+export interface FormField {
+  name: string;
+  type: 'text' | 'email' | 'number' | 'select' | 'textarea';
+  label: string;
+  placeholder?: string;
+  required?: boolean;
+  options?: Array<{ label: string; value: any }>; // Para campos select
 }

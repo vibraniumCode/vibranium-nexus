@@ -21,7 +21,7 @@
               d="M12 4v16m8-8H4"
             />
           </svg>
-          {{ addButtonText }} <span class="ml-4">Agregar nueva estacion</span>
+          <span class="ml-4">Agregar nueva estacion</span>
         </button>
       </div>
       <div class="h-full w-full mb-6 bg-white p-6 font-sans rounded-lg">
@@ -67,10 +67,10 @@
                   d="M160-120v-640q0-33 23.5-56.5T240-840h240q33 0 56.5 23.5T560-760v280h40q33 0 56.5 23.5T680-400v180q0 17 11.5 28.5T720-180q17 0 28.5-11.5T760-220v-288q-9 5-19 6.5t-21 1.5q-42 0-71-29t-29-71q0-32 17.5-57.5T684-694l-84-84 42-42 148 144q15 15 22.5 35t7.5 41v380q0 42-29 71t-71 29q-42 0-71-29t-29-71v-200h-60v300H160Zm80-440h240v-200H240v200Zm480 0q17 0 28.5-11.5T760-600q0-17-11.5-28.5T720-640q-17 0-28.5 11.5T680-600q0 17 11.5 28.5T720-560ZM240-200h240v-280H240v280Zm240 0H240h240Z"
                 />
               </svg>
-              {{ addButtonText }} <span class="ml-4">Combustible</span>
+              <span class="ml-4">Combustible</span>
             </button>
             <button
-              @click="$emit('add-new')"
+              @click="openImpuestosModal"
               class="inline-flex items-center px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
             >
               <svg
@@ -84,7 +84,7 @@
                   d="M200-280v-280h80v280h-80Zm240 0v-280h80v280h-80ZM80-120v-80h800v80H80Zm600-160v-280h80v280h-80ZM80-640v-80l400-200 400 200v80H80Zm178-80h444-444Zm0 0h444L480-830 258-720Z"
                 />
               </svg>
-              {{ addButtonText }} <span class="ml-4">Impuestos</span>
+              <span class="ml-4">Impuestos</span>
             </button>
           </div>
         </div>
@@ -94,19 +94,31 @@
         :data="empresas"
         :columns="empresaColumns"
         :centerColumns="true"
+        editType="form"
+        :formFields="empresaFormFields"
         :showActions="true"
         :showReport="true"
+        :actionConfig="{
+          showDetail: true,
+          showEdit: true,
+          showDelete: true,
+          editLabel: 'Editar Empresa',
+        }"
+        @form-submit="handleEmpresaUpdate"
+        @delete-row="handleEmpresaDelete"
       />
       <ModalCombustible
         :show="showCombustibleModal"
         @close="closeCombustibleModal"
       />
+      <ModalImpuestos :show="showImpuestosModal" @close="closeImpuestosModal" />
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import TableLayout from "@/components/common/TableLayout.vue";
 import ModalCombustible from "@/components/ModalCombustible.vue";
+import ModalImpuestos from "@/components/ModalImpuestos.vue";
 
 import { ref, onMounted } from "vue";
 import { useEmpresas } from "@/composables/useEmpresas";
@@ -114,14 +126,109 @@ import type { Empresa } from "@/types/empresa";
 
 const { empresas, fetchEmpresas } = useEmpresas();
 const showCombustibleModal = ref(false);
+const showImpuestosModal = ref(false);
 
 const openCombustibleModal = () => {
   showCombustibleModal.value = true;
 };
 
+const openImpuestosModal = () => {
+  showImpuestosModal.value = true;
+};
+
 const closeCombustibleModal = () => {
   showCombustibleModal.value = false;
 };
+
+const closeImpuestosModal = () => {
+  showImpuestosModal.value = false;
+};
+
+// Campos del formulario para empresas
+const empresaFormFields = ref([
+  {
+    name: "nombre",
+    type: "text",
+    label: "Nombre de la empresa",
+    placeholder: "Ingrese el nombre de la empresa",
+    required: true,
+    width: "half", // Ocupa media columna
+  },
+  {
+    name: "cuit",
+    type: "text",
+    label: "CUIT",
+    placeholder: "Ingrese el CUIT",
+    required: true,
+    width: "half", // Ocupa media columna
+  },
+  {
+    name: "ingBrutos",
+    type: "text",
+    label: "Ingresos Brutos",
+    placeholder: "Ingrese los ingresos brutos",
+    required: true,
+    width: "half", // Ocupa media columna
+    //width: "full", // Ocupa ancho completo
+  },
+  {
+    name: "direccion",
+    type: "text",
+    label: "Dirección",
+    placeholder: "Ingrese la dirección",
+    required: true,
+    width: "half", // Ocupa media columna
+  },
+  {
+    name: "cp",
+    type: "text",
+    label: "Código Postal",
+    placeholder: "Ingrese el código postal",
+    required: true,
+    width: "half", // Ocupa media columna
+  },
+  {
+    name: "localidad",
+    type: "text",
+    label: "Localidad",
+    placeholder: "Ingrese la localidad",
+    required: true,
+    width: "half", // Ocupa media columna
+  },
+  {
+    name: "provincia",
+    type: "text",
+    label: "Provincia",
+    placeholder: "Ingrese la provincia",
+    required: true,
+    width: "half", // Ocupa media columna
+  },
+  {
+    name: "Actividad",
+    type: "text",
+    label: "Actividad",
+    placeholder: "Ingrese la actividad",
+    required: true,
+    width: "half", // Ocupa media columna
+  },
+]);
+
+// Manejar la actualización de empresa
+function handleEmpresaUpdate(formData: any, index: number) {
+  console.log("Actualizando empresa:", formData, "en índice:", index);
+  // Aquí puedes implementar la lógica para actualizar la empresa
+  // Por ejemplo, llamar a un composable o hacer una petición a la API
+
+  // Actualizar localmente (opcional)
+  empresas.value[index] = { ...empresas.value[index], ...formData };
+}
+
+// Manejar la eliminación de empresa
+function handleEmpresaDelete(index: number) {
+  console.log("Eliminando empresa en índice:", index);
+  // Aquí implementar la lógica de eliminación
+  empresas.value.splice(index, 1);
+}
 
 onMounted(() => {
   fetchEmpresas();

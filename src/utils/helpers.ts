@@ -3,13 +3,10 @@
  */
 export function formatDate(dateStr: string): string {
   if (!dateStr) return "";
-  const date = new Date(dateStr);
-  return date.toLocaleDateString("es-AR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
+  const [year, month, day] = dateStr.split("T")[0].split("-");
+  return `${day}/${month}/${year}`;
 }
+
 
 /**
  * Formatea un CUIT a la forma XX-XXXXXXXX-X

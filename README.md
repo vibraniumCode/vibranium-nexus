@@ -17,3 +17,4 @@ npm install @fontsource/inter
 
 
 npm install axios
+npm install apexcharts
