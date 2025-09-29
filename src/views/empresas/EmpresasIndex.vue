@@ -106,7 +106,10 @@
         }"
         @form-submit="handleEmpresaUpdate"
         @delete-row="handleEmpresaDelete"
-      />
+      >
+        <Form :title="'Editar Registro'" />
+      </TableLayout>
+
       <ModalCombustible
         :show="showCombustibleModal"
         @close="closeCombustibleModal"
@@ -119,10 +122,12 @@
 import TableLayout from "@/components/common/TableLayout.vue";
 import ModalCombustible from "@/components/ModalCombustible.vue";
 import ModalImpuestos from "@/components/ModalImpuestos.vue";
+import Form from "@/components/common/Form.vue";
 
 import { ref, onMounted } from "vue";
 import { useEmpresas } from "@/composables/useEmpresas";
 import type { Empresa } from "@/types/empresa";
+import { empresaColumns, empresaFormFields } from "@/constants/empresaConfig";
 
 const { empresas, fetchEmpresas } = useEmpresas();
 const showCombustibleModal = ref(false);
@@ -144,75 +149,6 @@ const closeImpuestosModal = () => {
   showImpuestosModal.value = false;
 };
 
-// Campos del formulario para empresas
-const empresaFormFields = ref([
-  {
-    name: "nombre",
-    type: "text",
-    label: "Nombre de la empresa",
-    placeholder: "Ingrese el nombre de la empresa",
-    required: true,
-    width: "half", // Ocupa media columna
-  },
-  {
-    name: "cuit",
-    type: "text",
-    label: "CUIT",
-    placeholder: "Ingrese el CUIT",
-    required: true,
-    width: "half", // Ocupa media columna
-  },
-  {
-    name: "ingBrutos",
-    type: "text",
-    label: "Ingresos Brutos",
-    placeholder: "Ingrese los ingresos brutos",
-    required: true,
-    width: "half", // Ocupa media columna
-    //width: "full", // Ocupa ancho completo
-  },
-  {
-    name: "direccion",
-    type: "text",
-    label: "Dirección",
-    placeholder: "Ingrese la dirección",
-    required: true,
-    width: "half", // Ocupa media columna
-  },
-  {
-    name: "cp",
-    type: "text",
-    label: "Código Postal",
-    placeholder: "Ingrese el código postal",
-    required: true,
-    width: "half", // Ocupa media columna
-  },
-  {
-    name: "localidad",
-    type: "text",
-    label: "Localidad",
-    placeholder: "Ingrese la localidad",
-    required: true,
-    width: "half", // Ocupa media columna
-  },
-  {
-    name: "provincia",
-    type: "text",
-    label: "Provincia",
-    placeholder: "Ingrese la provincia",
-    required: true,
-    width: "half", // Ocupa media columna
-  },
-  {
-    name: "Actividad",
-    type: "text",
-    label: "Actividad",
-    placeholder: "Ingrese la actividad",
-    required: true,
-    width: "half", // Ocupa media columna
-  },
-]);
-
 // Manejar la actualización de empresa
 function handleEmpresaUpdate(formData: any, index: number) {
   console.log("Actualizando empresa:", formData, "en índice:", index);
@@ -231,18 +167,6 @@ function handleEmpresaDelete(index: number) {
 }
 
 onMounted(() => {
-  fetchEmpresas();
+  fetchEmpresas("CTA");
 });
-
-// definís qué columnas mostrar y con qué nombre
-const empresaColumns: { key: keyof Empresa; label: string }[] = [
-  { key: "nombre", label: "Nombre" },
-  { key: "cuit", label: "CUIT" },
-  { key: "ingBrutos", label: "Ingresos Brutos" },
-  { key: "direccion", label: "Dirección" },
-  { key: "cp", label: "Código Postal" },
-  { key: "localidad", label: "Localidad" },
-  { key: "provincia", label: "Provincia" },
-  { key: "Actividad", label: "Actividad" },
-];
 </script>

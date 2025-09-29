@@ -7,7 +7,7 @@ export interface Empresa {
   cp: string;
   localidad: string;
   provincia: string;
-  Actividad: string;
+  actividad: string;
 }
 
 export enum CategoriaFiscal {
