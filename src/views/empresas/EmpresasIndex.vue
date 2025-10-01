@@ -1,6 +1,5 @@
 <template>
   <div class="w-full flex flex-col">
-    <!--h-full saque-->
     <div class="flex-1 bg-gray-200 p-2">
       <div class="flex items-center justify-between mb-4">
         <h1 class="text-4xl font-semibold text-gray-900">Estaciones</h1>
@@ -24,10 +23,11 @@
           <span class="ml-4">Agregar nueva estacion</span>
         </button>
       </div>
+
       <div class="h-full w-full mb-6 bg-white p-6 font-sans rounded-lg">
         <div class="flex justify-between">
           <div
-            class="flexw-[50%] max-w-md flex-col w-full justify-between rounded-xl bg-slate-50 p-8 text-slate-900 ring-1 ring-slate-300 dark:bg-neutral-800 dark:text-slate-200 dark:ring-slate-300/20 xl:p-4"
+            class="flex w-[50%] max-w-md flex-col w-full justify-between rounded-xl bg-slate-50 p-8 text-slate-900 ring-1 ring-slate-300 dark:bg-neutral-800 dark:text-slate-200 dark:ring-slate-300/20 xl:p-4"
           >
             <div>
               <div class="flex items-center justify-between mb-6">
@@ -47,10 +47,13 @@
                 </svg>
               </div>
               <p class="flex items-baseline gap-x-1">
-                <span class="text-6xl font-bold tracking-tight">5</span>
+                <span class="text-6xl font-bold tracking-tight">{{
+                  empresas.length
+                }}</span>
               </p>
             </div>
           </div>
+
           <div class="flex items-end gap-4">
             <button
               @click="openCombustibleModal"
@@ -89,13 +92,13 @@
           </div>
         </div>
       </div>
+
+      <!-- TableLayout con slot de edición -->
       <TableLayout
-        :title="'Empresas'"
+        title="Empresas"
         :data="empresas"
         :columns="empresaColumns"
         :centerColumns="true"
-        editType="form"
-        :formFields="empresaFormFields"
         :showActions="true"
         :showReport="true"
         :actionConfig="{
@@ -104,10 +107,23 @@
           showDelete: true,
           editLabel: 'Editar Empresa',
         }"
-        @form-submit="handleEmpresaUpdate"
-        @delete-row="handleEmpresaDelete"
+        @edit-row="handleEditRow"
+        @delete-row="handleDeleteRow"
+        @form-submit="handleFormSubmit"
       >
-        <Form :title="'Editar Registro'" />
+        <!-- Slot para el formulario de edición -->
+        <template v-slot:edit-content="{ row, index, onSubmit, onCancel }">
+          <div class="p-4 bg-gray-50">
+            <Form
+              title="Editar Empresa"
+              subtitle="Modifique los datos de la empresa"
+              :fields="empresaFormFields"
+              :initialData="row"
+              @submit="onSubmit"
+              @cancel="onCancel"
+            />
+          </div>
+        </template>
       </TableLayout>
 
       <ModalCombustible
@@ -118,18 +134,20 @@
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
+import { ref, onMounted } from "vue";
 import TableLayout from "@/components/common/TableLayout.vue";
 import ModalCombustible from "@/components/ModalCombustible.vue";
 import ModalImpuestos from "@/components/ModalImpuestos.vue";
 import Form from "@/components/common/Form.vue";
-
-import { ref, onMounted } from "vue";
 import { useEmpresas } from "@/composables/useEmpresas";
-import type { Empresa } from "@/types/empresa";
+import { useEmpresaHandlers } from "@/composables/useEmpresaHandlers";
 import { empresaColumns, empresaFormFields } from "@/constants/empresaConfig";
 
 const { empresas, fetchEmpresas } = useEmpresas();
+const { handleEmpresaUpdate, handleEmpresaDelete } = useEmpresaHandlers();
+
 const showCombustibleModal = ref(false);
 const showImpuestosModal = ref(false);
 
@@ -149,21 +167,30 @@ const closeImpuestosModal = () => {
   showImpuestosModal.value = false;
 };
 
-// Manejar la actualización de empresa
-function handleEmpresaUpdate(formData: any, index: number) {
-  console.log("Actualizando empresa:", formData, "en índice:", index);
-  // Aquí puedes implementar la lógica para actualizar la empresa
-  // Por ejemplo, llamar a un composable o hacer una petición a la API
-
-  // Actualizar localmente (opcional)
-  empresas.value[index] = { ...empresas.value[index], ...formData };
+// Handler cuando se hace clic en editar
+function handleEditRow(row: any, index: number) {
+  console.log("EmpresaIndex - Editando empresa:", row, "índice:", index);
+  // La tabla ya maneja el estado de edición internamente
 }
 
-// Manejar la eliminación de empresa
-function handleEmpresaDelete(index: number) {
-  console.log("Eliminando empresa en índice:", index);
-  // Aquí implementar la lógica de eliminación
-  empresas.value.splice(index, 1);
+// Handler cuando se envía el formulario
+async function handleFormSubmit(formData: any, index: number) {
+  console.log("EmpresaIndex - Form submit:", formData, index);
+  const success = await handleEmpresaUpdate(formData, index, empresas.value);
+
+  if (success) {
+    alert("Empresa actualizada exitosamente");
+  }
+}
+
+// Handler cuando se elimina una empresa
+async function handleDeleteRow(row: any, index: number) {
+  console.log("EmpresaIndex - Eliminando:", row, index);
+  const success = await handleEmpresaDelete(index, empresas.value);
+
+  if (success) {
+    alert("Empresa eliminada exitosamente");
+  }
 }
 
 onMounted(() => {
