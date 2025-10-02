@@ -1,6 +1,7 @@
 <template>
   <div class="w-full flex flex-col">
     <div class="flex-1 bg-gray-200 p-2">
+      <!-- Header -->
       <div class="flex items-center justify-between mb-4">
         <h1 class="text-4xl font-semibold text-gray-900">Estaciones</h1>
         <button
@@ -24,10 +25,11 @@
         </button>
       </div>
 
+      <!-- Dashboard Card -->
       <div class="h-full w-full mb-6 bg-white p-6 font-sans rounded-lg">
         <div class="flex justify-between">
           <div
-            class="flex w-[50%] max-w-md flex-col w-full justify-between rounded-xl bg-slate-50 p-8 text-slate-900 ring-1 ring-slate-300 dark:bg-neutral-800 dark:text-slate-200 dark:ring-slate-300/20 xl:p-4"
+            class="flexw-[50%] max-w-md flex-col w-full justify-between rounded-xl bg-slate-50 p-8 text-slate-900 ring-1 ring-slate-300 dark:bg-neutral-800 dark:text-slate-200 dark:ring-slate-300/20 xl:p-4"
           >
             <div>
               <div class="flex items-center justify-between mb-6">
@@ -47,13 +49,12 @@
                 </svg>
               </div>
               <p class="flex items-baseline gap-x-1">
-                <span class="text-6xl font-bold tracking-tight">{{
-                  empresas.length
-                }}</span>
+                <span class="text-6xl font-bold tracking-tight">
+                  {{ empresas.length }}
+                </span>
               </p>
             </div>
           </div>
-
           <div class="flex items-end gap-4">
             <button
               @click="openCombustibleModal"
@@ -93,7 +94,7 @@
         </div>
       </div>
 
-      <!-- TableLayout con slot de edición -->
+      <!-- Table -->
       <TableLayout
         title="Empresas"
         :data="empresas"
@@ -107,30 +108,30 @@
           showDelete: true,
           editLabel: 'Editar Empresa',
         }"
-        @edit-row="handleEditRow"
-        @delete-row="handleDeleteRow"
-        @form-submit="handleFormSubmit"
+        @delete-row="handleDelete"
       >
-        <!-- Slot para el formulario de edición -->
-        <template v-slot:edit-content="{ row, index, onSubmit, onCancel }">
-          <div class="p-4 bg-gray-50">
-            <Form
-              title="Editar Empresa"
-              subtitle="Modifique los datos de la empresa"
-              :fields="empresaFormFields"
-              :initialData="row"
-              @submit="onSubmit"
-              @cancel="onCancel"
-            />
-          </div>
+        <template #expanded-content="{ expandedRow: expandedIndex, data }">
+          <Form
+            v-if="expandedIndex !== null"
+            title="Editar Empresa"
+            subtitle="Modifica los datos de la empresa"
+            :fields="empresaFormFields"
+            :initialData="data[expandedIndex]"
+            @submit="(formData) => handleUpdate(formData, expandedIndex)"
+            @cancel="expandedRow = null"
+          />
         </template>
       </TableLayout>
 
+      <!-- Modals -->
       <ModalCombustible
         :show="showCombustibleModal"
-        @close="closeCombustibleModal"
+        @close="showCombustibleModal = false"
       />
-      <ModalImpuestos :show="showImpuestosModal" @close="closeImpuestosModal" />
+      <ModalImpuestos
+        :show="showImpuestosModal"
+        @close="showImpuestosModal = false"
+      />
     </div>
   </div>
 </template>
@@ -145,55 +146,28 @@ import { useEmpresas } from "@/composables/useEmpresas";
 import { useEmpresaHandlers } from "@/composables/useEmpresaHandlers";
 import { empresaColumns, empresaFormFields } from "@/constants/empresaConfig";
 
+// Composables
 const { empresas, fetchEmpresas } = useEmpresas();
 const { handleEmpresaUpdate, handleEmpresaDelete } = useEmpresaHandlers();
 
+// State
 const showCombustibleModal = ref(false);
 const showImpuestosModal = ref(false);
+const expandedRow = ref<number | null>(null);
 
-const openCombustibleModal = () => {
-  showCombustibleModal.value = true;
-};
+// Methods
+const openCombustibleModal = () => (showCombustibleModal.value = true);
+const openImpuestosModal = () => (showImpuestosModal.value = true);
 
-const openImpuestosModal = () => {
-  showImpuestosModal.value = true;
-};
-
-const closeCombustibleModal = () => {
-  showCombustibleModal.value = false;
-};
-
-const closeImpuestosModal = () => {
-  showImpuestosModal.value = false;
-};
-
-// Handler cuando se hace clic en editar
-function handleEditRow(row: any, index: number) {
-  console.log("EmpresaIndex - Editando empresa:", row, "índice:", index);
-  // La tabla ya maneja el estado de edición internamente
-}
-
-// Handler cuando se envía el formulario
-async function handleFormSubmit(formData: any, index: number) {
-  console.log("EmpresaIndex - Form submit:", formData, index);
+const handleUpdate = async (formData: any, index: number) => {
   const success = await handleEmpresaUpdate(formData, index, empresas.value);
+  if (success) expandedRow.value = null;
+};
 
-  if (success) {
-    alert("Empresa actualizada exitosamente");
-  }
-}
+const handleDelete = (index: number) => {
+  handleEmpresaDelete(index, empresas.value);
+};
 
-// Handler cuando se elimina una empresa
-async function handleDeleteRow(row: any, index: number) {
-  console.log("EmpresaIndex - Eliminando:", row, index);
-  const success = await handleEmpresaDelete(index, empresas.value);
-
-  if (success) {
-    alert("Empresa eliminada exitosamente");
-  }
-}
-
-onMounted(() => {
-  fetchEmpresas("CTA");
-});
+// Lifecycle
+onMounted(() => fetchEmpresas("CTA"));
 </script>

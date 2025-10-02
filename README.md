@@ -18,3 +18,11 @@ npm install @fontsource/inter
 
 npm install axios
 npm install apexcharts
+
+
+🎯 Propósito de cada archivo:
+
+empresaConfig.ts: Configuración estática (columnas + campos del form)
+useEmpresas.ts: Lógica de datos (fetch, update, estado)
+useEmpresaHandlers.ts: Lógica de negocio (validaciones, confirmaciones)
+Componente: UI + orquestación

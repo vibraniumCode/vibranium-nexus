@@ -8,6 +8,7 @@ export interface Empresa {
   localidad: string;
   provincia: string;
   actividad: string;
+  telefono: string;
 }
 
 export enum CategoriaFiscal {

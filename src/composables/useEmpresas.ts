@@ -17,13 +17,9 @@ export function useEmpresas() {
         `http://localhost:3000/api/empresas/${accion}`
       );
 
-      if (Array.isArray(data)) {
-        empresas.value = data;
-      } else {
-        console.error("Error: la respuesta no es un array");
-      }
+      empresas.value = Array.isArray(data) ? data : [];
     } catch (err: any) {
-      error.value = err.message || "Error al obtener los combustibles";
+      error.value = err.message || "Error al obtener empresas";
       console.error("Error al obtener empresas:", err);
     } finally {
       loading.value = false;
@@ -31,7 +27,7 @@ export function useEmpresas() {
   };
 
   const updateEmpresa = async (
-    nomEstacion: string,
+    nombre: string, // ✅ Cambiado de "nomEstacion" a "nombre"
     cuit: string,
     ingBrutos: string,
     direccion: string,
@@ -51,29 +47,32 @@ export function useEmpresas() {
       const { data } = await axios.put(
         `http://localhost:3000/api/empresas/${idEstacion}/${accion}`,
         {
-          nomEstacion: nomEstacion
-          , cuit: cuit
-          , ingBrutos: ingBrutos
-          , direccion: direccion
-          , cp: cp
-          , localidad: localidad
-          , provincia: provincia
-          , telefono: telefono
-          , actividad: actividad
-          , idUser: idUser
+          nomEstacion: nombre, // ✅ Backend espera "nomEstacion"
+          cuit,
+          ingBrutos,
+          direccion,
+          cp,
+          localidad,
+          provincia,
+          telefono,
+          actividad,
+          idUser,
         }
       );
+
+      // Actualizar localmente
       const idx = empresas.value.findIndex((e) => e.id === idEstacion);
       if (idx !== -1) empresas.value[idx] = data;
+
       return true;
     } catch (err: any) {
       error.value = err.response?.data?.message || err.message || "Error al actualizar empresa";
       console.error("Error al actualizar empresa:", err);
-      return false; // Fallo
+      return false;
     } finally {
       loading.value = false;
     }
-  }
+  };
 
-  return { empresas, fetchEmpresas, updateEmpresa };
+  return { empresas, loading, error, fetchEmpresas, updateEmpresa };
 }
