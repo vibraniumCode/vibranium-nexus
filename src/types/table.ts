@@ -8,7 +8,7 @@ export interface ActionConfig {
   editType?: 'input' | 'form'; // Nuevo: tipo de edición
 }
 
-export interface TableColumn {
-  key: string;
+export interface TableColumn<T = any> {
+  key: keyof T & string;
   label: string;
 }

@@ -102,6 +102,7 @@
         :centerColumns="true"
         :showActions="true"
         :showReport="true"
+        :expandedRow="expandedRow"
         :actionConfig="{
           showDetail: true,
           showEdit: true,
@@ -109,16 +110,17 @@
           editLabel: 'Editar Empresa',
         }"
         @delete-row="handleDelete"
+        @toggle-expand="handleToggleExpand"
       >
-        <template #expanded-content="{ expandedRow: expandedIndex, data }">
+        <template #expanded-content="{ expandedRow, data }">
           <Form
-            v-if="expandedIndex !== null"
+            v-if="expandedRow !== null"
             title="Editar Empresa"
             subtitle="Modifica los datos de la empresa"
             :fields="empresaFormFields"
-            :initialData="data[expandedIndex]"
-            @submit="(formData) => handleUpdate(formData, expandedIndex)"
-            @cancel="expandedRow = null"
+            :initialData="data[expandedRow]"
+            @submit="(formData) => handleUpdate(formData, expandedRow)"
+            @cancel="closeExpandedForm"
           />
         </template>
       </TableLayout>
@@ -159,6 +161,10 @@ const expandedRow = ref<number | null>(null);
 const openCombustibleModal = () => (showCombustibleModal.value = true);
 const openImpuestosModal = () => (showImpuestosModal.value = true);
 
+const handleToggleExpand = (index: number | null) => {
+  expandedRow.value = index;
+};
+
 const handleUpdate = async (formData: any, index: number) => {
   const success = await handleEmpresaUpdate(formData, index, empresas.value);
   if (success) expandedRow.value = null;
@@ -167,7 +173,12 @@ const handleUpdate = async (formData: any, index: number) => {
 const handleDelete = (index: number) => {
   handleEmpresaDelete(index, empresas.value);
 };
+const closeExpandedForm = () => {
+  expandedRow.value = null;
+};
 
 // Lifecycle
-onMounted(() => fetchEmpresas("CTA"));
+onMounted(async () => {
+  await fetchEmpresas("CTA");
+});
 </script>

@@ -162,7 +162,9 @@ interface ActionConfig {
   deleteLabel?: string;
 }
 
-const props = withDefaults(
+type MenuActions = "detail" | "edit" | "duplicate" | "delete";
+
+const { actions, menuPosition } = withDefaults(
   defineProps<{
     actions?: ActionConfig;
     menuPosition?: string;
@@ -179,10 +181,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  detail: [];
-  edit: [];
-  duplicate: [];
-  delete: [];
+  (e: MenuActions): void;
 }>();
 
 const isOpen = ref(false);
@@ -195,7 +194,7 @@ function closeMenu() {
   isOpen.value = false;
 }
 
-function handleAction(action: "detail" | "edit" | "duplicate" | "delete") {
+function handleAction(action: MenuActions) {
   emit(action);
   closeMenu();
 }

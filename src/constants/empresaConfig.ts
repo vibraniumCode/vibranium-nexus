@@ -4,6 +4,7 @@ import type { FormField } from "@/types/form"; // ✅ Importar desde form.ts
 import type { TableColumn } from "@/types/table";
 
 export const empresaColumns: TableColumn[] = [
+  { key: "id", label: 'id' },
   { key: "nombre", label: "Nombre" },
   { key: "cuit", label: "CUIT" },
   { key: "ingBrutos", label: "Ingresos Brutos" },
@@ -11,7 +12,7 @@ export const empresaColumns: TableColumn[] = [
   { key: "cp", label: "Código Postal" },
   { key: "localidad", label: "Localidad" },
   { key: "provincia", label: "Provincia" },
-  { key: "actividad", label: "Actividad" },
+  { key: "Actividad", label: "Actividad" },
 ];
 
 export const empresaFormFields: FormField[] = [
@@ -23,5 +24,5 @@ export const empresaFormFields: FormField[] = [
   { name: "localidad", type: "text", label: "Localidad", placeholder: "Ingrese la localidad", required: false, width: "half" },
   { name: "provincia", type: "text", label: "Provincia", placeholder: "Ingrese la provincia", required: false, width: "half" },
   { name: "telefono", type: "text", label: "Teléfono", placeholder: "Ingrese el teléfono", required: false, width: "half" },
-  { name: "actividad", type: "text", label: "Actividad", placeholder: "Ingrese la actividad", required: false, width: "full" },
+  { name: "Actividad", type: "text", label: "Actividad", placeholder: "Ingrese la actividad", required: false, width: "full" },
 ];

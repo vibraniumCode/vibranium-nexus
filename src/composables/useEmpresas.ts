@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import axios from "axios";
 import type { Empresa } from "@/types/empresa";
+import { formatDate } from "@/utils/helpers";
 
 export function useEmpresas() {
   const empresas = ref<Empresa[]>([]);
@@ -16,8 +17,13 @@ export function useEmpresas() {
       const { data } = await axios.get<Empresa[]>(
         `http://localhost:3000/api/empresas/${accion}`
       );
+      empresas.value = Array.isArray(data)
+        ? data.map((e: any) => ({
+          ...e,
+          Actividad: e.Actividad ? formatDate(String(e.Actividad)) : "",
+        }))
+        : [];
 
-      empresas.value = Array.isArray(data) ? data : [];
     } catch (err: any) {
       error.value = err.message || "Error al obtener empresas";
       console.error("Error al obtener empresas:", err);
@@ -35,7 +41,7 @@ export function useEmpresas() {
     localidad: string,
     provincia: string,
     telefono: string,
-    actividad: string,
+    actividad: string | Date,
     idUser: number,
     idEstacion: number,
     accion: string
@@ -43,7 +49,6 @@ export function useEmpresas() {
     try {
       loading.value = true;
       error.value = null;
-
       const { data } = await axios.put(
         `http://localhost:3000/api/empresas/${idEstacion}/${accion}`,
         {

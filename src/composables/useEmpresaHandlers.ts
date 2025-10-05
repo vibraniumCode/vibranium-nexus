@@ -28,15 +28,18 @@ export function useEmpresaHandlers() {
         formData.cp || empresa.cp,
         formData.localidad || empresa.localidad,
         formData.provincia || empresa.provincia,
-        formData.telefono || "",
-        formData.actividad || empresa.actividad,
+        formData.telefono || empresa.telefono,
+        // actividadDate,
+        formData.Actividad || empresa.actividad,
         1, // idUser - ajustar según tu lógica de autenticación
         empresa.id,
-        "CTA"
+        "EDIT"
       );
 
       if (success) {
         console.log("Empresa actualizada correctamente");
+        //hace una actualización inmutable del objeto en la posición index del array empresas
+        empresas[index] = { ...empresas[index], ...formData };
         return true;
       } else {
         console.error("Error al actualizar empresa");

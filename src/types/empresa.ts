@@ -7,7 +7,7 @@ export interface Empresa {
   cp: string;
   localidad: string;
   provincia: string;
-  actividad: string;
+  actividad: string | Date;
   telefono: string;
 }
 
