@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show" class="fixed inset-0 flex items-center justify-center">
+  <div v-if="show" class="fixed inset-0 flex items-center justify-center z-50">
     <div
       class="absolute inset-0 bg-opacity-40 backdrop-blur-xs"
       @click="close"

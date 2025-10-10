@@ -34,7 +34,7 @@
             :type="field.type"
             :placeholder="field.placeholder"
             :required="field.required"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors"
           />
 
           <!-- Select -->
@@ -43,7 +43,7 @@
             :id="field.name"
             v-model="formData[field.name]"
             :required="field.required"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors"
           >
             <option value="">Seleccione una opción</option>
             <option
@@ -63,7 +63,7 @@
             :placeholder="field.placeholder"
             :required="field.required"
             rows="3"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors resize-none"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors resize-none"
           ></textarea>
         </div>
       </div>
@@ -73,15 +73,15 @@
         <button
           type="submit"
           :disabled="isSubmitting"
-          class="px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          class="px-6 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <span v-if="isSubmitting">Guardando...</span>
           <span v-else>Guardar</span>
         </button>
         <button
           type="button"
-          @click="handleCancel"
-          class="px-6 py-2 bg-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors"
+          @click="$emit('cancel')"
+          class="px-4 py-2 bg-gray-200 rounded-md text-gray-700 hover:bg-gray-300 transition"
         >
           Cancelar
         </button>

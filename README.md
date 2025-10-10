@@ -26,3 +26,6 @@ empresaConfig.ts: Configuración estática (columnas + campos del form)
 useEmpresas.ts: Lógica de datos (fetch, update, estado)
 useEmpresaHandlers.ts: Lógica de negocio (validaciones, confirmaciones)
 Componente: UI + orquestación
+
+
+npm install sweetalert2 -> para las alertas

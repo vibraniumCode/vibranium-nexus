@@ -14,19 +14,22 @@
         editLabel: 'Actualizar',
       }"
       @edit="handleEdit"
+      v-model:expandedRow="expandedRow"
     >
       <!-- 🔥 Slot para el contenido expandido -->
       <template #expanded-content="{ expandedRow, data }">
         <EditInput
-          v-if="expandedRow !== null"
+          v-if="typeof expandedRow === 'number' && data[expandedRow]"
           v-model="editingPrice"
-          :label="`Precio de ${data[expandedRow].tipo}`"
+          :label="`Precio de ${data[expandedRow]?.tipo ?? ''}`"
           field-name="precio"
           input-type="number"
-          :placeholder="`Ingresa el precio para ${data[expandedRow].tipo}`"
+          :placeholder="`Ingresa el precio para ${
+            data[expandedRow]?.tipo ?? ''
+          }`"
           save-label="Actualizar Precio"
           :is-saving="isSaving"
-          @save="savePrice(expandedRow, data[expandedRow].id)"
+          @save="savePrice(expandedRow, data[expandedRow]?.id)"
           @cancel="closeEdit"
         />
       </template>
@@ -39,50 +42,51 @@ import { defineProps, defineEmits, ref, onMounted } from "vue";
 import ModalLayout from "@/components/common/ModalLayout.vue";
 import TableLayout from "@/components/common/TableLayout.vue";
 import EditInput from "@/components/common/EditInput.vue";
-
 import { useCombustibles } from "@/composables/useCombustible";
+import { combustibleColumns } from "@/constants/combustibleConfig";
+import { useCombustibleHandlers } from "@/composables/useCombustibleHandlers";
 import type { Combustible } from "@/types/combustible";
-import type { TableColumn } from "@/types/table";
 
-const { combustibles, fetchCombustible, updateCombustiblePrice } =
-  useCombustibles();
+//composables
+const { combustibles, fetchCombustible } = useCombustibles();
+const { handleCombustiblePriceUpdate } = useCombustibleHandlers();
 
 const props = defineProps<{ show: boolean }>();
 const emit = defineEmits(["close"]);
 
 const editingPrice = ref<number>(0);
 const isSaving = ref(false);
+const expandedRow = ref<number | null>(null);
 
 const close = () => {
   emit("close");
 };
 
 const handleEdit = (index: number, data: Combustible) => {
-  console.log("Editando combustible:", data);
+  expandedRow.value = index;
   editingPrice.value = data.precio; //aca cargo el precio de la tabla(db) en el input
 };
 
 const closeEdit = () => {
+  expandedRow.value = null;
   editingPrice.value = 0;
 };
 
 const savePrice = async (index: number, id: number) => {
   try {
     const newPrice = Number(editingPrice.value);
-
-    if (isNaN(newPrice) || newPrice < 0) {
-      alert("Por favor, ingresa un precio válido mayor a 0");
-      return;
-    }
-
     isSaving.value = true;
 
-    const success = await updateCombustiblePrice(id, newPrice);
+    const success = await handleCombustiblePriceUpdate(
+      id,
+      newPrice,
+      combustibles.value
+    );
 
     if (success) {
       console.log("Precio actualizado correctamente");
       closeEdit();
-      // Opcional: refrescar la lista
+      //refrescar la lista
       await fetchCombustible();
     } else {
       console.error("Error al actualizar el precio");
@@ -97,9 +101,4 @@ const savePrice = async (index: number, id: number) => {
 onMounted(() => {
   fetchCombustible();
 });
-
-const combustibleColumns: TableColumn<Combustible>[] = [
-  { key: "tipo", label: "Tipo" },
-  { key: "precio", label: "Precio" },
-];
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="relative shadow-md sm:rounded-lg" v-bind="$attrs">
+  <div class="relative shadow-md sm:rounded-lg">
     <!-- Header con búsqueda y acciones -->
     <div class="p-6 bg-white border-b border-gray-200">
       <div class="flex items-center justify-between mb-4">
@@ -38,17 +38,19 @@
 
     <!-- Tabla -->
     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-      <thead class="text-sm text-gray-700 uppercase">
+      <thead
+        class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-neutral-800 dark:text-neutral-400"
+      >
         <tr>
           <th
             v-for="(col, index) in computedColumns"
             :key="index"
-            class="px-6 py-3 bg-gray-50"
+            class="px-6 py-3"
             :class="{ 'text-center': centerColumns }"
           >
             {{ col }}
           </th>
-          <th v-if="props.showActions" class="px-6 py-3 bg-gray-50 text-center">
+          <th v-if="props.showActions" class="px-6 py-3 text-center">
             Acciones
           </th>
         </tr>
@@ -57,6 +59,7 @@
         <tr
           v-for="(row, rowIndex) in computedRows"
           :key="rowIndex"
+          class="text-center"
           :class="[
             rowIndex % 2 === 1 ? 'bg-gray-100' : 'bg-white',
             'hover:bg-gray-50 transition-colors duration-150',
@@ -140,6 +143,7 @@ const props = withDefaults(
     title: string;
     data: Record<string, any>[];
     columns: TableColumn[];
+    expandedRow?: number | null;
     centerColumns?: boolean;
     centerRows?: boolean;
     showActions?: boolean;
@@ -170,6 +174,10 @@ const props = withDefaults(
   }
 );
 
+defineOptions({
+  inheritAttrs: false,
+});
+
 const emit = defineEmits<{
   detail: [index: number, data: any];
   edit: [index: number, data: any];
@@ -178,11 +186,12 @@ const emit = defineEmits<{
   export: [data: any[]];
   email: [data: any[]];
   print: [data: any[]];
+  "update:expandedRow": [index: number | null];
+  combustible: [];
+  impuesto: [];
 }>();
 
 const searchQuery = ref("");
-const expandedRow = ref<number | null>(null);
-
 const computedColumns = computed(() => props.columns.map((c) => c.label));
 
 const filteredData = computed(() => {
@@ -205,7 +214,7 @@ function handleAction(
   index: number
 ) {
   if (action === "edit") {
-    expandedRow.value = expandedRow.value === index ? null : index;
+    emit("update:expandedRow", props.expandedRow === index ? null : index);
   }
 
   emit(action, index, filteredData.value[index]);

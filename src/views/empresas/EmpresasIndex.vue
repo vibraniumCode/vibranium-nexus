@@ -102,7 +102,7 @@
         :centerColumns="true"
         :showActions="true"
         :showReport="true"
-        :expandedRow="expandedRow"
+        v-model:expandedRow="expandedRow"
         :actionConfig="{
           showDetail: true,
           showEdit: true,
@@ -113,26 +113,46 @@
         @toggle-expand="handleToggleExpand"
       >
         <template #expanded-content="{ expandedRow, data }">
-          <Form
-            v-if="expandedRow !== null"
-            title="Editar Empresa"
-            subtitle="Modifica los datos de la empresa"
-            :fields="empresaFormFields"
-            :initialData="data[expandedRow]"
-            @submit="(formData) => handleUpdate(formData, expandedRow)"
-            @cancel="closeExpandedForm"
-          />
+          <Transition
+            enter-active-class="transition duration-300"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-100"
+            leave-active-class="transition duration-200"
+            leave-from-class="opacity-100 scale-100"
+            leave-to-class="opacity-0 scale-95"
+          >
+            <Form
+              v-if="expandedRow !== null"
+              title="Editar Empresa"
+              subtitle="Modifica los datos de la empresa"
+              :fields="empresaFormFields"
+              :initialData="data[expandedRow]"
+              @submit="(formData) => handleUpdate(formData, expandedRow)"
+              @cancel="closeExpandedForm"
+            />
+          </Transition>
         </template>
       </TableLayout>
 
       <!-- Modals -->
-      <ModalCombustible
-        :show="showCombustibleModal"
-        @close="showCombustibleModal = false"
-      />
+      <Transition
+        enter-active-class="transition duration-300"
+        enter-from-class="opacity-0 scale-95"
+        enter-to-class="opacity-100 scale-100"
+        leave-active-class="transition duration-200"
+        leave-from-class="opacity-100 scale-100"
+        leave-to-class="opacity-0 scale-95"
+      >
+        <ModalCombustible
+          v-if="showCombustibleModal"
+          :show="showCombustibleModal"
+          @close="closeCombustibleModal"
+        />
+      </Transition>
       <ModalImpuestos
+        v-if="showImpuestosModal"
         :show="showImpuestosModal"
-        @close="showImpuestosModal = false"
+        @close="closeImpuestosModal"
       />
     </div>
   </div>
@@ -157,9 +177,28 @@ const showCombustibleModal = ref(false);
 const showImpuestosModal = ref(false);
 const expandedRow = ref<number | null>(null);
 
-// Methods
-const openCombustibleModal = () => (showCombustibleModal.value = true);
-const openImpuestosModal = () => (showImpuestosModal.value = true);
+// 🔧 Funciones toggle (abren o cierran el modal)
+const openCombustibleModal = () => {
+  expandedRow.value = null;
+  showImpuestosModal.value = false;
+  showCombustibleModal.value = true;
+};
+const closeCombustibleModal = () => {
+  showCombustibleModal.value = false;
+};
+
+const openImpuestosModal = () => {
+  expandedRow.value = null;
+  showCombustibleModal.value = false;
+  showImpuestosModal.value = true;
+};
+const closeImpuestosModal = () => {
+  showImpuestosModal.value = false;
+};
+
+const closeExpandedForm = () => {
+  expandedRow.value = null;
+};
 
 const handleToggleExpand = (index: number | null) => {
   expandedRow.value = index;
@@ -172,9 +211,6 @@ const handleUpdate = async (formData: any, index: number) => {
 
 const handleDelete = (index: number) => {
   handleEmpresaDelete(index, empresas.value);
-};
-const closeExpandedForm = () => {
-  expandedRow.value = null;
 };
 
 // Lifecycle
