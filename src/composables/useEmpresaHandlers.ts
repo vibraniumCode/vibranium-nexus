@@ -4,7 +4,7 @@ import type { Empresa } from "@/types/empresa";
 import Swal from "sweetalert2";
 
 export function useEmpresaHandlers() {
-  const { updateEmpresa, deleteEmpresa, fetchEmpresas, error } = useEmpresas();
+  const { updateEmpresa, deleteEmpresa, createEmpresa, fetchEmpresas, error } = useEmpresas();
 
   const handleEmpresaUpdate = async (
     formData: any,
@@ -81,9 +81,40 @@ export function useEmpresaHandlers() {
     }
   };
 
+  const handleEmpresaCreate = async (formData: any): Promise<boolean> => {
+    try {
+      console.log("Creando empresa con datos:", formData);
+
+      const success = await createEmpresa(
+        formData.nombre,
+        formData.cuit,
+        formData.ingBrutos,
+        formData.direccion,
+        formData.cp,
+        formData.localidad,
+        formData.provincia,
+        formData.telefono,
+        formData.actividad,
+        1, // idUser - ajustar según tu lógica de autenticación
+        "NEW"
+      );
+
+      if (success) {
+        console.log("Empresa creada correctamente");
+        return true;
+      } else {
+        console.error("Error al crear empresa");
+        return false;
+      }
+    } catch (err) {
+      console.error("Error inesperado al crear empresa:", err);
+      return false;
+    }
+  };
 
   return {
     handleEmpresaUpdate,
     handleEmpresaDelete,
+    handleEmpresaCreate,
   };
 }

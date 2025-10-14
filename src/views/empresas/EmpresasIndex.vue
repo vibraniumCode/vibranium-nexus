@@ -21,7 +21,12 @@
               d="M12 4v16m8-8H4"
             />
           </svg>
-          <span class="ml-4">Agregar nueva estacion</span>
+
+          <span class="ml-4">
+            <router-link to="/empresas/crear">
+              Agregar nueva estacion
+            </router-link>
+          </span>
         </button>
       </div>
 

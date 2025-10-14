@@ -33,7 +33,7 @@ export function useEmpresas() {
   };
 
   const updateEmpresa = async (
-    nombre: string, // ✅ Cambiado de "nomEstacion" a "nombre"
+    nombre: string,
     cuit: string,
     ingBrutos: string,
     direccion: string,
@@ -99,5 +99,49 @@ export function useEmpresas() {
     }
   }
 
-  return { empresas, loading, error, fetchEmpresas, updateEmpresa, deleteEmpresa };
+  const createEmpresa = async (
+    nombre: string,
+    cuit: string,
+    ingBrutos: string,
+    direccion: string,
+    cp: string,
+    localidad: string,
+    provincia: string,
+    telefono: string,
+    actividad: string | Date,
+    idUser: number,
+    accion: string
+  ): Promise<boolean> => {
+    try {
+      loading.value = true;
+      error.value = null;
+      const { data } = await axios.post(
+        `http://localhost:3000/api/empresas/${accion}`,
+        {
+          nomEstacion: nombre,
+          cuit,
+          ingBrutos,
+          direccion,
+          cp,
+          localidad,
+          provincia,
+          telefono,
+          actividad,
+          idUser
+        }
+      );
+
+      // Agregar localmente
+      empresas.value.push(data);
+      return true;
+    } catch (err: any) {
+      error.value = err.response?.data?.message || err.message || "Error al crear empresa";
+      console.error("Error al crear empresa:", err);
+      return false;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  return { empresas, loading, error, fetchEmpresas, updateEmpresa, deleteEmpresa, createEmpresa };
 }
