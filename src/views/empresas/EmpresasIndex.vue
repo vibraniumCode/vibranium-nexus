@@ -109,8 +109,9 @@
           showDelete: true,
           editLabel: 'Editar Empresa',
         }"
-        @delete-row="handleDelete"
+        @delete="handleDelete"
         @toggle-expand="handleToggleExpand"
+        @detail="(_, rowData) => handleDetail(rowData)"
       >
         <template #expanded-content="{ expandedRow, data }">
           <Transition
@@ -122,7 +123,7 @@
             leave-to-class="opacity-0 scale-95"
           >
             <Form
-              v-if="expandedRow !== null"
+              v-if="typeof expandedRow === 'number' && expandedRow !== null"
               title="Editar Empresa"
               subtitle="Modifica los datos de la empresa"
               :fields="empresaFormFields"
@@ -133,6 +134,24 @@
           </Transition>
         </template>
       </TableLayout>
+
+      <!-- Detalle de Impuesto -->
+      <!-- Detalle de Impuesto -->
+      <Transition
+        enter-active-class="transition duration-300"
+        enter-from-class="opacity-0 scale-95"
+        enter-to-class="opacity-100 scale-100"
+        leave-active-class="transition duration-200"
+        leave-from-class="opacity-100 scale-100"
+        leave-to-class="opacity-0 scale-95"
+      >
+        <DetalleImpuesto
+          v-if="showDetalle && detalleId"
+          :id="detalleId"
+          :estacion="detalleNombre"
+          @close="closeDetalle"
+        />
+      </Transition>
 
       <!-- Modals -->
       <Transition
@@ -167,6 +186,29 @@ import Form from "@/components/common/Form.vue";
 import { useEmpresas } from "@/composables/useEmpresas";
 import { useEmpresaHandlers } from "@/composables/useEmpresaHandlers";
 import { empresaColumns, empresaFormFields } from "@/constants/empresaConfig";
+import DetalleImpuesto from "@/components/DetalleImpuesto.vue";
+
+// 🔹 Estado del Detalle
+const showDetalle = ref(false);
+const detalleId = ref<number | null>(null);
+const detalleNombre = ref<string>("");
+
+// 🔹 Abrir detalle
+const handleDetail = (rowData: any) => {
+  expandedRow.value = null; // cerrar form si estaba abierto
+  showCombustibleModal.value = false;
+  showImpuestosModal.value = false;
+
+  detalleId.value = rowData.id; // o el campo que tenga el ID de la empresa
+  detalleNombre.value = rowData.nombre; // o el campo con el nombre
+  showDetalle.value = true;
+};
+
+// 🔹 Cerrar detalle
+const closeDetalle = () => {
+  showDetalle.value = false;
+  detalleId.value = null;
+};
 
 // Composables
 const { empresas, fetchEmpresas } = useEmpresas();
@@ -209,8 +251,13 @@ const handleUpdate = async (formData: any, index: number) => {
   if (success) expandedRow.value = null;
 };
 
-const handleDelete = (index: number) => {
-  handleEmpresaDelete(index, empresas.value);
+const handleDelete = async (index: number, rowData: any) => {
+  expandedRow.value = null;
+
+  const success = await handleEmpresaDelete(index, empresas.value);
+  if (success) {
+    await fetchEmpresas("CTA"); // 🔁 refresca la lista visible
+  }
 };
 
 // Lifecycle

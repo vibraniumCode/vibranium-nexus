@@ -1,9 +1,10 @@
 // composables/useEmpresaHandlers.ts
 import { useEmpresas } from "./useEmpresas";
 import type { Empresa } from "@/types/empresa";
+import Swal from "sweetalert2";
 
 export function useEmpresaHandlers() {
-  const { updateEmpresa, error } = useEmpresas();
+  const { updateEmpresa, deleteEmpresa, fetchEmpresas, error } = useEmpresas();
 
   const handleEmpresaUpdate = async (
     formData: any,
@@ -43,56 +44,43 @@ export function useEmpresaHandlers() {
         return true;
       } else {
         console.error("Error al actualizar empresa");
-        alert("Error al actualizar la empresa. " + error.value);
         return false;
       }
     } catch (err) {
       console.error("Error inesperado al actualizar empresa:", err);
-      alert("Error inesperado al actualizar la empresa");
       return false;
     }
   };
 
-  const handleEmpresaDelete = async (
-    index: number,
-    empresas: Empresa[]
-  ): Promise<boolean> => {
+  const handleEmpresaDelete = async (index: number, empresas: Empresa[]) => {
     try {
-      console.log("Eliminando empresa en índice:", index);
-
-      if (!confirm("¿Está seguro de que desea eliminar esta empresa?")) {
-        return false;
-      }
-
       const empresa = empresas[index];
       if (!empresa?.id) {
         console.error("No se pudo encontrar la empresa o falta el ID");
         return false;
       }
 
-      // Aquí necesitarías implementar la función deleteEmpresa en useEmpresas
-      // const success = await deleteEmpresa(empresa.id, "CTA");
+      const result = await Swal.fire({
+        title: "¿Está seguro de que desea eliminar esta empresa?",
+        showDenyButton: true,
+        confirmButtonText: "Sí",
+        denyButtonText: "No",
+      });
 
-      // Por ahora, comentado hasta que implementes deleteEmpresa
-      console.warn("Función deleteEmpresa no implementada aún");
+      if (!result.isConfirmed) return false;
+
+      const success = await deleteEmpresa("DLET", empresa.id);
+      if (success) {
+        await fetchEmpresas("CTA");
+        return true;
+      }
       return false;
-
-      // if (success) {
-      //   console.log("Empresa eliminada correctamente");
-      //   // Eliminar del array local
-      //   empresas.splice(index, 1);
-      //   return true;
-      // } else {
-      //   console.error("Error al eliminar empresa");
-      //   alert("Error al eliminar la empresa. " + error.value);
-      //   return false;
-      // }
     } catch (err) {
       console.error("Error inesperado al eliminar empresa:", err);
-      alert("Error inesperado al eliminar la empresa");
       return false;
     }
   };
+
 
   return {
     handleEmpresaUpdate,

@@ -77,7 +77,27 @@ export function useEmpresas() {
     } finally {
       loading.value = false;
     }
+
   };
 
-  return { empresas, loading, error, fetchEmpresas, updateEmpresa };
+  const deleteEmpresa = async (accion: string, idEstacion: number): Promise<boolean> => {
+    try {
+      loading.value = true;
+      error.value = null;
+      await axios.delete(
+        `http://localhost:3000/api/empresas/${idEstacion}/${accion}`
+      );
+      //Actualizar localmente
+      // empresas.value = empresas.value.filter((e) => e.id !== idEstacion);
+      return true;
+    } catch (err: any) {
+      error.value = err.response?.data?.message || err.message || "Error al eliminar empresa";
+      console.error("Error al eliminar empresa:", err);
+      return false;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  return { empresas, loading, error, fetchEmpresas, updateEmpresa, deleteEmpresa };
 }

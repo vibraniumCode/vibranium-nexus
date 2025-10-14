@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white p-6 rounded-lg shadow-lg mt-6">
+  <div class="bg-white p-6 rounded-b-lg shadow-lg mt-6">
     <div class="mb-6">
       <h2 class="text-xl font-semibold text-gray-900 mb-2">{{ title }}</h2>
       <p v-if="subtitle" class="text-gray-600">{{ subtitle }}</p>
@@ -34,7 +34,7 @@
             :type="field.type"
             :placeholder="field.placeholder"
             :required="field.required"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-200 focus:red-gray-200 outline-none transition-colors"
           />
 
           <!-- Select -->
@@ -43,7 +43,7 @@
             :id="field.name"
             v-model="formData[field.name]"
             :required="field.required"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-200 focus:border-gray-200 outline-none transition-colors"
           >
             <option value="">Seleccione una opción</option>
             <option
@@ -63,7 +63,7 @@
             :placeholder="field.placeholder"
             :required="field.required"
             rows="3"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors resize-none"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-200 focus:border-gray-200 outline-none transition-colors resize-none"
           ></textarea>
         </div>
       </div>

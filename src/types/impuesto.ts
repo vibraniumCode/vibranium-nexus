@@ -9,3 +9,32 @@ export interface ImpEstacion {
   importe: number;
   fec_carga?: string;
 }
+
+export interface ImpuestoDetalle {
+  impEstacion: string;
+  importe: number;
+}
+
+// export interface TipoImpuesto {
+//   id: number;
+//   tipo: string;
+// }
+
+export interface DatoChart {
+  impuestoId: number;
+  tipo: string;
+  yr: number;
+  mth: number;
+  mesLabel: string;
+  total: number;
+}
+
+export interface ChartSeries {
+  name: string;
+  data: number[];
+}
+
+export interface ChartData {
+  categories: string[];
+  series: ChartSeries[];
+}
