@@ -142,6 +142,6 @@ export function useEmpresas() {
       loading.value = false;
     }
   };
-
+  
   return { empresas, loading, error, fetchEmpresas, updateEmpresa, deleteEmpresa, createEmpresa };
 }

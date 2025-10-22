@@ -206,7 +206,7 @@ const handleDetail = (rowData: any) => {
 
   detalleId.value = rowData.id; // o el campo que tenga el ID de la empresa
   detalleNombre.value = rowData.nombre; // o el campo con el nombre
-  showDetalle.value = true;
+  showDetalle.value = true; 
 };
 
 // 🔹 Cerrar detalle

@@ -4,6 +4,8 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import Dashboard from '@/views/Dashboard.vue'
 import EmpresasIndex from '@/views/empresas/EmpresasIndex.vue'
 import EmpresaCreate from '@/views/empresas/EmpresaCreate.vue'
+import ClientesIndex from '@/views/clientes/ClientesIndex.vue'
+import ClienteCreate from '@/views/clientes/ClienteCreate.vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -26,6 +28,22 @@ const routes: RouteRecordRaw[] = [
     component: EmpresaCreate,
     meta: {
       title: 'Crear Empresa'
+    }
+  },
+  {
+    path: '/clientes',
+    name: 'clientes',
+    component: ClientesIndex,
+    meta: {
+      title: 'Clientes'
+    }
+  },
+  {
+    path: '/clientes/crear',
+    name: 'clientes.crear',
+    component: ClienteCreate,
+    meta: {
+      title: 'Crear Cliente'
     }
   },
 ]
