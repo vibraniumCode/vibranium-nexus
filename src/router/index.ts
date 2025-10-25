@@ -6,6 +6,7 @@ import EmpresasIndex from '@/views/empresas/EmpresasIndex.vue'
 import EmpresaCreate from '@/views/empresas/EmpresaCreate.vue'
 import ClientesIndex from '@/views/clientes/ClientesIndex.vue'
 import ClienteCreate from '@/views/clientes/ClienteCreate.vue'
+import Facturacion from '@/views/pventa/facturacion.vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -44,6 +45,14 @@ const routes: RouteRecordRaw[] = [
     component: ClienteCreate,
     meta: {
       title: 'Crear Cliente'
+    }
+  },
+  {
+    path: '/facturacion',
+    name: 'facturacion',
+    component: Facturacion,
+    meta: {
+      title: 'Facturación'
     }
   },
 ]

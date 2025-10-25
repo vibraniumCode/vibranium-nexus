@@ -29,3 +29,7 @@ Componente: UI + orquestación
 
 
 npm install sweetalert2 -> para las alertas
+
+backend:
+npm install express jsonwebtoken bcryptjs cors dotenv
+npm install -D typescript ts-node-dev @types/express @types/jsonwebtoken @types/bcryptjs @types/cors
