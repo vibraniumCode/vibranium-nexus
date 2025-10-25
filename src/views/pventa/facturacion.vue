@@ -3,8 +3,9 @@
     <div class="flex-1 bg-gray-200 p-6">
       <!-- Header -->
       <div class="flex items-center justify-between mb-2">
-        <h1 class="text-xl font font-semibold text-gray-500">
-          Datos del Ticket
+        <h1 class="text-2xl font font-semibold text-gray-900">
+          Facturación
+          <span class="text-sm text-gray-500 ml-2">Proceso de Facturación</span>
         </h1>
       </div>
 
@@ -78,9 +79,8 @@
               >Fecha de emisión</label
             >
             <input id="fechaEmision" type="date" v-model="fechaEmision"
-            class="px-3 py-2 border border-gray-300 rounded-lg text-sm
-            text-white dark:bg-neutral-800 dark:border-gray-700
-            focus:outline-none focus:ring-2 hover:ring-gray-400"
+            class="px-3 py-2 border rounded-lg text-sm text-white bg-neutral-800
+            border-gray-700 focus:outline-none focus:ring-2 hover:ring-gray-400"
           </div>
         </div>
       </div>

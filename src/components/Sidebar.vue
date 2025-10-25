@@ -3,7 +3,7 @@
   <div class="lg:hidden py-16 text-center">
     <button
       type="button"
-      class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-start bg-gray-800 border border-gray-800 text-white text-sm font-medium rounded-lg shadow-2xs align-middle hover:bg-gray-950 focus:outline-hidden focus:bg-gray-900 dark:bg-white dark:text-neutral-800 dark:hover:bg-neutral-200 dark:focus:bg-neutral-200"
+      class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-start border border-gray-800 text-sm font-medium rounded-lg shadow-2xs align-middle focus:outline-hidden bg-white text-neutral-800 hover:bg-neutral-200 focus:bg-neutral-200"
       aria-haspopup="dialog"
       aria-expanded="false"
       aria-controls="hs-sidebar-footer"
@@ -18,7 +18,7 @@
   <!-- Sidebar -->
   <div
     id="hs-sidebar-footer"
-    class="hs-overlay [--auto-close:lg] lg:block lg:translate-x-0 lg:end-auto lg:bottom-0 w-64 hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform h-full hidden fixed top-0 start-0 bottom-0 z-60 bg-gray-200 border-e border-gray-200 dark:bg-neutral-800 dark:border-neutral-700"
+    class="hs-overlay [--auto-close:lg] lg:block lg:translate-x-0 lg:end-auto lg:bottom-0 w-64 hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform h-full hidden fixed top-0 start-0 bottom-0 z-60 border-e bg-neutral-800 border-neutral-700"
     role="dialog"
     tabindex="-1"
     aria-label="Sidebar"
@@ -27,7 +27,7 @@
       <!-- Header -->
       <header class="p-4 flex justify-between items-center gap-x-2">
         <a
-          class="flex-none font-semibold text-xl text-black focus:outline-hidden focus:opacity-80 dark:text-white"
+          class="flex-none font-semibold text-xl focus:outline-hidden focus:opacity-80 text-white"
           href="#"
           aria-label="Nexus"
           >Nexus</a
@@ -37,7 +37,7 @@
           <!-- Close Button -->
           <button
             type="button"
-            class="flex justify-center items-center gap-x-3 size-6 bg-white border border-gray-200 text-sm text-gray-600 hover:bg-gray-100 rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:hover:text-neutral-200 dark:focus:text-neutral-200"
+            class="flex justify-center items-center gap-x-3 size-6 border text-sm rounded-full disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden bg-neutral-800 border-neutral-700 text-neutral-400 hover:bg-neutral-700 focus:bg-neutral-700 hover:text-neutral-200 focus:text-neutral-200"
             data-hs-overlay="#hs-sidebar-footer"
           >
             <svg
@@ -64,7 +64,7 @@
 
       <!-- Body -->
       <nav
-        class="h-full overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+        class="h-full overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-neutral-700 [&::-webkit-scrollbar-thumb]:bg-neutral-500"
       >
         <div
           class="hs-accordion-group pb-0 px-2 w-full flex flex-col flex-wrap"
@@ -74,7 +74,7 @@
             <li>
               <router-link
                 to="/"
-                class="flex items-center gap-x-3.5 py-2 px-2.5 bg-gray-100 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-purple-300/50 dark:hover:bg-purple-400/50 dark:focus:bg-purple-400/50 dark:text-white"
+                class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-purple-300/50 hover:bg-purple-400/50 focus:bg-purple-400/50 text-white"
               >
                 <svg
                   class="size-4"
@@ -98,7 +98,7 @@
             <li class="hs-accordion" id="users-accordion">
               <button
                 type="button"
-                class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:text-neutral-200"
+                class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
                 aria-expanded="true"
                 aria-controls="users-accordion-collapse-1"
               >
@@ -120,7 +120,7 @@
                 Entidades
 
                 <svg
-                  class="hs-accordion-active:block ms-auto hidden size-4 text-gray-600 group-hover:text-gray-500 dark:text-neutral-400"
+                  class="hs-accordion-active:block ms-auto hidden size-4 group-hover:text-gray-500 text-neutral-400"
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
                   height="24"
@@ -135,7 +135,7 @@
                 </svg>
 
                 <svg
-                  class="hs-accordion-active:hidden ms-auto block size-4 text-gray-600 group-hover:text-gray-500 dark:text-neutral-400"
+                  class="hs-accordion-active:hidden ms-auto block size-4 group-hover:text-gray-500 text-neutral-400"
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
                   height="24"
@@ -163,7 +163,7 @@
                   <li class="hs-accordion" id="users-accordion-sub-1">
                     <router-link
                       to="/empresas"
-                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:text-neutral-200"
+                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -187,7 +187,7 @@
                   <li class="hs-accordion" id="users-accordion-sub-2">
                     <router-link
                       to="/clientes"
-                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:text-neutral-200"
+                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -214,7 +214,7 @@
             <li class="hs-accordion" id="account-accordion">
               <button
                 type="button"
-                class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:text-neutral-200"
+                class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
                 aria-expanded="true"
                 aria-controls="account-accordion-sub-1-collapse-1"
               >
@@ -236,7 +236,7 @@
                 Punto de venta
 
                 <svg
-                  class="hs-accordion-active:block ms-auto hidden size-4 text-gray-600 group-hover:text-gray-500 dark:text-neutral-400"
+                  class="hs-accordion-active:block ms-auto hidden size-4 group-hover:text-gray-500 text-neutral-400"
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
                   height="24"
@@ -251,7 +251,7 @@
                 </svg>
 
                 <svg
-                  class="hs-accordion-active:hidden ms-auto block size-4 text-gray-600 group-hover:text-gray-500 dark:text-neutral-400"
+                  class="hs-accordion-active:hidden ms-auto block size-4 group-hover:text-gray-500 text-neutral-400"
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
                   height="24"
@@ -276,7 +276,7 @@
                   <li>
                     <router-link
                       to="/facturacion"
-                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:text-neutral-200"
+                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -298,7 +298,7 @@
                   </li>
                   <li>
                     <a
-                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:text-neutral-200"
+                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
                       href="#"
                     >
                       <svg
@@ -326,7 +326,7 @@
             <li class="hs-accordion" id="projects-accordion">
               <button
                 type="button"
-                class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:text-neutral-200"
+                class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
                 aria-expanded="true"
                 aria-controls="projects-accordion-sub-1-collapse-1"
               >
@@ -351,7 +351,7 @@
                 Configuración
 
                 <svg
-                  class="hs-accordion-active:block ms-auto hidden size-4 text-gray-600 group-hover:text-gray-500 dark:text-neutral-400"
+                  class="hs-accordion-active:block ms-auto hidden size-4 group-hover:text-gray-500 text-neutral-400"
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
                   height="24"
@@ -366,7 +366,7 @@
                 </svg>
 
                 <svg
-                  class="hs-accordion-active:hidden ms-auto block size-4 text-gray-600 group-hover:text-gray-500 dark:text-neutral-400"
+                  class="hs-accordion-active:hidden ms-auto block size-4 group-hover:text-gray-500 text-neutral-400"
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
                   height="24"
@@ -390,7 +390,7 @@
                 <ul class="pt-1 ps-7 space-y-1">
                   <li>
                     <a
-                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:text-neutral-200"
+                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
                       href="#"
                     >
                       Impuestos
@@ -398,7 +398,7 @@
                   </li>
                   <li>
                     <a
-                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:text-neutral-200"
+                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
                       href="#"
                     >
                       Combustibles
@@ -406,7 +406,7 @@
                   </li>
                   <li>
                     <a
-                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:text-neutral-200"
+                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
                       href="#"
                     >
                       Numeración
@@ -421,9 +421,7 @@
       <!-- End Body -->
 
       <!-- Footer -->
-      <footer
-        class="mt-auto p-2 border-t border-gray-200 dark:border-neutral-700"
-      >
+      <footer class="mt-auto p-2 border-t border-neutral-700">
         <!-- Account Dropdown -->
         <div
           class="hs-dropdown [--strategy:absolute] [--auto-close:inside] relative w-full inline-flex"
@@ -431,7 +429,7 @@
           <button
             id="hs-sidebar-footer-example-with-dropdown"
             type="button"
-            class="w-full inline-flex shrink-0 items-center gap-x-2 p-2 text-start text-sm text-gray-800 rounded-md hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+            class="w-full inline-flex shrink-0 items-center gap-x-2 p-2 text-start text-sm rounded-md ocus:outline-hidden text-neutral-200 hover:bg-neutral-700 focus:bg-neutral-700"
             aria-haspopup="menu"
             aria-expanded="false"
             aria-label="Dropdown"
@@ -461,32 +459,32 @@
 
           <!-- Account Dropdown -->
           <div
-            class="hs-dropdown-menu hs-dropdown-open:opacity-100 w-60 transition-[opacity,margin] duration opacity-0 hidden z-20 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-900 dark:border-neutral-700"
+            class="hs-dropdown-menu hs-dropdown-open:opacity-100 w-60 transition-[opacity,margin] duration opacity-0 hidden z-20 border rounded-lg shadow-lg bg-neutral-900 border-neutral-700"
             role="menu"
             aria-orientation="vertical"
             aria-labelledby="hs-sidebar-footer-example-with-dropdown"
           >
             <div class="p-1">
               <a
-                class="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+                class="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden text-neutral-300 hover:bg-neutral-800 focus:bg-neutral-800"
                 href="#"
               >
                 My account
               </a>
               <a
-                class="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+                class="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden text-neutral-300 hover:bg-neutral-800 focus:bg-neutral-800"
                 href="#"
               >
                 Settings
               </a>
               <a
-                class="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+                class="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden text-neutral-300 hover:bg-neutral-800 focus:bg-neutral-800"
                 href="#"
               >
                 Billing
               </a>
               <a
-                class="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden focus:bg-gray-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
+                class="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden text-neutral-300 hover:bg-neutral-800 focus:bg-neutral-800"
                 href="#"
               >
                 Sign out
