@@ -441,7 +441,7 @@
               src="https://images.unsplash.com/photo-1734122415415-88cb1d7d5dc0?q=80&w=320&h=320&auto=format&fit=facearea&facepad=3&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Avatar"
             />
-            Mia Hudson
+            {{ items }}
             <svg
               class="shrink-0 size-3.5 ms-auto"
               xmlns="http://www.w3.org/2000/svg"
@@ -502,3 +502,13 @@
   </div>
   <!-- End Sidebar -->
 </template>
+<script setup lang="ts">
+import { ref } from "vue";
+
+const items = ref([]);
+
+const storedData = localStorage.getItem("user");
+const user = storedData ? JSON.parse(storedData) : null;
+const userNombre = user.nombre;
+items.value = userNombre;
+</script>

@@ -33,3 +33,32 @@ npm install sweetalert2 -> para las alertas
 backend:
 npm install express jsonwebtoken bcryptjs cors dotenv
 npm install -D typescript ts-node-dev @types/express @types/jsonwebtoken @types/bcryptjs @types/cors
+npm install express-validator
+npm install express-rate-limit
+
+
+
+
+
+LOGIN
+---
+
+## **Flujo Completo**
+```
+1. Usuario escribe "admin" y "123456"
+   ↓
+2. Usuario hace clic en "Sign in"
+   ↓
+3. Se ejecuta handleLogin()
+   ↓
+4. Se envía POST a http://localhost:3000/api/auth/login
+   ↓
+5a. ✅ Si éxito:
+    - Guarda token en localStorage
+    - Redirige a /dashboard
+   
+5b. ❌ Si error:
+    - Muestra mensaje de error en pantalla
+```
+
+---

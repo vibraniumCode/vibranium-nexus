@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
 // Importaciones
+import Login from '@/views/auth/Login.vue';
 import Dashboard from '@/views/Dashboard.vue'
+import NotFound from '@/views/NotFound.vue';
 import EmpresasIndex from '@/views/empresas/EmpresasIndex.vue'
 import EmpresaCreate from '@/views/empresas/EmpresaCreate.vue'
 import ClientesIndex from '@/views/clientes/ClientesIndex.vue'
@@ -11,8 +13,30 @@ import Facturacion from '@/views/pventa/facturacion.vue'
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
+    redirect: '/auth/login'
+  },
+  {
+    path: '/auth/login',
+    name: 'Login',
+    component: Login,
+    meta: {
+      requiresAuth: false,
+      layout: 'auth'  // ✅ Usar AuthLayout
+    }
+  },
+  {
+    path: '/dashboard',
     name: 'dashboard',
-    component: Dashboard
+    component: Dashboard,
+    meta: {
+      requiresAuth: true,
+      layout: 'dashboard'  // ✅ Usar DashboardLayout
+    }
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFound
   },
   // Rutas de Empresas
   {
@@ -20,7 +44,9 @@ const routes: RouteRecordRaw[] = [
     name: 'empresas',
     component: EmpresasIndex,
     meta: {
-      title: 'Empresas'
+      title: 'Empresas',
+      requiresAuth: true,
+      layout: 'dashboard'
     }
   },
   {
@@ -28,7 +54,9 @@ const routes: RouteRecordRaw[] = [
     name: 'empresas.crear',
     component: EmpresaCreate,
     meta: {
-      title: 'Crear Empresa'
+      title: 'Crear Empresa',
+      requiresAuth: true,
+      layout: 'dashboard'
     }
   },
   {
@@ -36,7 +64,9 @@ const routes: RouteRecordRaw[] = [
     name: 'clientes',
     component: ClientesIndex,
     meta: {
-      title: 'Clientes'
+      title: 'Clientes',
+      requiresAuth: true,
+      layout: 'dashboard'
     }
   },
   {
@@ -44,7 +74,9 @@ const routes: RouteRecordRaw[] = [
     name: 'clientes.crear',
     component: ClienteCreate,
     meta: {
-      title: 'Crear Cliente'
+      title: 'Crear Cliente',
+      requiresAuth: true,
+      layout: 'dashboard'
     }
   },
   {
@@ -52,7 +84,9 @@ const routes: RouteRecordRaw[] = [
     name: 'facturacion',
     component: Facturacion,
     meta: {
-      title: 'Facturación'
+      title: 'Facturación',
+      requiresAuth: true,
+      layout: 'dashboard'
     }
   },
 ]
@@ -67,5 +101,21 @@ router.beforeEach((to, from, next) => {
   document.title = to.meta?.title ? `${to.meta.title} - Nexus` : 'Nexus'
   next()
 })
+
+// Guard de autenticación
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token');
+  const requiresAuth = to.meta.requiresAuth;
+
+  if (requiresAuth && !token) {
+    // Si requiere auth y no hay token, redirigir al login
+    next('/auth/login');
+  } else if (!requiresAuth && token && to.path === '/auth/login') {
+    // Si está autenticado y trata de ir al login, redirigir al dashboard
+    next('/dashboard');
+  } else {
+    next();
+  }
+});
 
 export default router
