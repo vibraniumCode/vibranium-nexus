@@ -3,7 +3,9 @@
     <div class="flex-1 bg-gray-200 p-2">
       <!-- Header -->
       <div class="flex items-center justify-between mb-4">
-        <h1 class="text-4xl font-semibold text-gray-900">Estaciones</h1>
+        <h1 class="text-4xl font-semibold text-gray-900">
+          Empresa <span class="text-sm text-gray-500 ml-2">Estaciones</span>
+        </h1>
         <button
           @click="$emit('add-new')"
           class="inline-flex items-center px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
@@ -206,7 +208,7 @@ const handleDetail = (rowData: any) => {
 
   detalleId.value = rowData.id; // o el campo que tenga el ID de la empresa
   detalleNombre.value = rowData.nombre; // o el campo con el nombre
-  showDetalle.value = true; 
+  showDetalle.value = true;
 };
 
 // 🔹 Cerrar detalle
