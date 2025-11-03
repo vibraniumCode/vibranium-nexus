@@ -33,7 +33,7 @@
       </div>
 
       <!-- Dashboard Card -->
-      <div class="h-full w-full mb-6 bg-white p-6 font-sans">
+      <div class="h-full w-full mb-6 bg-white p-6 font-sans rounded-lg">
         <div class="flex justify-between">
           <div
             class="flexw-[50%] max-w-md flex-col w-full justify-between rounded-xl bg-slate-50 p-8 text-slate-900 ring-1 ring-slate-300 dark:bg-neutral-800 dark:text-slate-200 dark:ring-slate-300/20 xl:p-4"
@@ -154,6 +154,7 @@
         <DetalleImpuesto
           v-if="showDetalle && detalleId"
           :id="detalleId"
+          :estacion="detalleNombre"
           @close="closeDetalle"
         />
       </Transition>

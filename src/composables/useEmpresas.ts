@@ -1,3 +1,4 @@
+import { Impuesto } from './../types/impuesto';
 // composables/useEmpresas.ts
 import { ref } from "vue";
 import axios from "axios";
@@ -142,6 +143,34 @@ export function useEmpresas() {
       loading.value = false;
     }
   };
-  
-  return { empresas, loading, error, fetchEmpresas, updateEmpresa, deleteEmpresa, createEmpresa };
+
+  const fetchEmpresaDetails = async (idEmpresa: number) => {
+    try {
+      loading.value = true;
+      error.value = null;
+      const empresa = ref<any>(null);
+      const combustible = ref<any[]>([]);
+      const impuesto = ref<any[]>([]);
+
+      const { data } = await axios.get(
+        `http://localhost:3000/api/empresas/details/${idEmpresa}`
+      );
+
+
+      if (data && data.empresa) {
+        empresa.value = data.empresa;
+        combustible.value = data.combustible || [];
+        impuesto.value = data.Impuesto || [];
+      } else {
+        throw new Error("No se recibieron datos válidos de la empresa");
+      }
+    } catch (err: any) {
+      error.value = err.message || "Error al obtener los datos de la empresa";
+      console.error("Error al obtener detalles de la empresa:", err);
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  return { empresas, loading, error, fetchEmpresas, updateEmpresa, deleteEmpresa, createEmpresa, fetchEmpresaDetails };
 }

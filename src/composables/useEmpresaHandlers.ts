@@ -4,7 +4,7 @@ import type { Empresa } from "@/types/empresa";
 import Swal from "sweetalert2";
 
 export function useEmpresaHandlers() {
-  const { updateEmpresa, deleteEmpresa, createEmpresa, fetchEmpresas, error } = useEmpresas();
+  const { updateEmpresa, deleteEmpresa, createEmpresa, fetchEmpresas, fetchEmpresaDetails, error } = useEmpresas();
 
   const handleEmpresaUpdate = async (
     formData: any,
@@ -112,9 +112,18 @@ export function useEmpresaHandlers() {
     }
   };
 
+  const handleEmpresaDetailsFetch = async (idEmpresa: number) => {
+    try {
+      await fetchEmpresaDetails(idEmpresa);
+    } catch (err) {
+      console.error("Error inesperado al obtener detalles de la empresa:", err);
+    }
+  };
+
   return {
     handleEmpresaUpdate,
     handleEmpresaDelete,
     handleEmpresaCreate,
+    handleEmpresaDetailsFetch,
   };
 }
