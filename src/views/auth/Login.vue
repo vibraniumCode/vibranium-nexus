@@ -38,7 +38,7 @@
                   id="usuario"
                   autocomplete="username"
                   required
-                  class="block w-full rounded-md border-2 border-gray-300 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
+                  class="block w-full rounded-md border-2 border-gray-300 px-3 py-1.5 text-base text-black outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
                   placeholder="Ingresa tu usuario"
                 />
               </div>
@@ -70,7 +70,7 @@
                   id="password"
                   autocomplete="current-password"
                   required
-                  class="block w-full rounded-md border-2 border-gray-300 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
+                  class="block w-full rounded-md border-2 border-gray-300 px-3 py-1.5 text-base text-black outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
                   placeholder="Ingresa tu contraseña"
                 />
               </div>

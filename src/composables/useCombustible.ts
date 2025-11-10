@@ -7,6 +7,7 @@ export function useCombustibles() {
   const combustibles = ref<Combustible[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
+  const api = 'https://vibranium-nexus-backend.onrender.com/api'
 
   const fetchTCombustibles = async () => {
     try {
@@ -14,7 +15,7 @@ export function useCombustibles() {
       error.value = null;
 
       const { data } = await axios.get(
-        "http://localhost:3000/api/combustible"
+        `${api}/combustible`
       );
 
       if (Array.isArray(data)) {
@@ -36,7 +37,7 @@ export function useCombustibles() {
       loading.value = true;
       error.value = null;
 
-      const { data } = await axios.get(`http://localhost:3000/api/combustible/${idEmpresa}`);
+      const { data } = await axios.get(`${api}/combustible/${idEmpresa}`);
       combustibles.value = data;
     } catch (err: any) {
       console.error("Error al obtener combustibles:", err);
@@ -53,7 +54,7 @@ export function useCombustibles() {
       loading.value = true;
       error.value = null;
       const { data } = await axios.post(
-        "http://localhost:3000/api/combustible/new",
+        `${api}/combustible/new`,
         {
           txtDesc
         }

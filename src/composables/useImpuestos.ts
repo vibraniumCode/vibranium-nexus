@@ -13,7 +13,7 @@ export function useImpuestos() {
       error.value = null;
 
       const { data } = await axios.get<Impuesto[]>(
-        "http://localhost:3000/api/Impuestos"
+        "https://vibranium-nexus-backend.onrender.com/api/Impuestos"
       );
 
       if (Array.isArray(data)) {
@@ -37,7 +37,7 @@ export function useImpuestos() {
       error.value = null;
 
       const { data } = await axios.post(
-        "http://localhost:3000/api/impuestos/new",
+        "https://vibranium-nexus-backend.onrender.com/api/impuestos/new",
         {
           tipo
         }
@@ -68,7 +68,7 @@ export function useImpuestos() {
       error.value = null;
 
       const { data } = await axios.post(
-        "http://localhost:3000/api/impuestos/new",
+        "https://vibranium-nexus-backend.onrender.com/api/impuestos/new",
         {
           idEmpresa,
           idCombustible,
@@ -100,7 +100,7 @@ export function useImpuestos() {
       error.value = null;
 
       const { data } = await axios.delete(
-        `http://localhost:3000/api/impuestos/${idEmpresa}/${idCombustible}/${idImpuesto}/dlet`
+        `https://vibranium-nexus-backend.onrender.com/api/impuestos/${idEmpresa}/${idCombustible}/${idImpuesto}/dlet`
       );
 
       return { success: true, message: data.message || "Impuesto eliminado" };
@@ -128,7 +128,7 @@ export function useImpuestos() {
 
       // La ruta debe coincidir con tu backend
       const { data } = await axios.put(
-        `http://localhost:3000/api/impuestos/${idEmpresa}/${idCombustible}/${idImpuesto}/upd`,
+        `https://vibranium-nexus-backend.onrender.com/api/impuestos/${idEmpresa}/${idCombustible}/${idImpuesto}/upd`,
         {
           monto
         }

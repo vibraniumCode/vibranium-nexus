@@ -7,6 +7,7 @@ export function useClientes() {
   const clientes = ref<Cliente[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
+  const api = 'https://vibranium-nexus-backend.onrender.com/api'
 
   const fetchClientes = async (accion: string) => {
     try {
@@ -14,7 +15,7 @@ export function useClientes() {
       error.value = null;
 
       const { data } = await axios.get<Cliente[]>(
-        `http://localhost:3000/api/clientes/${accion}`
+        `${api}/clientes/${accion}`
       );
       if (Array.isArray(data)) {
         clientes.value = data;
@@ -40,7 +41,7 @@ export function useClientes() {
       loading.value = true;
       error.value = null;
       const { data } = await axios.put(
-        `http://localhost:3000/api/clientes/${idCliente}/${accion}`,
+        `${api}/clientes/${idCliente}/${accion}`,
         {
           nombre,
           cuit,
@@ -69,7 +70,7 @@ export function useClientes() {
       loading.value = true;
       error.value = null;
       await axios.delete(
-        `http://localhost:3000/api/clientes/${idCliente}/${accion}`
+        `${api}/clientes/${idCliente}/${accion}`
       );
       //Actualizar localmente
       // clientes.value = clientes.value.filter((e) => e.id !== idCliente);
@@ -94,7 +95,7 @@ export function useClientes() {
       loading.value = true;
       error.value = null;
       const { data } = await axios.post(
-        `http://localhost:3000/api/clientes/${accion}`,
+        `${api}/clientes/${accion}`,
         {
           nombre,
           cuit,

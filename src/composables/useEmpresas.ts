@@ -9,6 +9,7 @@ export function useEmpresas() {
   const empresas = ref<Empresa[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
+  const api = 'https://vibranium-nexus-backend.onrender.com/api/'
 
   const fetchEmpresas = async (accion: string) => {
     try {
@@ -16,7 +17,7 @@ export function useEmpresas() {
       error.value = null;
 
       const { data } = await axios.get<Empresa[]>(
-        `http://localhost:3000/api/empresas/${accion}`
+        `${api}empresas/${accion}`
       );
       empresas.value = Array.isArray(data)
         ? data.map((e: any) => ({
@@ -51,7 +52,7 @@ export function useEmpresas() {
       loading.value = true;
       error.value = null;
       const { data } = await axios.put(
-        `http://localhost:3000/api/empresas/${idEstacion}/${accion}`,
+        `${api}empresas/${idEstacion}/${accion}`,
         {
           nomEstacion: nombre, // ✅ Backend espera "nomEstacion"
           cuit,
@@ -86,7 +87,7 @@ export function useEmpresas() {
       loading.value = true;
       error.value = null;
       await axios.delete(
-        `http://localhost:3000/api/empresas/${idEstacion}/${accion}`
+        `${api}empresas/${idEstacion}/${accion}`
       );
       //Actualizar localmente
       // empresas.value = empresas.value.filter((e) => e.id !== idEstacion);
@@ -117,7 +118,7 @@ export function useEmpresas() {
       loading.value = true;
       error.value = null;
       const { data } = await axios.post(
-        `http://localhost:3000/api/empresas/${accion}`,
+        `${api}empresas/${accion}`,
         {
           nomEstacion: nombre,
           cuit,
@@ -153,7 +154,7 @@ export function useEmpresas() {
       const impuesto = ref<any[]>([]);
 
       const { data } = await axios.get(
-        `http://localhost:3000/api/empresas/details/${idEmpresa}`
+        `${api}empresas/details/${idEmpresa}`
       );
 
 

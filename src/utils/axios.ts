@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const apiURL = 'https://vibranium-nexus-backend.onrender.com/api';
+
 const api = axios.create({
-  baseURL: 'http://localhost:3000/api',
+  baseURL: apiURL,
   headers: {
     'Content-Type': 'application/json'
   }
