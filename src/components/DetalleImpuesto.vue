@@ -278,7 +278,7 @@ const {
   impuestos,
   loading: loadingImpuestos,
   error: errorImpuestos,
-  fetchImpuesto,
+  fetchTImpuesto,
   crearImpuesto,
   deleteImpuesto,
   updateImpuesto,
@@ -322,7 +322,7 @@ watch(
 
 // --- cargar tipos de impuestos del backend ---
 onMounted(() => {
-  fetchImpuesto();
+  fetchTImpuesto();
 });
 
 // --- estado temporal por combustible ---

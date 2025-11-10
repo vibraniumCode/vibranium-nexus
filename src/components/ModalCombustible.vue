@@ -1,38 +1,52 @@
 <template>
   <ModalLayout :show="show" title="Combustibles" @close="close">
+    <!-- Agregar nuevo combustible -->
+    <details class="bg-white rounded-md mt-2 border border-gray-200">
+      <summary
+        class="flex items-center justify-between cursor-pointer select-none px-4 py-2 text-sm font-medium text-gray-800 hover:text-indigo-600"
+      >
+        <span class="flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4 text-indigo-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+          Agregar nuevo combustible
+        </span>
+      </summary>
+
+      <div class="p-4 border-t border-gray-100 flex flex-col gap-3">
+        <input
+          v-model="nuevoCombustible.tipo"
+          type="text"
+          placeholder="Nombre del combustible"
+          class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+        />
+        <button
+          @click="agregarCombustible"
+          class="bg-indigo-600 text-white text-sm px-4 py-2 rounded-md hover:bg-indigo-700 w-fit"
+        >
+          Guardar
+        </button>
+      </div>
+    </details>
     <TableLayout
       :title="'Listado de Combustibles'"
-      :data="combustibles"
-      :columns="combustibleColumns"
+      :data="tcombustibles"
+      :columns="tcombustibleColumns"
       :centerColumns="true"
-      :showActions="true"
+      :showActions="false"
       :showReport="false"
-      :actionConfig="{
-        showDetail: false,
-        showEdit: true,
-        showDelete: false,
-        editLabel: 'Actualizar',
-      }"
-      @edit="handleEdit"
-      v-model:expandedRow="expandedRow"
     >
-      <!-- 🔥 Slot para el contenido expandido -->
-      <template #expanded-content="{ expandedRow, data }">
-        <EditInput
-          v-if="typeof expandedRow === 'number' && data[expandedRow]"
-          v-model="editingPrice"
-          :label="`Precio de ${data[expandedRow]?.tipo ?? ''}`"
-          field-name="precio"
-          input-type="number"
-          :placeholder="`Ingresa el precio para ${
-            data[expandedRow]?.tipo ?? ''
-          }`"
-          save-label="Actualizar Precio"
-          :is-saving="isSaving"
-          @save="savePrice(expandedRow, data[expandedRow]?.id)"
-          @cancel="closeEdit"
-        />
-      </template>
     </TableLayout>
   </ModalLayout>
 </template>
@@ -41,64 +55,31 @@
 import { defineProps, defineEmits, ref, onMounted } from "vue";
 import ModalLayout from "@/components/common/ModalLayout.vue";
 import TableLayout from "@/components/common/TableLayout.vue";
-import EditInput from "@/components/common/EditInput.vue";
 import { useCombustibles } from "@/composables/useCombustible";
-import { combustibleColumns } from "@/constants/combustibleConfig";
-import { useCombustibleHandlers } from "@/composables/useCombustibleHandlers";
-import type { Combustible } from "@/types/combustible";
+import { tcombustibleColumns } from "@/constants/combustibleConfig";
+import { Console } from "console";
 
 //composables
-const { combustibles, fetchCombustible } = useCombustibles();
-const { handleCombustiblePriceUpdate } = useCombustibleHandlers();
+const { tcombustibles, fetchTCombustibles, crearTCombustible } =
+  useCombustibles();
 
 const props = defineProps<{ show: boolean }>();
 const emit = defineEmits(["close"]);
 
-const editingPrice = ref<number>(0);
-const isSaving = ref(false);
-const expandedRow = ref<number | null>(null);
+// nuevo impuesto
+const nuevoCombustible = ref({ tipo: "" });
+
+const agregarCombustible = async () => {
+  if (!nuevoCombustible.value.tipo.trim()) return;
+  await crearTCombustible(nuevoCombustible.value.tipo);
+  nuevoCombustible.value.tipo = "";
+};
 
 const close = () => {
   emit("close");
 };
 
-const handleEdit = (index: number, data: Combustible) => {
-  expandedRow.value = index;
-  editingPrice.value = data.precio; //aca cargo el precio de la tabla(db) en el input
-};
-
-const closeEdit = () => {
-  expandedRow.value = null;
-  editingPrice.value = 0;
-};
-
-const savePrice = async (index: number, id: number) => {
-  try {
-    const newPrice = Number(editingPrice.value);
-    isSaving.value = true;
-
-    const success = await handleCombustiblePriceUpdate(
-      id,
-      newPrice,
-      combustibles.value
-    );
-
-    if (success) {
-      console.log("Precio actualizado correctamente");
-      closeEdit();
-      //refrescar la lista
-      await fetchCombustible();
-    } else {
-      console.error("Error al actualizar el precio");
-    }
-  } catch (error) {
-    console.error("Error inesperado:", error);
-  } finally {
-    isSaving.value = false;
-  }
-};
-
 onMounted(() => {
-  fetchCombustible();
+  fetchTCombustibles();
 });
 </script>

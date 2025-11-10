@@ -35,93 +35,96 @@
         </TableActions>
       </div>
     </div>
-
-    <!-- Tabla -->
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-      <thead
-        class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-neutral-800 dark:text-neutral-400"
-      >
-        <tr>
-          <th
-            v-for="(col, index) in computedColumns"
-            :key="index"
-            class="px-6 py-3"
-            :class="{ 'text-center': centerColumns }"
+    <!-- Contenedor con scroll horizontal y vertical -->
+    <div class="max-h-[500px] overflow-y-auto overflow-x-auto">
+      <!-- Tabla -->
+      <div class="overflow-y-auto max-h-[500px]">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+          <thead
+            class="sticky top-0 z-10 text-sm text-gray-700 uppercase bg-gray-50 dark:bg-neutral-800 dark:text-neutral-400"
           >
-            {{ col }}
-          </th>
-          <th v-if="props.showActions" class="px-6 py-3 text-center">
-            Acciones
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(row, rowIndex) in computedRows"
-          :key="rowIndex"
-          class="text-center"
-          :class="[
-            rowIndex % 2 === 1 ? 'bg-gray-100' : 'bg-white',
-            'hover:bg-gray-50 transition-colors duration-150',
-          ]"
-        >
-          <td
-            v-for="(value, colIndex) in row"
-            :key="colIndex"
-            class="px-6 py-4"
-            :class="[centerRows ? 'text-center' : '']"
-            v-html="value"
-          ></td>
-
-          <!-- 🔥 Componente de menú de acciones -->
-          <td v-if="props.showActions" class="px-6 py-4 text-center">
-            <ActionsMenu
-              :actions="actionConfig"
-              @detail="handleAction('detail', rowIndex)"
-              @edit="handleAction('edit', rowIndex)"
-              @duplicate="handleAction('duplicate', rowIndex)"
-              @delete="handleAction('delete', rowIndex)"
-            >
-              <!-- Slot para acciones personalizadas en el menú -->
-              <template #custom-actions="{ close }">
-                <slot
-                  name="custom-row-actions"
-                  :row-index="rowIndex"
-                  :row-data="filteredData[rowIndex]"
-                  :close="close"
-                ></slot>
-              </template>
-            </ActionsMenu>
-          </td>
-        </tr>
-
-        <!-- Fila vacía si no hay datos -->
-        <tr v-if="computedRows.length === 0">
-          <td
-            :colspan="computedColumns.length + (showActions ? 1 : 0)"
-            class="px-6 py-8 text-center text-gray-500"
-          >
-            <div class="flex flex-col items-center justify-center">
-              <svg
-                class="w-12 h-12 text-gray-400 mb-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            <tr>
+              <th
+                v-for="(col, index) in computedColumns"
+                :key="index"
+                class="px-6 py-3"
+                :class="{ 'text-center': centerColumns }"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
-                />
-              </svg>
-              <p class="text-sm">{{ emptyMessage }}</p>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+                {{ col }}
+              </th>
+              <th v-if="props.showActions" class="px-6 py-3 text-center">
+                Acciones
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(row, rowIndex) in computedRows"
+              :key="rowIndex"
+              class="text-center"
+              :class="[
+                rowIndex % 2 === 1 ? 'bg-gray-100' : 'bg-white',
+                'hover:bg-gray-50 transition-colors duration-150',
+              ]"
+            >
+              <td
+                v-for="(value, colIndex) in row"
+                :key="colIndex"
+                class="px-6 py-4"
+                :class="[centerRows ? 'text-center' : '']"
+                v-html="value"
+              ></td>
 
+              <!-- 🔥 Componente de menú de acciones -->
+              <td v-if="props.showActions" class="px-6 py-4 text-center">
+                <ActionsMenu
+                  :actions="actionConfig"
+                  @detail="handleAction('detail', rowIndex)"
+                  @edit="handleAction('edit', rowIndex)"
+                  @duplicate="handleAction('duplicate', rowIndex)"
+                  @delete="handleAction('delete', rowIndex)"
+                >
+                  <!-- Slot para acciones personalizadas en el menú -->
+                  <template #custom-actions="{ close }">
+                    <slot
+                      name="custom-row-actions"
+                      :row-index="rowIndex"
+                      :row-data="filteredData[rowIndex]"
+                      :close="close"
+                    ></slot>
+                  </template>
+                </ActionsMenu>
+              </td>
+            </tr>
+
+            <!-- Fila vacía si no hay datos -->
+            <tr v-if="computedRows.length === 0">
+              <td
+                :colspan="computedColumns.length + (showActions ? 1 : 0)"
+                class="px-6 py-8 text-center text-gray-500"
+              >
+                <div class="flex flex-col items-center justify-center">
+                  <svg
+                    class="w-12 h-12 text-gray-400 mb-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+                    />
+                  </svg>
+                  <p class="text-sm">{{ emptyMessage }}</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <!-- 🔥 Slot para contenido expandido (formularios, inputs, etc.) -->
     <slot
       name="expanded-content"

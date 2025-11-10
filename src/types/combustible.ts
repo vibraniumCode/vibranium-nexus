@@ -1,3 +1,8 @@
+export interface TCombustible {
+  id: number;
+  tipo: string;
+}
+
 export interface Combustible {
   id: number;
   tipo: string;
