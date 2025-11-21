@@ -1,9 +1,11 @@
 <template>
-  <div class="bg-white shadow-lg rounded-xl mt-6 p-8 border border-gray-100">
+  <div class="bg-white shadow-lg mt-6 p-8 border border-gray-100">
     <!-- Header -->
     <div class="border-b border-gray-200 pb-4 mb-6">
-      <h2 class="text-2xl font-semibold text-gray-900">{{ title }}</h2>
-      <p v-if="subtitle" class="text-gray-500 text-sm mt-1">{{ subtitle }}</p>
+      <div class="border-l-4 border-indigo-600 pl-3">
+        <h2 class="text-2xl font-semibold text-gray-900">{{ title }}</h2>
+        <p v-if="subtitle" class="text-gray-500 text-sm mt-1">{{ subtitle }}</p>
+      </div>
     </div>
 
     <!-- Form -->
@@ -32,7 +34,7 @@
           :type="field.type"
           :placeholder="field.placeholder"
           :required="field.required"
-          class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition-all"
+          class="w-full px-3 py-2 text-gray-600 border border-gray-400 hover:border-indigo-600 focus:ring-0 focus:ring-indigo-100 outline-none transition-all"
         />
 
         <!-- Select -->
@@ -61,7 +63,7 @@
           :placeholder="field.placeholder"
           :required="field.required"
           rows="3"
-          class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition-all resize-none"
+          class="w-full px-3 py-2 border border-gray-300 bg-gray-50 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition-all resize-none"
         ></textarea>
       </div>
 
@@ -72,14 +74,14 @@
         <button
           type="button"
           @click="handleCancel"
-          class="px-5 py-2.5 rounded-lg text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors"
+          class="px-5 py-2.5 rounded-sm text-gray-700 bg-gray-200 hover:bg-gray-300 transition-colors"
         >
           Cancelar
         </button>
         <button
           type="submit"
           :disabled="isSubmitting"
-          class="px-6 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          class="px-6 py-2.5 bg-indigo-600 text-white rounded-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <span v-if="isSubmitting">Guardando...</span>
           <span v-else>Guardar</span>
@@ -91,6 +93,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import { useToast } from "vue-toast-notification";
 
 interface FormField {
   name: string;
@@ -108,34 +111,52 @@ const props = withDefaults(
     subtitle?: string;
     fields: FormField[];
     initialData?: Record<string, any>;
+    submitHandler?: (data: Record<string, any>) => Promise<any>;
   }>(),
   {
     initialData: () => ({}),
+    submitHandler: undefined,
   }
 );
 
+// Cambié los emits para incluir success y error
 const emit = defineEmits<{
   submit: [data: Record<string, any>];
   cancel: [];
+  success: [response: any];
+  error: [error: any];
 }>();
 
 const formData = ref<Record<string, any>>({});
 const isSubmitting = ref(false);
+const $toast = useToast();
 
 function getFieldClass(field: FormField): string {
   return field.width === "full" ? "col-span-full" : "col-span-1";
 }
 
-function handleSubmit() {
+async function handleSubmit() {
   isSubmitting.value = true;
-  setTimeout(() => {
-    emit("submit", { ...formData.value });
+  try {
+    if (props.submitHandler) {
+      const response = await props.submitHandler({ ...formData.value });
+      emit("success", response);
+      $toast.success("Formulario enviado con éxito.");
+    } else {
+      // No mostrar toast aquí: el padre debe manejar la llamada y notificar éxito/error
+      emit("submit", { ...formData.value });
+    }
+  } catch (err: any) {
+    emit("error", err);
+    $toast.error(err?.message || "Error al enviar el formulario.");
+  } finally {
     isSubmitting.value = false;
-  }, 500);
+  }
 }
 
 function handleCancel() {
   emit("cancel");
+  $toast.info("Formulario cancelado.");
 }
 
 onMounted(() => {

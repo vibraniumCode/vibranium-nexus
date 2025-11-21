@@ -5,16 +5,23 @@
       <div class="flex items-center justify-between mb-4">
         <h1 class="text-4xl font-semibold text-gray-900">
           Facturación
-          <span class="text-sm text-gray-500 ml-2">
-            Proceso de comprobantes
+          <span
+            class="bg-indigo-100 text-indigo-700 text-xs font-medium px-2 py-1 rounded"
+          >
+            Generador
           </span>
         </h1>
       </div>
-
-      <!-- Card principal -->
       <div
-        class="h-full w-full mb-6 bg-white p-6 font-sans rounded-lg shadow-md"
+        class="bg-indigo-600 text-white shadow-md border-t rounded-t-2xl p-2"
       >
+        <h2 class="text-lg font-semibold">Generación de tickets</h2>
+        <p class="text-sm opacity-90">
+          Seleccioná los siguientes datos para generar los tickets de venta:
+        </p>
+      </div>
+
+      <div class="h-full w-full mb-6 bg-white p-6 font-sans shadow-md">
         <!-- Sección Empresa, Cliente, Fecha -->
         <div class="grid grid-cols-3 gap-6 mb-6">
           <Dropdown
@@ -41,7 +48,7 @@
               id="fechaEmision"
               type="date"
               v-model="fechaEmision"
-              class="px-3 py-2 border rounded-lg text-sm text-white bg-neutral-800 border-gray-700 focus:outline-none focus:ring-2 hover:ring-gray-400"
+              class="px-3 py-2 border text-sm text-gray-600 border-gray-400 hover:border-indigo-600 focus:outline-none focus:ring-0"
             />
           </div>
         </div>
@@ -49,8 +56,9 @@
         <!-- Sección Combustibles -->
         <div class="mt-8">
           <h2
-            class="text-lg font-semibold text-gray-800 border-l-4 border-indigo-600 pl-2 mb-4"
+            class="text-lg font-semibold text-gray-800 mb-4 flex items-center"
           >
+            <span class="w-1 h-8 bg-indigo-600 mr-2 rounded"></span>
             Combustibles de la estación
           </h2>
 
@@ -60,16 +68,17 @@
           >
             <div
               v-for="c in combustibles"
-              :key="c.idTipo"
+              :key="c.id"
               @click="selectedCombustible = c"
-              class="border rounded-xl p-4 cursor-pointer transition hover:shadow-md hover:bg-indigo-50"
+              class="border rounded-md p-4 cursor-pointer transition hover:shadow-md hover:bg-indigo-600 text-gray-800 hover:text-white"
               :class="{
-                'border-indigo-600 bg-indigo-100':
-                  selectedCombustible?.idTipo === c.idTipo,
-                'border-gray-300': selectedCombustible?.idTipo !== c.idTipo,
+                'border-gray-300 bg-gray-200': selectedCombustible?.id === c.id,
+                'border-gray-300': selectedCombustible?.id !== c.id,
               }"
             >
-              <p class="font-semibold text-gray-800">{{ c.Combustible }}</p>
+              <p class="font-semibold">
+                {{ c.tipo }}
+              </p>
             </div>
           </div>
 
@@ -110,7 +119,7 @@
                 v-model.number="field.value"
                 step="any"
                 :readonly="!margenEditable"
-                class="px-3 py-2 border rounded-lg bg-neutral-800 text-white text-sm border-gray-700 focus:outline-none focus:ring-2 hover:ring-gray-400"
+                class="px-3 py-2 border text-gray-600 border-gray-400 hover:border-indigo-600 text-sm focus:outline-none focus:ring-0"
               />
               <div v-if="key === 'MargenLitros'" class="flex items-center mt-1">
                 <input
@@ -130,7 +139,7 @@
                 type="number"
                 v-model.number="field.value"
                 step="any"
-                class="px-3 py-2 border rounded-lg bg-neutral-800 text-white text-sm border-gray-700 focus:outline-none focus:ring-2 hover:ring-gray-400"
+                class="px-3 py-2 border text-gray-600 border-gray-400 hover:border-indigo-600 text-sm focus:outline-none focus:ring-0"
                 :readonly="key === 'PrecioPorLitro'"
               />
             </div>
@@ -139,10 +148,16 @@
           <div class="flex justify-end mt-6">
             <button
               @click="calcularComprobantes"
-              class="bg-indigo-600 text-white px-5 py-2 rounded-xl font-medium hover:bg-indigo-700 transition"
+              :disabled="loading"
+              class="bg-indigo-600 text-white px-5 py-2 font-medium hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Calcular comprobantes
+              {{ loading ? "Calculando..." : "Calcular comprobantes" }}
             </button>
+          </div>
+
+          <!-- Mensaje de error -->
+          <div v-if="error" class="mt-4 p-3 bg-red-100 text-red-700 rounded-lg">
+            {{ error }}
           </div>
         </div>
 
@@ -154,37 +169,85 @@
             Resultado del cálculo
           </h2>
 
-          <div class="overflow-hidden rounded-lg border border-gray-300">
-            <table class="w-full text-sm">
-              <thead class="bg-gray-100 text-gray-700">
-                <tr>
-                  <th class="p-2 text-left">#</th>
-                  <th class="p-2 text-left">Litros</th>
-                  <th class="p-2 text-left">Importe</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="c in resultado"
-                  :key="c.NroComprobante"
-                  class="border-t hover:bg-gray-50"
-                >
-                  <td class="p-2">{{ c.NroComprobante }}</td>
-                  <td class="p-2">{{ c.Litros }}</td>
-                  <td class="p-2">${{ c.Importe }}</td>
-                </tr>
-              </tbody>
-            </table>
+          <TableLayout
+            title="Detalle de comprobantes"
+            :data="resultado"
+            :columns="columnasResultado"
+            :center-columns="true"
+            :show-actions="false"
+            :show-table-actions="false"
+          />
+
+          <div class="mt-4 bg-gray-100 p-4 rounded-lg grid grid-cols-2 gap-4">
+            <div>
+              <p class="text-sm text-gray-600">Total comprobantes</p>
+              <p class="text-2xl font-bold text-gray-900">
+                {{ resumen?.CantidadComprobantes }}
+              </p>
+            </div>
+            <div>
+              <p class="text-sm text-gray-600">Total calculado</p>
+              <p class="text-2xl font-bold text-gray-900">
+                ${{ resumen?.TotalCalculado?.toLocaleString() }}
+              </p>
+            </div>
           </div>
 
-          <div class="mt-4 bg-gray-100 p-4 rounded-lg">
-            <p>
-              <strong>Total comprobantes:</strong>
-              {{ resumen?.CantidadComprobantes }}
-            </p>
-            <p>
-              <strong>Total calculado:</strong> ${{ resumen?.TotalCalculado }}
-            </p>
+          <!-- Botones para acciones -->
+          <div class="mt-6 flex gap-3">
+            <button
+              @click="mostrarTicket = true"
+              class="px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition"
+            >
+              👁️ Ver ticket térmico
+            </button>
+            <button
+              @click="descargarTicketPDF"
+              class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition"
+            >
+              📥 Descargar PDF
+            </button>
+          </div>
+
+          <!-- Modal del ticket -->
+          <div
+            v-if="mostrarTicket"
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            @click="mostrarTicket = false"
+          >
+            <div
+              class="bg-white rounded-lg p-6 max-h-[80vh] overflow-y-auto"
+              @click.stop
+            >
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold">Vista previa del ticket</h3>
+                <button
+                  @click="mostrarTicket = false"
+                  class="text-gray-500 hover:text-gray-700 text-2xl"
+                >
+                  ×
+                </button>
+              </div>
+              <TicketTermico
+                :numero-comprobante="
+                  '0001-' +
+                  String(resultado[0]?.NroComprobante).padStart(8, '0')
+                "
+                :cliente="selectedCliente"
+                :empresa="selectedEmpresa"
+                :items="
+                  resultado.map((r) => ({
+                    id: r.NroComprobante,
+                    descripcion: selectedCombustible?.tipo || 'Combustible',
+                    cantidad: r.Litros,
+                    precio: r.Importe / r.Litros,
+                    total: r.Importe,
+                  }))
+                "
+                :metodo-pago="'Efectivo'"
+                :fecha="new Date(fechaEmision)"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -195,10 +258,12 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, watch } from "vue";
 import Dropdown from "@/components/common/Dropdown.vue";
+import TableLayout from "@/components/common/TableLayout.vue";
+import TicketTermico from "@/components/TicketTermico.vue";
 import { useEmpresas } from "@/composables/useEmpresas";
 import { useClientes } from "@/composables/useClientes";
 import { useCombustibles } from "@/composables/useCombustible";
-import axios from "axios";
+import { useTickets } from "@/composables/useTickets";
 
 // Variables reactivas
 const selectedEmpresa = ref<any>(null);
@@ -218,12 +283,24 @@ const parametros = reactive({
   PrecioPorLitro: { label: "Precio por Litro", value: null },
 });
 
+// Configuración de columnas para TableLayout
+const columnasResultado = [
+  { key: "NroComprobante", label: "#" },
+  { key: "Litros", label: "Litros" },
+  { key: "Importe", label: "Importe" },
+];
+
 // Controla si el margen es editable
 const margenEditable = ref(false);
 
+// Controla si mostrar el ticket
+const mostrarTicket = ref(false);
+
+// Usar composables
 const { empresas, fetchEmpresas } = useEmpresas();
 const { clientes, fetchClientes } = useClientes();
 const { combustibles, fetchCombustibles } = useCombustibles();
+const { generarTickets, loading, error } = useTickets();
 
 // Cargar empresas y clientes al montar
 onMounted(() => {
@@ -257,25 +334,40 @@ watch(selectedCombustible, (nuevo) => {
 
 // Ejecutar SP de cálculo
 const calcularComprobantes = async () => {
-  try {
-    const payload = Object.fromEntries(
-      Object.entries(parametros).map(([k, v]) => [k, v.value])
-    );
-    const { data } = await axios.post(
-      "http://localhost:3000/api/facturacion/calcular",
-      payload
-    );
-
-    resultado.value = data.detalle || [];
-    resumen.value = data.resumen || null;
-  } catch (err) {
-    console.error("Error calculando comprobantes:", err);
+  // Validar que todos los parámetros requeridos estén completos
+  if (
+    !parametros.ImporteTotal.value ||
+    !parametros.LitrosPromedio.value ||
+    !parametros.ImporteMin.value ||
+    !parametros.ImporteMax.value ||
+    !selectedEmpresa.value
+  ) {
+    error.value = "Por favor completa todos los parámetros";
+    return;
   }
+
+  const response = await generarTickets(selectedEmpresa.value.id, {
+    importeTotal: parametros.ImporteTotal.value,
+    litrosPromedio: parametros.LitrosPromedio.value,
+    margenLitros: parametros.MargenLitros.value,
+    importeMinimo: parametros.ImporteMin.value,
+    importeMaximo: parametros.ImporteMax.value,
+  });
+
+  if (response.success && response.data) {
+    resultado.value = response.data.comprobantes;
+    resumen.value = response.data.resumen;
+  }
+};
+
+const descargarTicketPDF = () => {
+  // Aquí irá la lógica para descargar PDF
+  alert("Función de descargar PDF en desarrollo");
 };
 </script>
 
 <style scoped>
 input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(1);
+  filter: invert(0);
 }
 </style>

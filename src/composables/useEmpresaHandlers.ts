@@ -1,10 +1,12 @@
 // composables/useEmpresaHandlers.ts
 import { useEmpresas } from "./useEmpresas";
+import { useToast } from "vue-toast-notification";
 import type { Empresa } from "@/types/empresa";
 import Swal from "sweetalert2";
 
 export function useEmpresaHandlers() {
-  const { updateEmpresa, deleteEmpresa, createEmpresa, fetchEmpresas, fetchEmpresaDetails, error } = useEmpresas();
+  const { updateEmpresa, deleteEmpresa, createEmpresa, fetchEmpresas, error } = useEmpresas();
+  const $toast = useToast();
 
   const handleEmpresaUpdate = async (
     formData: any,
@@ -12,16 +14,14 @@ export function useEmpresaHandlers() {
     empresas: Empresa[]
   ): Promise<boolean> => {
     try {
-      console.log("Actualizando empresa:", formData, "en índice:", index);
-
       const empresa = empresas[index];
       if (!empresa?.id) {
-        console.error("No se pudo encontrar la empresa o falta el ID");
+        ($toast as any).error("Error", { description: "No se pudo encontrar la empresa" });
         return false;
       }
 
-      // Llamar a la función updateEmpresa con todos los parámetros requeridos
-      const success = await updateEmpresa(
+      // ✅ AHORA RETORNA UN OBJETO
+      const resultado = await updateEmpresa(
         formData.nombre || empresa.nombre,
         formData.cuit || empresa.cuit,
         formData.ingBrutos || empresa.ingBrutos,
@@ -30,24 +30,23 @@ export function useEmpresaHandlers() {
         formData.localidad || empresa.localidad,
         formData.provincia || empresa.provincia,
         formData.telefono || empresa.telefono,
-        // actividadDate,
         formData.Actividad || empresa.actividad,
-        1, // idUser - ajustar según tu lógica de autenticación
+        1,
         empresa.id,
         "EDIT"
       );
 
-      if (success) {
-        console.log("Empresa actualizada correctamente");
-        //hace una actualización inmutable del objeto en la posición index del array empresas
+      // ✅ VERIFICAR EL OBJETO RESULTADO
+      if (resultado.success) {
+        ($toast as any).success("Se actualizó correctamente", { description: resultado.message });
         empresas[index] = { ...empresas[index], ...formData };
         return true;
       } else {
-        console.error("Error al actualizar empresa");
+        ($toast as any).error("Error", { description: resultado.message });
         return false;
       }
-    } catch (err) {
-      console.error("Error inesperado al actualizar empresa:", err);
+    } catch (err: any) {
+      ($toast as any).error("Error", { description: err.message || "Error inesperado" });
       return false;
     }
   };
@@ -56,7 +55,7 @@ export function useEmpresaHandlers() {
     try {
       const empresa = empresas[index];
       if (!empresa?.id) {
-        console.error("No se pudo encontrar la empresa o falta el ID");
+        ($toast as any).error("Error", { description: "No se pudo encontrar la empresa" });  // ✅ CAMBIAR
         return false;
       }
 
@@ -67,16 +66,22 @@ export function useEmpresaHandlers() {
         denyButtonText: "No",
       });
 
-      if (!result.isConfirmed) return false;
+      if (!result.isConfirmed) {
+        ($toast as any).info("Eliminación cancelada");  // ✅ CAMBIAR
+        return false;
+      }
 
       const success = await deleteEmpresa("DLET", empresa.id);
       if (success) {
+        ($toast as any).success("¡Éxito!", { description: "Empresa eliminada correctamente" });  // ✅ CAMBIAR
         await fetchEmpresas("CTA");
         return true;
+      } else {
+        ($toast as any).error("Error", { description: error.value || "No se pudo eliminar la empresa" });  // ✅ CAMBIAR
+        return false;
       }
-      return false;
-    } catch (err) {
-      console.error("Error inesperado al eliminar empresa:", err);
+    } catch (err: any) {
+      ($toast as any).error("Error", { description: err.message || "Error inesperado" });  // ✅ CAMBIAR
       return false;
     }
   };
@@ -84,8 +89,7 @@ export function useEmpresaHandlers() {
   const handleEmpresaCreate = async (formData: any): Promise<boolean> => {
     try {
       console.log("Creando empresa con datos:", formData);
-
-      const success = await createEmpresa(
+      const resultado = await createEmpresa(
         formData.nombre,
         formData.cuit,
         formData.ingBrutos,
@@ -95,28 +99,19 @@ export function useEmpresaHandlers() {
         formData.provincia,
         formData.telefono,
         formData.actividad,
-        1, // idUser - ajustar según tu lógica de autenticación
+        1,
         "NEW"
       );
-
-      if (success) {
-        console.log("Empresa creada correctamente");
+      if (resultado.success) {
+        ($toast as any).success(resultado.message);  // ✅ SOLO UN PARÁMETRO
         return true;
       } else {
-        console.error("Error al crear empresa");
+        ($toast as any).error(resultado.message);  // ✅ SOLO UN PARÁMETRO
         return false;
       }
-    } catch (err) {
-      console.error("Error inesperado al crear empresa:", err);
+    } catch (err: any) {
+      ($toast as any).error(err.message || "Error inesperado");  // ✅ SOLO UN PARÁMETRO
       return false;
-    }
-  };
-
-  const handleEmpresaDetailsFetch = async (idEmpresa: number) => {
-    try {
-      await fetchEmpresaDetails(idEmpresa);
-    } catch (err) {
-      console.error("Error inesperado al obtener detalles de la empresa:", err);
     }
   };
 
@@ -124,6 +119,5 @@ export function useEmpresaHandlers() {
     handleEmpresaUpdate,
     handleEmpresaDelete,
     handleEmpresaCreate,
-    handleEmpresaDetailsFetch,
   };
 }

@@ -7,7 +7,7 @@ export function useClientes() {
   const clientes = ref<Cliente[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
-  const api = 'https://vibranium-nexus-backend.onrender.com/api'
+  const apiUrl = "https://vibranium-nexus-backend.onrender.com/api"
 
   const fetchClientes = async (accion: string) => {
     try {
@@ -15,7 +15,7 @@ export function useClientes() {
       error.value = null;
 
       const { data } = await axios.get<Cliente[]>(
-        `${api}/clientes/${accion}`
+        `${apiUrl}/clientes/${accion}`
       );
       if (Array.isArray(data)) {
         clientes.value = data;
@@ -36,12 +36,12 @@ export function useClientes() {
     idUser: number,
     idCliente: number,
     accion: string
-  ): Promise<boolean> => {
+  ): Promise<{ success: boolean; message: string }> => {
     try {
       loading.value = true;
       error.value = null;
       const { data } = await axios.put(
-        `${api}/clientes/${idCliente}/${accion}`,
+        `${apiUrl}/clientes/${idCliente}/${accion}`,
         {
           nombre,
           cuit,
@@ -54,11 +54,11 @@ export function useClientes() {
       const idx = clientes.value.findIndex((e) => e.id === idCliente);
       if (idx !== -1) clientes.value[idx] = data;
 
-      return true;
+      return { success: true, message: "Cliente actualizado correctamente" };
     } catch (err: any) {
-      error.value = err.response?.data?.message || err.message || "Error al actualizar cliente";
-      console.error("Error al actualizar cliente:", err);
-      return false;
+      const mensaje = err.response?.data?.message || err.message || "Error al actualizar cliente";
+      error.value = mensaje;
+      return { success: false, message: mensaje };
     } finally {
       loading.value = false;
     }
@@ -70,7 +70,7 @@ export function useClientes() {
       loading.value = true;
       error.value = null;
       await axios.delete(
-        `${api}/clientes/${idCliente}/${accion}`
+        `${apiUrl}/clientes/${idCliente}/${accion}`
       );
       //Actualizar localmente
       // clientes.value = clientes.value.filter((e) => e.id !== idCliente);
@@ -95,7 +95,7 @@ export function useClientes() {
       loading.value = true;
       error.value = null;
       const { data } = await axios.post(
-        `${api}/clientes/${accion}`,
+        `${apiUrl}/clientes/${accion}`,
         {
           nombre,
           cuit,

@@ -6,6 +6,8 @@ export function useImpuestos() {
   const impuestos = ref<Impuesto[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
+  const idAccion = ref<number | null>(null);
+  const apiUrl = "https://vibranium-nexus-backend.onrender.com/api"
 
   const fetchTImpuesto = async () => {
     try {
@@ -13,7 +15,7 @@ export function useImpuestos() {
       error.value = null;
 
       const { data } = await axios.get<Impuesto[]>(
-        "https://vibranium-nexus-backend.onrender.com/api/Impuestos"
+        `${apiUrl}/Impuestos`
       );
 
       if (Array.isArray(data)) {
@@ -37,7 +39,7 @@ export function useImpuestos() {
       error.value = null;
 
       const { data } = await axios.post(
-        "https://vibranium-nexus-backend.onrender.com/api/impuestos/new",
+        `${apiUrl}/impuestos/new`,
         {
           tipo
         }
@@ -66,9 +68,10 @@ export function useImpuestos() {
     try {
       loading.value = true;
       error.value = null;
+      idAccion.value = 2;
 
       const { data } = await axios.post(
-        "https://vibranium-nexus-backend.onrender.com/api/impuestos/new",
+        `${apiUrl}/impuestos/tipo/new/${idAccion.value}`,
         {
           idEmpresa,
           idCombustible,
@@ -98,9 +101,10 @@ export function useImpuestos() {
     try {
       loading.value = true;
       error.value = null;
-
+      idAccion.value = 2;
+      console.log("Eliminando impuesto:", `${apiUrl}/impuestos/${idEmpresa}/${idCombustible}/${idImpuesto}/dlet/${idAccion.value}`);
       const { data } = await axios.delete(
-        `https://vibranium-nexus-backend.onrender.com/api/impuestos/${idEmpresa}/${idCombustible}/${idImpuesto}/dlet`
+        `${apiUrl}/impuestos/${idEmpresa}/${idCombustible}/${idImpuesto}/dlet/${idAccion.value}`
       );
 
       return { success: true, message: data.message || "Impuesto eliminado" };
@@ -125,10 +129,11 @@ export function useImpuestos() {
     try {
       loading.value = true;
       error.value = null;
+      idAccion.value = 2;
 
       // La ruta debe coincidir con tu backend
       const { data } = await axios.put(
-        `https://vibranium-nexus-backend.onrender.com/api/impuestos/${idEmpresa}/${idCombustible}/${idImpuesto}/upd`,
+        `${apiUrl}/impuestos/${idEmpresa}/${idCombustible}/${idImpuesto}/upd/${idAccion.value}`,
         {
           monto
         }

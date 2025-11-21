@@ -2,7 +2,7 @@ import type { CombustibleDetalle } from "@/types/combustible";
 import type { CTImpuesto } from "@/types/impuesto";
 
 export interface Empresa {
-  id?: number;
+  id: number;
   nombre: string;
   cuit: string;
   ingBrutos: string;

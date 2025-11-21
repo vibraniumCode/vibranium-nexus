@@ -1,7 +1,7 @@
 import type { TableColumn } from "@/types/table";
 
 export const tcombustibleColumns: TableColumn[] = [
-  { key: "txtDesc", label: "Tipo" },
+  { key: "tipo", label: "Tipo" },
 ];
 
 export const combustibleColumns: TableColumn[] = [

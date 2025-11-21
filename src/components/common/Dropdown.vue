@@ -7,7 +7,7 @@
     <!-- Botón -->
     <button
       @click="toggleDropdown"
-      class="flex items-center justify-between w-100 px-4 py-2 text-sm font-medium text-neutral-200 bg-neutral-800 borderborder-gray-900 rounded-lg hover:bg-gray-800 focus:outline-none focus:ring-2 hover:ring-gray-400"
+      class="flex items-center justify-between w-100 px-4 py-2 text-sm font-medium text-gray-600 border border-gray-400 hover:border-indigo-600"
     >
       {{ selectedLabel || placeholder }}
 
@@ -32,7 +32,7 @@
     <transition name="fade">
       <div
         v-if="isOpen"
-        class="absolute z-20 w-100 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-neutral-800 dark:border-gray-700"
+        class="absolute z-20 w-100 mt-2 bg-white border border-indigo-200 shadow-lg dark:bg-neutral-800 dark:border-gray-700"
       >
         <ul class="max-h-56 overflow-y-auto">
           <li

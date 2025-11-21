@@ -9,7 +9,7 @@ export function useEmpresas() {
   const empresas = ref<Empresa[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
-  const api = 'https://vibranium-nexus-backend.onrender.com/api/'
+  const apiUrl = "https://vibranium-nexus-backend.onrender.com/api"
 
   const fetchEmpresas = async (accion: string) => {
     try {
@@ -17,7 +17,7 @@ export function useEmpresas() {
       error.value = null;
 
       const { data } = await axios.get<Empresa[]>(
-        `${api}empresas/${accion}`
+        `${apiUrl}/empresas/${accion}`
       );
       empresas.value = Array.isArray(data)
         ? data.map((e: any) => ({
@@ -47,14 +47,14 @@ export function useEmpresas() {
     idUser: number,
     idEstacion: number,
     accion: string
-  ): Promise<boolean> => {
+  ): Promise<{ success: boolean; message: string }> => {  // ✅ CAMBIAR RETURN
     try {
       loading.value = true;
       error.value = null;
       const { data } = await axios.put(
-        `${api}empresas/${idEstacion}/${accion}`,
+        `${apiUrl}/empresas/${idEstacion}/${accion}`,
         {
-          nomEstacion: nombre, // ✅ Backend espera "nomEstacion"
+          nomEstacion: nombre,
           cuit,
           ingBrutos,
           direccion,
@@ -67,35 +67,36 @@ export function useEmpresas() {
         }
       );
 
-      // Actualizar localmente
       const idx = empresas.value.findIndex((e) => e.id === idEstacion);
       if (idx !== -1) empresas.value[idx] = data;
 
-      return true;
+      return { success: true, message: "Empresa actualizada correctamente" };  // ✅ CAMBIAR
+      console.log("Empresa actualizada:", data);
     } catch (err: any) {
-      error.value = err.response?.data?.message || err.message || "Error al actualizar empresa";
+      const mensaje = err.response?.data?.message || err.message || "Error al actualizar empresa";
+      error.value = mensaje;
       console.error("Error al actualizar empresa:", err);
-      return false;
+      return { success: false, message: mensaje };  // ✅ CAMBIAR
     } finally {
       loading.value = false;
     }
-
   };
 
-  const deleteEmpresa = async (accion: string, idEstacion: number): Promise<boolean> => {
+  const deleteEmpresa = async (accion: string, idEstacion: number): Promise<{ success: boolean; message: string }> => {
     try {
       loading.value = true;
       error.value = null;
       await axios.delete(
-        `${api}empresas/${idEstacion}/${accion}`
+        `${apiUrl}/empresas/${idEstacion}/${accion}`
       );
       //Actualizar localmente
       // empresas.value = empresas.value.filter((e) => e.id !== idEstacion);
-      return true;
+      return { success: true, message: "Empresa eliminada correctamente" };
     } catch (err: any) {
-      error.value = err.response?.data?.message || err.message || "Error al eliminar empresa";
+      const mensaje = err.response?.data?.message || err.message || "Error al eliminar empresa";
+      error.value = mensaje;
       console.error("Error al eliminar empresa:", err);
-      return false;
+      return { success: false, message: mensaje };
     } finally {
       loading.value = false;
     }
@@ -113,12 +114,12 @@ export function useEmpresas() {
     actividad: string | Date,
     idUser: number,
     accion: string
-  ): Promise<boolean> => {
+  ): Promise<{ success: boolean; message: string }> => {  // ✅ CAMBIAR RETURN
     try {
       loading.value = true;
       error.value = null;
       const { data } = await axios.post(
-        `${api}empresas/${accion}`,
+        `${apiUrl}/empresas/${accion}`,
         {
           nomEstacion: nombre,
           cuit,
@@ -129,17 +130,17 @@ export function useEmpresas() {
           provincia,
           telefono,
           actividad,
-          idUser
+          idUser,
         }
       );
 
-      // Agregar localmente
       empresas.value.push(data);
-      return true;
+      return { success: true, message: "Empresa creada correctamente" };  // ✅ CAMBIAR
     } catch (err: any) {
-      error.value = err.response?.data?.message || err.message || "Error al crear empresa";
+      const mensaje = err.response?.data?.message || err.message || "Error al crear empresa";
+      error.value = mensaje;
       console.error("Error al crear empresa:", err);
-      return false;
+      return { success: false, message: mensaje };  // ✅ CAMBIAR
     } finally {
       loading.value = false;
     }
@@ -154,7 +155,7 @@ export function useEmpresas() {
       const impuesto = ref<any[]>([]);
 
       const { data } = await axios.get(
-        `${api}empresas/details/${idEmpresa}`
+        `${apiUrl}/empresas/details/${idEmpresa}`
       );
 
 

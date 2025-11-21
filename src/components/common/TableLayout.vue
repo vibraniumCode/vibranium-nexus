@@ -41,7 +41,7 @@
       <div class="overflow-y-auto max-h-[500px]">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead
-            class="sticky top-0 z-10 text-sm text-gray-700 uppercase bg-gray-50 dark:bg-neutral-800 dark:text-neutral-400"
+            class="sticky top-0 z-10 text-sm uppercase bg-neutral-800 text-neutral-400"
           >
             <tr>
               <th

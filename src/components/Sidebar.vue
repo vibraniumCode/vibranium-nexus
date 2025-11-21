@@ -74,7 +74,7 @@
             <li>
               <router-link
                 to="/"
-                class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-purple-300/50 hover:bg-purple-400/50 focus:bg-purple-400/50 text-white"
+                class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-indigo-600 hover:bg-indigo-400/50 focus:bg-indigo-400/50 text-white"
               >
                 <svg
                   class="size-4"

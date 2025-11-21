@@ -20,6 +20,7 @@ export interface CombustibleUpdate {
 }
 
 export interface CombustibleDetalle {
+  id?: number;
   Combustible: string;
   Imp_combustible: number;
   Impuesto: string;

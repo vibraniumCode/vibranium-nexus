@@ -57,7 +57,6 @@ import ModalLayout from "@/components/common/ModalLayout.vue";
 import TableLayout from "@/components/common/TableLayout.vue";
 import { useCombustibles } from "@/composables/useCombustible";
 import { tcombustibleColumns } from "@/constants/combustibleConfig";
-import { Console } from "console";
 
 //composables
 const { tcombustibles, fetchTCombustibles, crearTCombustible } =
