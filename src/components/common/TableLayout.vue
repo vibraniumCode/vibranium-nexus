@@ -83,6 +83,7 @@
                   @edit="handleAction('edit', rowIndex)"
                   @duplicate="handleAction('duplicate', rowIndex)"
                   @delete="handleAction('delete', rowIndex)"
+                  @print="handleAction('print', rowIndex)"
                 >
                   <!-- Slot para acciones personalizadas en el menú -->
                   <template #custom-actions="{ close }">
@@ -168,7 +169,7 @@ const props = withDefaults(
     showTableActions: false,
     showExport: true,
     showEmail: true,
-    showPrint: false,
+    showPrint: true,
     searchPlaceholder: "Búsqueda general...",
     showSearchCount: false,
     emptyMessage: "No hay datos para mostrar",
@@ -186,9 +187,9 @@ const emit = defineEmits<{
   edit: [index: number, data: any];
   duplicate: [index: number, data: any];
   delete: [index: number, data: any];
+  print: [index: number, data: any]; // ✅ AGREGAR
   export: [data: any[]];
   email: [data: any[]];
-  print: [data: any[]];
   "update:expandedRow": [index: number | null];
   combustible: [];
   impuesto: [];
@@ -213,7 +214,7 @@ const computedRows = computed(() =>
 );
 
 function handleAction(
-  action: "detail" | "edit" | "duplicate" | "delete",
+  action: "detail" | "edit" | "duplicate" | "delete" | "print",
   index: number
 ) {
   if (action === "edit") {

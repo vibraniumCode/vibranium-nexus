@@ -30,7 +30,7 @@ export function useEmpresaHandlers() {
         formData.localidad || empresa.localidad,
         formData.provincia || empresa.provincia,
         formData.telefono || empresa.telefono,
-        formData.Actividad || empresa.actividad,
+        formData.actividad || empresa.actividad,
         1,
         empresa.id,
         "EDIT"
@@ -88,7 +88,15 @@ export function useEmpresaHandlers() {
 
   const handleEmpresaCreate = async (formData: any): Promise<boolean> => {
     try {
-      console.log("Creando empresa con datos:", formData);
+      console.log("📝 Creando empresa con datos:", formData);
+      console.log("📅 Actividad recibida:", formData.actividad, "Tipo:", typeof formData.actividad); // ✅ DEBUG
+
+      // ✅ Convertir fecha si es necesario
+      let actividad = formData.actividad;
+      if (actividad && typeof actividad === 'string') {
+        actividad = new Date(actividad).toISOString(); // Convertir a ISO string
+      }
+
       const resultado = await createEmpresa(
         formData.nombre,
         formData.cuit,

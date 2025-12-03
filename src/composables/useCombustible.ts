@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import axios from "axios";
 import type { Combustible, TCombustible } from "@/types/combustible";
+import { Console } from "console";
 
 export function useCombustibles() {
   const tcombustibles = ref<TCombustible[]>([]);
@@ -38,11 +39,19 @@ export function useCombustibles() {
       loading.value = true;
       error.value = null;
 
-      const { data } = await axios.get<Combustible[]>(`${apiUrl}/combustible/${idEmpresa}`);
+      console.log("🔄 Buscando combustibles para empresa:", idEmpresa); // ✅ DEBUG
+
+      const { data } = await axios.get<Combustible[]>(
+        `${apiUrl}/combustible/${idEmpresa}`
+      );
+
+      console.log("✅ Combustibles obtenidos:", data); // ✅ DEBUG
       combustibles.value = data;
+
     } catch (err: any) {
-      console.error("Error al obtener combustibles:", err);
+      console.error("❌ Error al obtener combustibles:", err.response?.status, err.response?.data); // ✅ DEBUG
       error.value = err.message || "Error al cargar combustibles";
+      combustibles.value = []; // ✅ VACIAR ARRAY EN ERROR
     } finally {
       loading.value = false;
     }
@@ -54,8 +63,9 @@ export function useCombustibles() {
     try {
       loading.value = true;
       error.value = null;
+      console.log("Creando tipo de combustible con:", { txtDesc });
       const { data } = await axios.post(
-        `${apiUrl}/combustible/new`,
+        `${apiUrl}/combustible/tipo/new`,
         {
           txtDesc
         }

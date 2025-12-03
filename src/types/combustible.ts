@@ -4,7 +4,7 @@ export interface TCombustible {
 }
 
 export interface Combustible {
-  id: number;
+  idTipo: number;
   tipo: string;
   precio: number;
 }

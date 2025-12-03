@@ -24,5 +24,5 @@ export const empresaFormFields: FormField[] = [
   { name: "localidad", type: "text", label: "Localidad", placeholder: "Ingrese la localidad", required: false, width: "half" },
   { name: "provincia", type: "text", label: "Provincia", placeholder: "Ingrese la provincia", required: false, width: "half" },
   { name: "telefono", type: "text", label: "Teléfono", placeholder: "Ingrese el teléfono", required: false, width: "half" },
-  { name: "Actividad", type: "text", label: "Actividad", placeholder: "Ingrese la actividad", required: false, width: "full" },
+  { name: "actividad", type: "text", label: "Actividad", placeholder: "Ingrese la actividad", required: false, width: "full" },
 ];

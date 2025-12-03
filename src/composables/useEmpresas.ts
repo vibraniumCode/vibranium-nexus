@@ -111,13 +111,14 @@ export function useEmpresas() {
     localidad: string,
     provincia: string,
     telefono: string,
-    actividad: string | Date,
+    actividad: Date,
     idUser: number,
     accion: string
   ): Promise<{ success: boolean; message: string }> => {  // ✅ CAMBIAR RETURN
     try {
       loading.value = true;
       error.value = null;
+      console.log("Creando empresa con:", { nombre, cuit, ingBrutos, direccion, cp, localidad, provincia, telefono, actividad, idUser, accion });
       const { data } = await axios.post(
         `${apiUrl}/empresas/${accion}`,
         {

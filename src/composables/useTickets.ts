@@ -23,6 +23,7 @@ interface GenerarTicketsParams {
   margenLitros: number;
   importeMinimo: number;
   importeMaximo: number;
+  idCombustible: number;
 }
 
 const apiUrl = "https://vibranium-nexus-backend.onrender.com/api";
@@ -39,7 +40,7 @@ export const useTickets = () => {
     try {
       loading.value = true;
       error.value = null;
-
+      console.log("Generando tickets con params:", params)
       const { data } = await axios.post<TicketsResponse>(
         `${apiUrl}/tickets/${idEmpresa}`,
         params
