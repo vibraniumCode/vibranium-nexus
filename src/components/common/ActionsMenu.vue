@@ -128,10 +128,7 @@
         </button>
 
         <!-- Divider antes de eliminar -->
-        <div
-          v-if="actions.showDelete"
-          class="border-t border-gray-200 my-1"
-        ></div>
+        <div v-if="actions.showDelete" class="my-1"></div>
 
         <!-- Eliminar -->
         <button

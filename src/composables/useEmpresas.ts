@@ -71,7 +71,6 @@ export function useEmpresas() {
       if (idx !== -1) empresas.value[idx] = data;
 
       return { success: true, message: "Empresa actualizada correctamente" };  // ✅ CAMBIAR
-      console.log("Empresa actualizada:", data);
     } catch (err: any) {
       const mensaje = err.response?.data?.message || err.message || "Error al actualizar empresa";
       error.value = mensaje;

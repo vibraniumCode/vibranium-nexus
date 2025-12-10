@@ -1,6 +1,6 @@
 export interface TCombustible {
   id: number;
-  tipo: string;
+  txtDesc: string;
 }
 
 export interface Combustible {

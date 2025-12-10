@@ -77,65 +77,44 @@
                 class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-indigo-600 hover:bg-indigo-400/50 focus:bg-indigo-400/50 text-white"
               >
                 <svg
-                  class="size-4"
                   xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  height="20px"
+                  viewBox="0 -960 960 960"
+                  width="20px"
+                  fill="#999999"
                 >
-                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                  <polyline points="9 22 9 12 15 12 15 22" />
+                  <path
+                    d="M96-576v-288h288v288H96Zm72-72h144v-144H168v144ZM96-96v-288h288v288H96Zm72-72h144v-144H168v144Zm408-408v-288h288v288H576Zm72-72h144v-144H648v144ZM576-96v-288h288v288H576Zm72-72h144v-144H648v144ZM312-648Zm0 336Zm336-336Zm0 336Z"
+                  />
                 </svg>
                 Dashboard
               </router-link>
             </li>
 
-            <li class="hs-accordion" id="users-accordion">
+            <!-- ✅ ENTIDADES ACCORDION -->
+            <li class="hs-accordion">
               <button
+                @click="toggleAccordion('entidades')"
                 type="button"
-                class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
-                aria-expanded="true"
-                aria-controls="users-accordion-collapse-1"
+                class="w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200 transition"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="size-6"
+                  height="20px"
+                  viewBox="0 -960 960 960"
+                  width="20px"
+                  fill="#999999"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z"
+                    d="M696-600h72v-72h-72v72Zm0 156h72v-72h-72v72Zm0 156h72v-72h-72v72Zm-48 144v-72h192v-528H480v57l-72-52v-77h504v672H648Zm-600 0v-384l264-192 264 192v384H360v-192h-96v192H48Zm72-72h72v-192h240v192h72v-276L312-631 120-492v276Zm562-331ZM432-216v-192H192v192-192h240v192Z"
                   />
                 </svg>
 
                 Entidades
 
                 <svg
-                  class="hs-accordion-active:block ms-auto hidden size-4 group-hover:text-gray-500 text-neutral-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="m18 15-6-6-6 6" />
-                </svg>
-
-                <svg
-                  class="hs-accordion-active:hidden ms-auto block size-4 group-hover:text-gray-500 text-neutral-400"
+                  :class="openAccordions.entidades ? 'rotate-180' : ''"
+                  class="ms-auto size-4 text-neutral-400 transition-transform"
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
                   height="24"
@@ -150,60 +129,48 @@
                 </svg>
               </button>
 
+              <!-- ✅ SUBMENU ENTIDADES -->
               <div
-                id="users-accordion-collapse-1"
-                class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden"
-                role="region"
-                aria-labelledby="users-accordion"
+                v-show="openAccordions.entidades"
+                class="overflow-hidden transition-all duration-300"
               >
-                <ul
-                  class="hs-accordion-group pt-1 ps-7 space-y-1"
-                  data-hs-accordion-always-open
-                >
-                  <li class="hs-accordion" id="users-accordion-sub-1">
+                <ul class="pt-1 ps-7 space-y-1">
+                  <li>
                     <router-link
                       to="/empresas"
                       class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="size-6"
+                        height="20px"
+                        viewBox="0 -960 960 960"
+                        width="20px"
+                        fill="#999999"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"
+                          d="M384-120v-216l60-161q5-14 17.5-22.5T489-528h271q15 0 27.5 9.23T805-496l59 160v215.6q0 10.4-6.92 17.4-6.93 7-17.08 7h-24.41Q806-96 799-102.92q-7-6.93-7-17.08v-24H456v24q0 10.15-6.92 17.08Q442.15-96 432-96h-24.41Q398-96 391-102.92q-7-6.93-7-17.08Zm95-264h291l-26-72H506l-27 72Zm-23 72v96-96Zm59.79 84q15.21 0 25.71-10.29t10.5-25.5q0-15.21-10.29-25.71t-25.5-10.5q-15.21 0-25.71 10.29t-10.5 25.5q0 15.21 10.29 25.71t25.5 10.5Zm216 0q15.21 0 25.71-10.29t10.5-25.5q0-15.21-10.29-25.71t-25.5-10.5q-15.21 0-25.71 10.29t-10.5 25.5q0 15.21 10.29 25.71t25.5 10.5ZM240-408v-72h72v72h-72Zm168-192v-72h72v72h-72ZM240-264v-72h72v72h-72Zm0 144v-72h72v72h-72ZM96-96v-528h168v-192h360v216h-72v-144H336v192H168v456H96Zm360-120h336v-96H456v96Z"
                         />
                       </svg>
-
                       Empresas
                     </router-link>
                   </li>
 
-                  <li class="hs-accordion" id="users-accordion-sub-2">
+                  <li>
                     <router-link
                       to="/clientes"
                       class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="size-6"
+                        height="20px"
+                        viewBox="0 -960 960 960"
+                        width="20px"
+                        fill="#999999"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"
+                          d="M395-480q-23.19 0-38.09-18Q342-516 348-538l17-88q8-42 40.5-68t74.02-26q42.48 0 74.98 26 32.5 26 40.5 68l17 88q5 23.2-9.5 40.6Q588-480 565-480H395Zm29-72h112l-12-60q-3-16-15.54-26t-28.5-10q-15.96 0-28.46 10T436-612l-12 60ZM132.09-432q-22.09 1-37.59-9Q79-451 74-470.6q-2-8.4-1-17.9 1-9.5 5-16.5l-1-3q-3-3-9.4-23.71Q66-543 70.5-553T83-571l2-3q2-17 15-30t31-13q5 0 19.32 5l2.68-1q5-5 12.33-8 7.34-3 15.59-3 10.08 0 18.58 3.5Q208-617 213-610q1 0 1.5.5t1.5.5q12.8 1 22.4 8.5 9.6 7.5 15.31 19.85Q256-574 255.5-567.5t-2.5 11.79q0 .89 1 3.53 6 6.18 10 14.68t4 17.5q0 2-5 19-1 2 0 4l2 16q0 20.18-17.5 34.59Q230-432 207-432h-74.91Zm660.41 0q-30.5 0-51.5-21.21t-21-51q0-10.83 3.5-20.31Q727-534 732-543l-32-28q-8-8-3.5-18.5T714-600h78q29.7 0 50.85 21.15Q864-557.7 864-528v18q0 32.17-20.5 55.09Q823-432 792.5-432ZM0-240v-60q0-53 49.5-78T168-403q15 0 30 1.5t30 4.5q-18 18-27 45.5t-9 51.5v60H0Zm240 0v-59.5q0-59.5 61-96T480-432q118 0 179 36.41 61 36.42 61 95.59v60H240Zm552-163q69 0 118.5 25t49.5 78v60H768v-60q0-24-8.5-51.5T732-397q15-3 29.79-4.5Q776.57-403 792-403Zm-312 43q-64 0-101 11.5T314-312h332q-29-25-65.5-36.5T480-360Zm1 48Zm-1-288Z"
                         />
                       </svg>
-
                       Clientes
                     </router-link>
                   </li>
@@ -211,47 +178,30 @@
               </div>
             </li>
 
-            <li class="hs-accordion" id="account-accordion">
+            <!-- ✅ PUNTO DE VENTA ACCORDION -->
+            <li class="hs-accordion">
               <button
+                @click="toggleAccordion('puntoVenta')"
                 type="button"
-                class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
-                aria-expanded="true"
-                aria-controls="account-accordion-sub-1-collapse-1"
+                class="w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200 transition"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="size-6"
+                  height="20px"
+                  viewBox="0 -960 960 960"
+                  width="20px"
+                  fill="#999999"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5m.75-9 3-3 2.148 2.148A12.061 12.061 0 0 1 16.5 7.605"
+                    d="M192-264v-312h72v312h-72Zm252 0v-312h72v312h-72ZM96-144v-72h768v72H96Zm600-120v-312h72v312h-72ZM96-624v-96l384-192 384 192v96H96Zm113-72h542-542Zm0 0h542L480-831 209-696Z"
                   />
                 </svg>
 
                 Punto de venta
 
                 <svg
-                  class="hs-accordion-active:block ms-auto hidden size-4 group-hover:text-gray-500 text-neutral-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="m18 15-6-6-6 6" />
-                </svg>
-
-                <svg
-                  class="hs-accordion-active:hidden ms-auto block size-4 group-hover:text-gray-500 text-neutral-400"
+                  :class="openAccordions.puntoVenta ? 'rotate-180' : ''"
+                  class="ms-auto size-4 text-neutral-400 transition-transform"
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
                   height="24"
@@ -266,11 +216,10 @@
                 </svg>
               </button>
 
+              <!-- ✅ SUBMENU PUNTO DE VENTA -->
               <div
-                id="account-accordion-sub-1-collapse-1"
-                class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300"
-                role="region"
-                aria-labelledby="account-accordion"
+                v-show="openAccordions.puntoVenta"
+                class="overflow-hidden transition-all duration-300"
               >
                 <ul class="pt-1 ps-7 space-y-1">
                   <li>
@@ -280,137 +229,36 @@
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="size-6"
+                        height="20px"
+                        viewBox="0 -960 960 960"
+                        width="20px"
+                        fill="#999999"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z"
+                          d="M144-96v-768l56 45 56-45 56 45 56-45 56 45 56-45 56 45 56-45 56 45 56-45 56 45 56-45v768l-56-45-56 45-56-45-56 45-56-45-56 45-56-45-56 45-56-45-56 45-56-45-56 45Zm144-216h384v-72H288v72Zm0-132h384v-72H288v72Zm0-132h384v-72H288v72Zm-72 360h528v-528H216v528Zm0-528v528-528Z"
                         />
                       </svg>
-
-                      Facturacion
+                      Facturación
                     </router-link>
                   </li>
                   <li>
-                    <a
+                    <router-link
+                      to="#"
                       class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
-                      href="#"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="size-6"
+                        height="20px"
+                        viewBox="0 -960 960 960"
+                        width="20px"
+                        fill="#999999"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229 2.523a1.125 1.125 0 0 1-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0 0 21 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 0 0-1.913-.247M6.34 18H5.25A2.25 2.25 0 0 1 3 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 0 1 1.913-.247m10.5 0a48.536 48.536 0 0 0-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5Zm-3 0h.008v.008H15V10.5Z"
+                          d="M168-144q-29.7 0-50.85-21.15Q96-186.3 96-216v-600l64.32 64 63.36-64L288-752l64.32-64 63.36 64L480-816l64.32 64 63.36-64L672-752l64.32-64 63.36 64L864-816v600q0 29.7-21.15 50.85Q821.7-144 792-144H168Zm0-72h276v-216H168v216Zm348 0h276v-72H516v72Zm0-144h276v-72H516v72ZM168-504h624v-144H168v144Z"
                         />
                       </svg>
-
                       Tickets
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-
-            <li class="hs-accordion" id="projects-accordion">
-              <button
-                type="button"
-                class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
-                aria-expanded="true"
-                aria-controls="projects-accordion-sub-1-collapse-1"
-              >
-                <svg
-                  class="size-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path
-                    d="M15.5 2H8.6c-.4 0-.8.2-1.1.5-.3.3-.5.7-.5 1.1v12.8c0 .4.2.8.5 1.1.3.3.7.5 1.1.5h9.8c.4 0 .8-.2 1.1-.5.3-.3.5-.7.5-1.1V6.5L15.5 2z"
-                  />
-                  <path d="M3 7.6v12.8c0 .4.2.8.5 1.1.3.3.7.5 1.1.5h9.8" />
-                  <path d="M15 2v5h5" />
-                </svg>
-                Configuración
-
-                <svg
-                  class="hs-accordion-active:block ms-auto hidden size-4 group-hover:text-gray-500 text-neutral-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="m18 15-6-6-6 6" />
-                </svg>
-
-                <svg
-                  class="hs-accordion-active:hidden ms-auto block size-4 group-hover:text-gray-500 text-neutral-400"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              </button>
-
-              <div
-                id="projects-accordion-sub-1-collapse-1"
-                class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden"
-                role="region"
-                aria-labelledby="projects-accordion"
-              >
-                <ul class="pt-1 ps-7 space-y-1">
-                  <li>
-                    <a
-                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
-                      href="#"
-                    >
-                      Impuestos
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
-                      href="#"
-                    >
-                      Combustibles
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
-                      href="#"
-                    >
-                      Numeración
-                    </a>
+                    </router-link>
                   </li>
                 </ul>
               </div>
@@ -423,90 +271,124 @@
       <!-- Footer -->
       <footer class="mt-auto p-2 border-t border-neutral-700">
         <!-- Account Dropdown -->
-        <div
-          class="hs-dropdown [--strategy:absolute] [--auto-close:inside] relative w-full inline-flex"
-        >
+        <!--  ----------------- PERFIL USUARIO ----------------- -->
+        <div class="mt-auto relative" @click="toggleMenuUser">
           <button
-            id="hs-sidebar-footer-example-with-dropdown"
             type="button"
-            class="w-full inline-flex shrink-0 items-center gap-x-2 p-2 text-start text-sm rounded-md ocus:outline-hidden text-neutral-200 hover:bg-neutral-700 focus:bg-neutral-700"
-            aria-haspopup="menu"
-            aria-expanded="false"
-            aria-label="Dropdown"
+            class="flex items-center w-full p-3 text-sm font-medium text-white hover:text-gray-900 transition rounded-lg hover:bg-purple-100"
           >
             <img
-              class="shrink-0 size-5 rounded-full"
-              src="https://images.unsplash.com/photo-1734122415415-88cb1d7d5dc0?q=80&w=320&h=320&auto=format&fit=facearea&facepad=3&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="Avatar"
+              class="object-cover w-10 h-10 rounded-lg"
+              :src="`https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${userNombre}`"
+              alt="avatar"
             />
-            {{ items }}
+
+            <div class="ml-4 text-left">
+              <p class="text-sm font-medium">
+                {{ userNombre }}
+              </p>
+              <p class="text-xs text-gray-500">Ver opciones</p>
+            </div>
+
             <svg
-              class="shrink-0 size-3.5 ms-auto"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              :class="openUserMenu ? 'rotate-180' : ''"
+              class="ml-auto w-4 h-4 transition-transform duration-200"
+              fill="currentColor"
+              viewBox="0 0 20 20"
             >
-              <path d="m7 15 5 5 5-5" />
-              <path d="m7 9 5-5 5 5" />
+              <path
+                fill-rule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 10.583l3.71-3.354a.75.75 0 011.02 1.1l-4.202 3.8a.75.75 0 01-1.02 0l-4.2-3.8a.75.75 0 01.02-1.1z"
+                clip-rule="evenodd"
+              />
             </svg>
           </button>
 
-          <!-- Account Dropdown -->
-          <div
-            class="hs-dropdown-menu hs-dropdown-open:opacity-100 w-60 transition-[opacity,margin] duration opacity-0 hidden z-20 border rounded-lg shadow-lg bg-neutral-900 border-neutral-700"
-            role="menu"
-            aria-orientation="vertical"
-            aria-labelledby="hs-sidebar-footer-example-with-dropdown"
-          >
-            <div class="p-1">
-              <a
-                class="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden text-neutral-300 hover:bg-neutral-800 focus:bg-neutral-800"
-                href="#"
+          <!-- MENU DESPLEGABLE -->
+          <transition name="fade">
+            <div
+              v-if="openUserMenu"
+              class="absolute bottom-20 w-full bg-white shadow-lg rounded-lg border border-gray-200"
+            >
+              <button
+                @click.stop="cerrarSesion"
+                class="w-full text-left px-4 py-2 text-black hover:bg-purple-100 text-sm font-medium"
               >
-                My account
-              </a>
-              <a
-                class="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden text-neutral-300 hover:bg-neutral-800 focus:bg-neutral-800"
-                href="#"
-              >
-                Settings
-              </a>
-              <a
-                class="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden text-neutral-300 hover:bg-neutral-800 focus:bg-neutral-800"
-                href="#"
-              >
-                Billing
-              </a>
-              <a
-                class="flex items-center gap-x-3 py-2 px-3 rounded-lg text-sm disabled:opacity-50 disabled:pointer-events-none focus:outline-hidden text-neutral-300 hover:bg-neutral-800 focus:bg-neutral-800"
-                href="#"
-              >
-                Sign out
-              </a>
+                <div class="flex items-center gap-x-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#1f1f1f"
+                  >
+                    <path
+                      d="M480-80 280-280l56-56 104 103v-407h80v407l104-103 56 56L480-80ZM146-260q-32-49-49-105T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 59-17 115t-49 105l-58-58q22-37 33-78t11-84q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 43 11 84t33 78l-58 58Z"
+                    />
+                  </svg>
+                  <p>Cerrar Sesión</p>
+                </div>
+              </button>
             </div>
-          </div>
-          <!-- End Account Dropdown -->
+          </transition>
         </div>
-        <!-- End Account Dropdown -->
+        <!-- ----------------- FIN PERFIL USUARIO ----------------- -->
       </footer>
       <!-- End Footer -->
     </div>
   </div>
   <!-- End Sidebar -->
 </template>
+
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
-const items = ref([]);
+// ⚠️ Acá deberías traer el nombre del usuario logeado
+const userNombre = localStorage.getItem("usuario") || "Usuario";
 
-const storedData = localStorage.getItem("user");
-const user = storedData ? JSON.parse(storedData) : null;
-const userNombre = user.nombre;
-items.value = userNombre;
+// Router para cambiar de página al cerrar sesión
+const router = useRouter();
+
+// Controla el menú del usuario
+const openUserMenu = ref(false);
+
+// ✅ CONTROLAR ACCORDIONS MANUALMENTE
+const openAccordions = ref({
+  entidades: false,
+  puntoVenta: false,
+});
+
+// ✅ TOGGLE ACCORDION
+const toggleAccordion = (key: string) => {
+  openAccordions.value[key as keyof typeof openAccordions.value] =
+    !openAccordions.value[key as keyof typeof openAccordions.value];
+};
+
+// Abre y cierra el menú del usuario
+const toggleMenuUser = () => {
+  openUserMenu.value = !openUserMenu.value;
+};
+
+// Cerrar sesión
+const cerrarSesion = () => {
+  // Eliminamos los datos del usuario (TOKEN, ID, etc.)
+  localStorage.removeItem("token");
+  localStorage.removeItem("usuario");
+
+  // Redireccionamos hacia el login
+  router.push("/auth/login");
+};
+
+// ✅ CERRAR MENÚ AL HACER CLICK AFUERA
+onMounted(() => {
+  document.addEventListener("click", (event: MouseEvent) => {
+    const target = event.target as HTMLElement;
+    const userButton = document.querySelector("[data-user-menu]");
+
+    if (userButton && !userButton.contains(target)) {
+      openUserMenu.value = false;
+    }
+  });
+});
 </script>

@@ -13,16 +13,14 @@
           class="inline-flex items-center px-4 py-2 bg-neutral-800 text-white text-sm font-medium rounded-sm hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
         >
           <svg
-            class="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            height="20px"
+            viewBox="0 -960 960 960"
+            width="20px"
+            fill="#ffffff"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 4v16m8-8H4"
+              d="M708-24v-108H600v-72h108v-108h72v108h108v72H780v108h-72ZM96-168v-216H48v-72l48-192h576l48 192v72h-48v144h-72v-144H432v216H96Zm72-72h192v-144H168v144Zm-46-216h524-524ZM96-696v-72h576v72H96Zm26 240h524l-30-120H152l-30 120Z"
             />
           </svg>
 

@@ -117,6 +117,39 @@ export function useCombustibles() {
   };
 
 
+  const deleteTCombustible = async (idCombustible: number) => {
+    try {
+      loading.value = true;
+      error.value = null;
+      idAccion.value = 1;
+      const { data } = await axios.delete(
+        `${apiUrl}/combustible/tipo/${idCombustible}`
+      );
+
+      // ✅ VERIFICAR SI FUE EXITOSO O ERROR
+      if (data.Resultado === "ERROR") {
+        console.error("Error al eliminar tipo de combustible:", data);
+        // ✅ CAPTURAR MENSAJE DE ERROR DEL BACKEND
+        error.value = data.Mensaje;
+        return {
+          success: false,
+          message: data.Mensaje
+        };
+      }
+
+      return { success: true, message: data.message || "Tipo de combustible eliminado" };
+    } catch (err: any) {
+      error.value =
+        err.response?.data?.message ||
+        err.message ||
+        "Error al eliminar el tipo de combustible";
+
+      return { success: false, message: error.value };
+    } finally {
+      loading.value = false;
+    }
+  };
+
   const deleteEmpresaCombustible = async (
     idEmpresa: number,
     idCombustible: number
@@ -182,6 +215,7 @@ export function useCombustibles() {
     fetchCombustibles,
     crearTCombustible,
     crearEmpresaCombustible,
+    deleteTCombustible,
     deleteEmpresaCombustible,
     updateEmpresaCombustible,
   };

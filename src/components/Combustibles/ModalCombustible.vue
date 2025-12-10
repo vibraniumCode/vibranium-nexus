@@ -44,8 +44,13 @@
       :data="tcombustibles"
       :columns="tcombustibleColumns"
       :centerColumns="true"
-      :showActions="false"
+      :showActions="true"
       :showReport="false"
+      :actionConfig="{
+        showDelete: true,
+        showEdit: false,
+      }"
+      @delete="handleDelete"
     >
     </TableLayout>
   </ModalLayout>
@@ -57,13 +62,20 @@ import ModalLayout from "@/components/common/ModalLayout.vue";
 import TableLayout from "@/components/common/TableLayout.vue";
 import { useCombustibles } from "@/composables/useCombustible";
 import { tcombustibleColumns } from "@/constants/combustibleConfig";
+import Swal from "sweetalert2";
+import { useToast } from "vue-toast-notification";
 
 //composables
-const { tcombustibles, fetchTCombustibles, crearTCombustible } =
-  useCombustibles();
+const {
+  tcombustibles,
+  fetchTCombustibles,
+  crearTCombustible,
+  deleteTCombustible,
+} = useCombustibles();
 
 const props = defineProps<{ show: boolean }>();
 const emit = defineEmits(["close"]);
+const $toast = useToast();
 
 // nuevo impuesto
 const nuevoCombustible = ref({ tipo: "" });
@@ -81,4 +93,29 @@ const close = () => {
 onMounted(() => {
   fetchTCombustibles();
 });
+
+// ✅ HANDLE DELETE CON ALERT
+const handleDelete = async (index: number, rowData: any) => {
+  // ✅ CONFIRMAR ANTES DE ELIMINAR
+
+  const result = await Swal.fire({
+    title: `¿Está seguro de que desea eliminar "${rowData.txtDesc}"?`,
+    showDenyButton: true,
+    confirmButtonText: "Sí",
+    denyButtonText: "No",
+  });
+
+  if (!result.isConfirmed) return;
+
+  // ✅ ELIMINAR Y CAPTURAR RESPUESTA
+  const resultado = await deleteTCombustible(rowData.idTC);
+
+  // ✅ MOSTRAR ALERT SEGÚN EL RESULTADO
+  if (resultado.success) {
+    ($toast as any).info("✅ Combustible eliminado correctamente");
+    await fetchTCombustibles();
+  } else {
+    ($toast as any).error(`❌ ${resultado.message}`);
+  }
+};
 </script>

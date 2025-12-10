@@ -31,7 +31,7 @@
         >
           <option disabled :value="null">Seleccionar combustible</option>
           <option v-for="comb in tcombustibles" :key="comb.id" :value="comb.id">
-            {{ comb.tipo }}
+            {{ comb.txtDesc }}
           </option>
         </select>
 

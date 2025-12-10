@@ -47,6 +47,12 @@
       :columns="impuestoColumns"
       :centerColumns="true"
       :showReport="false"
+      :showActions="true"
+      :actionConfig="{
+        showDelete: true,
+        showEdit: false,
+      }"
+      @delete="handleDelete"
     >
       <!--<template #actions="{ row }">
         <div class="flex gap-2 justify-center">
@@ -75,26 +81,25 @@ import TableLayout from "@/components/common/TableLayout.vue";
 import { useImpuestos } from "@/composables/useImpuestos";
 import type { Impuesto } from "@/types/impuesto";
 import type { TableColumn } from "@/types/table";
+import Swal from "sweetalert2";
+import { useToast } from "vue-toast-notification";
 
 const { show } = defineProps<{ show: boolean }>();
 const emit = defineEmits(["close"]);
+const $toast = useToast();
 
 const close = () => emit("close");
 
 // store/composable
-const {
-  impuestos,
-  fetchTImpuesto,
-  crearTImpuesto,
-  // updateImpuesto,
-  // deleteImpuesto,
-} = useImpuestos();
+const { impuestos, fetchTImpuesto, crearTImpuesto, deleteTImpuestos } =
+  useImpuestos();
 
 // inicialización
 onMounted(fetchTImpuesto);
 
 // columnas de la tabla
 const impuestoColumns: TableColumn<Impuesto>[] = [
+  { key: "id", label: "ID" },
   { key: "tipo", label: "Tipo" },
 ];
 
@@ -107,20 +112,28 @@ const agregarImpuesto = async () => {
   nuevoImpuesto.value.tipo = "";
 };
 
-// editar
-{
-  /* const editarImpuesto = async (row: Impuesto) => {
-  const nuevo = prompt("Editar tipo de impuesto:", row.tipo);
-  if (nuevo && nuevo !== row.tipo) {
-    await updateImpuesto(row.id, { tipo: nuevo });
+// ✅ HANDLE DELETE CON ALERT
+const handleDelete = async (index: number, rowData: any) => {
+  // ✅ CONFIRMAR ANTES DE ELIMINAR
+
+  const result = await Swal.fire({
+    title: `¿Está seguro de que desea eliminar "${rowData.tipo}"?`,
+    showDenyButton: true,
+    confirmButtonText: "Sí",
+    denyButtonText: "No",
+  });
+
+  if (!result.isConfirmed) return;
+
+  // ✅ ELIMINAR Y CAPTURAR RESPUESTA
+  const resultado = await deleteTImpuestos(rowData.id);
+
+  // ✅ MOSTRAR ALERT SEGÚN EL RESULTADO
+  if (resultado.success) {
+    ($toast as any).info("✅ Impuesto eliminado correctamente");
+    await fetchTImpuesto();
+  } else {
+    ($toast as any).error(`❌ ${resultado.message}`);
   }
 };
-
-// eliminar
-const eliminarImpuesto = async (id: number) => {
-  if (confirm("¿Seguro que deseas eliminar este impuesto?")) {
-    await deleteImpuesto(id);
-  }
-}; */
-}
 </script>

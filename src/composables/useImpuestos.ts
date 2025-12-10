@@ -59,6 +59,38 @@ export function useImpuestos() {
     }
   };
 
+  const deleteTImpuestos = async (idImpuesto: number) => {
+    try {
+      loading.value = true;
+      error.value = null;
+      const { data } = await axios.delete(
+        `${apiUrl}/impuestos/tipo/${idImpuesto}`
+      );
+
+      // ✅ VERIFICAR SI FUE EXITOSO O ERROR
+      if (data.Resultado === "ERROR") {
+        console.error("Error al eliminar tipo de impuesto:", data);
+        // ✅ CAPTURAR MENSAJE DE ERROR DEL BACKEND
+        error.value = data.Mensaje;
+        return {
+          success: false,
+          message: data.Mensaje
+        };
+      }
+
+      return { success: true, message: data.message || "Tipo de impuesto eliminado" };
+    } catch (err: any) {
+      error.value =
+        err.response?.data?.message ||
+        err.message ||
+        "Error al eliminar el tipo de impuesto";
+
+      return { success: false, message: error.value };
+    } finally {
+      loading.value = false;
+    }
+  };
+
   const crearImpuesto = async (
     idEmpresa: number,
     idCombustible: number,
@@ -162,6 +194,7 @@ export function useImpuestos() {
     fetchTImpuesto,
     crearTImpuesto,
     crearImpuesto,
+    deleteTImpuestos,
     deleteImpuesto,
     updateImpuesto,
     // clearError
