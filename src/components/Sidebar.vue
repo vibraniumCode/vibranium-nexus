@@ -243,7 +243,7 @@
                   </li>
                   <li>
                     <router-link
-                      to="#"
+                      to="informes"
                       class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
                     >
                       <svg
@@ -257,7 +257,7 @@
                           d="M168-144q-29.7 0-50.85-21.15Q96-186.3 96-216v-600l64.32 64 63.36-64L288-752l64.32-64 63.36 64L480-816l64.32 64 63.36-64L672-752l64.32-64 63.36 64L864-816v600q0 29.7-21.15 50.85Q821.7-144 792-144H168Zm0-72h276v-216H168v216Zm348 0h276v-72H516v72Zm0-144h276v-72H516v72ZM168-504h624v-144H168v144Z"
                         />
                       </svg>
-                      Tickets
+                      Informes
                     </router-link>
                   </li>
                 </ul>
@@ -345,7 +345,18 @@ import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 // ⚠️ Acá deberías traer el nombre del usuario logeado
-const userNombre = localStorage.getItem("usuario") || "Usuario";
+const userNombre = (() => {
+  const userData = localStorage.getItem("user");
+  if (userData) {
+    try {
+      const parsed = JSON.parse(userData);
+      return parsed.nombre || parsed.usuario || "Usuario";
+    } catch (e) {
+      return "Usuario";
+    }
+  }
+  return "Usuario";
+})();
 
 // Router para cambiar de página al cerrar sesión
 const router = useRouter();

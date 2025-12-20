@@ -1,19 +1,20 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
 // Importaciones
-import Login from '@/views/auth/Login.vue';
+import Login from '@/views/auth/Login.vue'
 import Dashboard from '@/views/Dashboard.vue'
-import NotFound from '@/views/NotFound.vue';
+import NotFound from '@/views/NotFound.vue'
 import EmpresasIndex from '@/views/empresas/EmpresasIndex.vue'
 import EmpresaCreate from '@/views/empresas/EmpresaCreate.vue'
 import ClientesIndex from '@/views/clientes/ClientesIndex.vue'
 import ClienteCreate from '@/views/clientes/ClienteCreate.vue'
 import Facturacion from '@/views/pventa/facturacion.vue'
+import Informes from '@/views/pventa/Informes.vue'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/auth/login'
+    redirect: '/dashboard'
   },
   {
     path: '/auth/login',
@@ -21,7 +22,7 @@ const routes: RouteRecordRaw[] = [
     component: Login,
     meta: {
       requiresAuth: false,
-      layout: 'auth'  // ✅ Usar AuthLayout
+      layout: 'auth'
     }
   },
   {
@@ -30,13 +31,8 @@ const routes: RouteRecordRaw[] = [
     component: Dashboard,
     meta: {
       requiresAuth: true,
-      layout: 'dashboard'  // ✅ Usar DashboardLayout
+      layout: 'dashboard'
     }
-  },
-  {
-    path: '/:pathMatch(.*)*',
-    name: 'NotFound',
-    component: NotFound
   },
   // Rutas de Empresas
   {
@@ -89,6 +85,22 @@ const routes: RouteRecordRaw[] = [
       layout: 'dashboard'
     }
   },
+  {
+    path: '/informes',
+    name: 'informes',
+    component: Informes,
+    meta: {
+      title: 'Informes',
+      requiresAuth: true,
+      layout: 'informes'
+    }
+  },
+  // ✅ IMPORTANTE: NotFound siempre al final
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFound
+  }
 ]
 
 const router = createRouter({
@@ -96,26 +108,25 @@ const router = createRouter({
   routes
 })
 
-// Guard para títulos de página
+// ✅ Consolidar los guards en uno solo para evitar conflictos
 router.beforeEach((to, from, next) => {
+  // 1. Actualizar título
   document.title = to.meta?.title ? `${to.meta.title} - Nexus` : 'Nexus'
-  next()
-})
 
-// Guard de autenticación
-router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token');
-  const requiresAuth = to.meta.requiresAuth;
+  // 2. Lógica de autenticación
+  const token = localStorage.getItem('token')
+  const requiresAuth = to.meta?.requiresAuth as boolean
 
   if (requiresAuth && !token) {
-    // Si requiere auth y no hay token, redirigir al login
-    next('/auth/login');
+    // Requiere auth pero no hay token → Login
+    next('/auth/login')
   } else if (!requiresAuth && token && to.path === '/auth/login') {
-    // Si está autenticado y trata de ir al login, redirigir al dashboard
-    next('/dashboard');
+    // Ya autenticado y trata de ir a login → Dashboard
+    next('/dashboard')
   } else {
-    next();
+    // Todo bien, continuar
+    next()
   }
-});
+})
 
 export default router

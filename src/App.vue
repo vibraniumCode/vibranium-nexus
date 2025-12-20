@@ -1,10 +1,9 @@
 <template>
   <div>
-    <!-- ✅ SessionWarning SIEMPRE visible cuando estás autenticado -->
-    <SessionWarning v-if="isAuthenticated" />
-
     <!-- Layout dinámico -->
     <component :is="layout">
+      <!-- ✅ SessionWarning SIEMPRE visible cuando estás autenticado -->
+      <SessionWarning v-if="isAuthenticated" />
       <router-view />
     </component>
   </div>

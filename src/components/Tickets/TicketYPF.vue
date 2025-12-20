@@ -135,12 +135,6 @@
       >
         Imprimir
       </button>
-      <button
-        @click="descargarPDF"
-        class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-      >
-        Descargar PDF
-      </button>
     </div>
   </div>
 </template>
