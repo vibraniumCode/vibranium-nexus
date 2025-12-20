@@ -1,16 +1,33 @@
 <template>
-  <div class="flex h-screen">
-    <Sidebar class="w-64 flex-shrink-0 h-full fixed left-0 top-0 z-20" />
-    <div class="flex flex-col flex-1 min-w-0 ml-64 h-screen">
-      <!--<Navbar class="z-10" />-->
-      <main class="flex-1 overflow-auto bg-gray-200">
-        <router-view />
-      </main>
-    </div>
+  <div>
+    <!-- Layout dinámico -->
+    <component :is="layout">
+      <!-- ✅ SessionWarning SIEMPRE visible cuando estás autenticado -->
+      <SessionWarning v-if="isAuthenticated" />
+      <router-view />
+    </component>
   </div>
 </template>
 
 <script setup lang="ts">
-import Sidebar from './components/Sidebar.vue'
-import Navbar from './components/Navbar.vue'
+import { computed, onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
+import AuthLayout from "@/layouts/AuthLayout.vue";
+import DashboardLayout from "@/layouts/DashboardLayout.vue";
+import SessionWarning from "@/components/SessionWarning.vue";
+
+const route = useRoute();
+const isAuthenticated = ref(false);
+
+// Verificar si hay token
+onMounted(() => {
+  const token = localStorage.getItem("token");
+  isAuthenticated.value = !!token;
+  console.log("✅ TOKEN DETECTADO:", !!token);
+});
+
+// ✅ Cambiar layout según la meta de la ruta
+const layout = computed(() => {
+  return route.meta.layout === "auth" ? AuthLayout : DashboardLayout;
+});
 </script>

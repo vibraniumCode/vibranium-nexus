@@ -1,19 +1,21 @@
 import { ref } from "vue";
 import axios from "axios";
-import type { Impuesto, ImpEstacion } from "@/types/impuesto";
+import type { Impuesto } from "@/types/impuesto";
 
 export function useImpuestos() {
   const impuestos = ref<Impuesto[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
+  const idAccion = ref<number | null>(null);
+  const apiUrl = "https://vibranium-nexus-backend.onrender.com/api"
 
-  const fetchImpuesto = async () => {
+  const fetchTImpuesto = async () => {
     try {
       loading.value = true;
       error.value = null;
 
       const { data } = await axios.get<Impuesto[]>(
-        "http://localhost:3000/api/Impuestos"
+        `${apiUrl}/Impuestos`
       );
 
       if (Array.isArray(data)) {
@@ -29,64 +31,172 @@ export function useImpuestos() {
     }
   };
 
-  // Función actualizada para soportar parámetros adicionales
-  const fetchImpEstacion = async (
-    accion: string,
-    idEstacion: number,
-    idImpuesto?: number | null,
-    meses?: number
+  const crearTImpuesto = async (
+    tipo: string,
   ) => {
     try {
       loading.value = true;
       error.value = null;
 
-      // Construir la URL base
-      let url = `http://localhost:3000/api/Impuestos/${accion}/${idEstacion}`;
+      const { data } = await axios.post(
+        `${apiUrl}/impuestos/new`,
+        {
+          tipo
+        }
+      );
+      await fetchTImpuesto();
 
-      // Agregar parámetros opcionales si están presentes
-      const params = new URLSearchParams();
-
-      if (idImpuesto !== null && idImpuesto !== undefined) {
-        params.append('idImpuesto', idImpuesto.toString());
-      }
-
-      if (meses !== null && meses !== undefined) {
-        params.append('meses', meses.toString());
-      }
-
-      // Si hay parámetros, agregarlos a la URL
-      if (params.toString()) {
-        url += `?${params.toString()}`;
-      }
-
-      console.log("URL construida:", url);
-
-      const { data } = await axios.get<ImpEstacion[]>(url);
-
-      if (Array.isArray(data)) {
-        console.log("Respuesta del API:", data);
-        return data;
-      } else {
-        throw new Error("La respuesta no es un array válido");
-      }
+      return { success: true, message: data.message || "Tipo de Impuesto agregado" };
     } catch (err: any) {
-      error.value = err.message || "Error al obtener los impuestos de la estación";
-      console.error("Error al obtener los impuestos de la estación:", err);
-      return [];
+      error.value =
+        err.response?.data?.message ||
+        err.message ||
+        "Error al agregar el tipo de impuesto";
+
+      return { success: false, message: error.value };
     } finally {
       loading.value = false;
     }
   };
-  const clearError = () => {
-    error.value = null;
+
+  const deleteTImpuestos = async (idImpuesto: number) => {
+    try {
+      loading.value = true;
+      error.value = null;
+      const { data } = await axios.delete(
+        `${apiUrl}/impuestos/tipo/${idImpuesto}`
+      );
+
+      // ✅ VERIFICAR SI FUE EXITOSO O ERROR
+      if (data.Resultado === "ERROR") {
+        console.error("Error al eliminar tipo de impuesto:", data);
+        // ✅ CAPTURAR MENSAJE DE ERROR DEL BACKEND
+        error.value = data.Mensaje;
+        return {
+          success: false,
+          message: data.Mensaje
+        };
+      }
+
+      return { success: true, message: data.message || "Tipo de impuesto eliminado" };
+    } catch (err: any) {
+      error.value =
+        err.response?.data?.message ||
+        err.message ||
+        "Error al eliminar el tipo de impuesto";
+
+      return { success: false, message: error.value };
+    } finally {
+      loading.value = false;
+    }
   };
+
+  const crearImpuesto = async (
+    idEmpresa: number,
+    idCombustible: number,
+    idImpuesto: number,
+    monto: number
+  ) => {
+    try {
+      loading.value = true;
+      error.value = null;
+      idAccion.value = 2;
+
+      const { data } = await axios.post(
+        `${apiUrl}/impuestos/tipo/new/${idAccion.value}`,
+        {
+          idEmpresa,
+          idCombustible,
+          idImpuesto,
+          monto,
+        }
+      );
+
+      return { success: true, message: data.message || "Impuesto agregado" };
+    } catch (err: any) {
+      error.value =
+        err.response?.data?.message ||
+        err.message ||
+        "Error al agregar el impuesto";
+
+      return { success: false, message: error.value };
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const deleteImpuesto = async (
+    idEmpresa: number,
+    idCombustible: number,
+    idImpuesto: number,
+  ) => {
+    try {
+      loading.value = true;
+      error.value = null;
+      idAccion.value = 2;
+      console.log("Eliminando impuesto:", `${apiUrl}/impuestos/${idEmpresa}/${idCombustible}/${idImpuesto}/dlet/${idAccion.value}`);
+      const { data } = await axios.delete(
+        `${apiUrl}/impuestos/${idEmpresa}/${idCombustible}/${idImpuesto}/dlet/${idAccion.value}`
+      );
+
+      return { success: true, message: data.message || "Impuesto eliminado" };
+    } catch (err: any) {
+      error.value =
+        err.response?.data?.message ||
+        err.message ||
+        "Error al eliminar el impuesto";
+
+      return { success: false, message: error.value };
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const updateImpuesto = async (
+    idEmpresa: number,
+    idCombustible: number,
+    idImpuesto: number,
+    monto: number
+  ) => {
+    try {
+      loading.value = true;
+      error.value = null;
+      idAccion.value = 2;
+
+      // La ruta debe coincidir con tu backend
+      const { data } = await axios.put(
+        `${apiUrl}/impuestos/${idEmpresa}/${idCombustible}/${idImpuesto}/upd/${idAccion.value}`,
+        {
+          monto
+        }
+      );
+
+      return { success: true, message: data.message || "Impuesto actualizado" };
+    } catch (err: any) {
+      error.value =
+        err.response?.data?.message ||
+        err.message ||
+        "Error al actualizar el impuesto";
+
+      return { success: false, message: error.value };
+    } finally {
+      loading.value = false;
+    }
+  };
+
+
+
 
   return {
     impuestos,
     loading,
     error,
-    fetchImpuesto,
-    fetchImpEstacion,
-    clearError
+    fetchTImpuesto,
+    crearTImpuesto,
+    crearImpuesto,
+    deleteTImpuestos,
+    deleteImpuesto,
+    updateImpuesto,
+    // clearError
   };
 }

@@ -1,3 +1,6 @@
+import type { CombustibleDetalle } from "@/types/combustible";
+import type { CTImpuesto } from "@/types/impuesto";
+
 export interface Empresa {
   id: number;
   nombre: string;
@@ -7,9 +10,16 @@ export interface Empresa {
   cp: string;
   localidad: string;
   provincia: string;
-  Actividad: string;
+  actividad: Date;
+  telefono: string;
 }
 
 export enum CategoriaFiscal {
   RESPONSABLE_INSCRIPTO = 'responsable_inscripto',
+}
+
+export interface EmpresaDetalle {
+  empresa: Empresa;
+  combustible: CombustibleDetalle[];
+  impuesto: CTImpuesto[];
 }

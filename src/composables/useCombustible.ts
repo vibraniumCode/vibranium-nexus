@@ -1,101 +1,222 @@
 import { ref } from "vue";
 import axios from "axios";
-import type { Combustible } from "@/types/combustible";
+import type { Combustible, TCombustible } from "@/types/combustible";
+import { Console } from "console";
 
 export function useCombustibles() {
+  const tcombustibles = ref<TCombustible[]>([]);
   const combustibles = ref<Combustible[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
+  const idAccion = ref<number | null>(null);
+  const apiUrl = "https://vibranium-nexus-backend.onrender.com/api"
 
-  const fetchCombustible = async () => {
+  const fetchTCombustibles = async () => {
     try {
       loading.value = true;
       error.value = null;
 
-      const { data } = await axios.get<Combustible[]>(
-        "http://localhost:3000/api/combustible"
+      const { data } = await axios.get(
+        `${apiUrl}/combustible`
       );
 
       if (Array.isArray(data)) {
-        combustibles.value = data;
+        tcombustibles.value = data;
+        console.log("Tipos de combustible obtenidos:", data);
       } else {
         throw new Error("La respuesta no es un array válido");
       }
     } catch (err: any) {
-      error.value = err.message || "Error al obtener los combustibles";
-      console.error("Error al obtener los combustibles:", err);
+      error.value = err.message || "Error al obtener los impuestos";
+      console.error("Error al obtener los impuestos:", err);
     } finally {
       loading.value = false;
     }
   };
 
-  // Función para actualizar precio
-  const updateCombustiblePrice = async (id: number, newPrice: number): Promise<boolean> => {
+  const fetchCombustibles = async (idEmpresa: number) => {
     try {
       loading.value = true;
       error.value = null;
 
-      // Validación básica
-      if (isNaN(newPrice) || newPrice < 0) {
-        throw new Error("El precio debe ser un número válido mayor a 0");
-      }
+      console.log("🔄 Buscando combustibles para empresa:", idEmpresa); // ✅ DEBUG
 
-      const response = await axios.put(
-        `http://localhost:3000/api/combustible/${id}`,
-        { precio: newPrice }
+      const { data } = await axios.get<Combustible[]>(
+        `${apiUrl}/combustible/${idEmpresa}`
       );
 
-      // Actualizar el estado local solo si la petición fue exitosa
-      const index = combustibles.value.findIndex(c => c.id === id);
-      if (index !== -1) {
-        combustibles.value[index].precio = newPrice;
-      }
+      console.log("✅ Combustibles obtenidos:", data); // ✅ DEBUG
+      combustibles.value = data;
 
-      return true; // Éxito
     } catch (err: any) {
-      error.value = err.response?.data?.message || err.message || "Error al actualizar precio";
-      console.error("Error al actualizar precio:", err);
-      return false; // Fallo
+      console.error("❌ Error al obtener combustibles:", err.response?.status, err.response?.data); // ✅ DEBUG
+      error.value = err.message || "Error al cargar combustibles";
+      combustibles.value = []; // ✅ VACIAR ARRAY EN ERROR
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const crearTCombustible = async (
+    txtDesc: string,
+  ) => {
+    try {
+      loading.value = true;
+      error.value = null;
+      console.log("Creando tipo de combustible con:", { txtDesc });
+      const { data } = await axios.post(
+        `${apiUrl}/combustible/tipo/new`,
+        {
+          txtDesc
+        }
+      );
+      await fetchTCombustibles();
+
+      return { success: true, message: data.message || "Tipo de Combustible agregado" };
+    } catch (err: any) {
+      error.value =
+        err.response?.data?.message ||
+        err.message ||
+        "Error al agregar el tipo de combustible";
+
+      return { success: false, message: error.value };
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const crearEmpresaCombustible = async (
+    idEmpresa: number,
+    idCombustible: number,
+    monto: number
+  ) => {
+    try {
+      loading.value = true;
+      error.value = null;
+      idAccion.value = 1;
+      console.log("Creando combustible con:", { idEmpresa, idCombustible, monto, idAccion: idAccion.value });
+
+      const { data } = await axios.post(
+        `${apiUrl}/combustible/new/${idAccion.value}`,
+        {
+          idEmpresa,
+          idCombustible,
+          monto,
+        }
+      );
+
+      return { success: true, message: "Combustible agregado", data };
+    } catch (err: any) {
+      console.error("Error al crear combustible:", err);
+      error.value =
+        err.response?.data?.message || "Error al crear combustible";
+      return { success: false, message: error.value };
     } finally {
       loading.value = false;
     }
   };
 
 
+  const deleteTCombustible = async (idCombustible: number) => {
+    try {
+      loading.value = true;
+      error.value = null;
+      idAccion.value = 1;
+      const { data } = await axios.delete(
+        `${apiUrl}/combustible/tipo/${idCombustible}`
+      );
 
-  // // Función para eliminar combustible
-  // const deleteCombustible = async (id: number): Promise<boolean> => {
-  //   try {
-  //     loading.value = true;
-  //     error.value = null;
+      // ✅ VERIFICAR SI FUE EXITOSO O ERROR
+      if (data.Resultado === "ERROR") {
+        console.error("Error al eliminar tipo de combustible:", data);
+        // ✅ CAPTURAR MENSAJE DE ERROR DEL BACKEND
+        error.value = data.Mensaje;
+        return {
+          success: false,
+          message: data.Mensaje
+        };
+      }
 
-  //     await axios.delete(`http://localhost:3000/api/combustible/${id}`);
+      return { success: true, message: data.message || "Tipo de combustible eliminado" };
+    } catch (err: any) {
+      error.value =
+        err.response?.data?.message ||
+        err.message ||
+        "Error al eliminar el tipo de combustible";
 
-  //     // Actualizar estado local
-  //     combustibles.value = combustibles.value.filter(c => c.id !== id);
+      return { success: false, message: error.value };
+    } finally {
+      loading.value = false;
+    }
+  };
 
-  //     return true;
-  //   } catch (err: any) {
-  //     error.value = err.response?.data?.message || err.message || "Error al eliminar combustible";
-  //     console.error("Error al eliminar combustible:", err);
-  //     return false;
-  //   } finally {
-  //     loading.value = false;
-  //   }
-  // };
+  const deleteEmpresaCombustible = async (
+    idEmpresa: number,
+    idCombustible: number
+  ) => {
+    try {
+      loading.value = true;
+      error.value = null;
+      idAccion.value = 1;
+      const { data } = await axios.delete(
+        `${apiUrl}/combustible/${idEmpresa}/${idCombustible}/dlet/${idAccion.value}`
+      );
 
-  // Función para limpiar errores
-  const clearError = () => {
-    error.value = null;
+      return { success: true, message: data.message || "Combustible eliminado" };
+    } catch (err: any) {
+      error.value =
+        err.response?.data?.message ||
+        err.message ||
+        "Error al eliminar el combustible";
+
+      return { success: false, message: error.value };
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const updateEmpresaCombustible = async (
+    idEmpresa: number,
+    idCombustible: number,
+    monto: number
+  ) => {
+    try {
+      loading.value = true;
+      error.value = null;
+      idAccion.value = 1;
+
+      // La ruta debe coincidir con tu backend
+      const { data } = await axios.put(
+        `${apiUrl}/combustible/${idEmpresa}/${idCombustible}/upd/${idAccion.value}`,
+        {
+          monto
+        }
+      );
+
+      return { success: true, message: data.message || "Combustible actualizado" };
+    } catch (err: any) {
+      error.value =
+        err.response?.data?.message ||
+        err.message ||
+        "Error al actualizar el combustible";
+
+      return { success: false, message: error.value };
+    } finally {
+      loading.value = false;
+    }
   };
 
   return {
+    tcombustibles,
     combustibles,
     loading,
     error,
-    fetchCombustible,
-    updateCombustiblePrice,
-    // deleteCombustible,
-    clearError
+    fetchTCombustibles,
+    fetchCombustibles,
+    crearTCombustible,
+    crearEmpresaCombustible,
+    deleteTCombustible,
+    deleteEmpresaCombustible,
+    updateEmpresaCombustible,
   };
 }
