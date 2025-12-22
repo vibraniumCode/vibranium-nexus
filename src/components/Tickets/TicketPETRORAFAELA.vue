@@ -132,16 +132,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Botones de acción - FUERA DEL TICKET -->
-    <div class="flex gap-2">
-      <button
-        @click="imprimirTicket"
-        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-      >
-        Imprimir
-      </button>
-    </div>
   </div>
 </template>
 
@@ -305,66 +295,101 @@ const formatoMoneda = (valor: number) => {
 const imprimirTicket = () => {
   if (!ticketRef.value) return;
 
-  const printWindow = window.open("", "", "width=400,height=800");
-  if (!printWindow) return;
+  // Obtener solo el HTML del ticket
+  const ticketHTML = ticketRef.value.innerHTML;
 
-  const styles = `
-    <style>
-      @media print {
-        * {
-          margin: 0;
-          padding: 0;
-        }
-        body {
-          width: 80mm;
-          margin: 0;
-          padding: 0;
-        }
-        .ticket {
-          width: 80mm;
-          margin: 0;
-          padding: 0;
-          page-break-after: auto;
-        }
-      }
-      body {
-        font-family: 'Courier New', monospace;
-        margin: 0;
-        padding: 0;
-        background: white;
-      }
-      .ticket {
-        width: 80mm;
-        margin: 0;
-        padding: 4mm;
-        font-size: 11px;
-        line-height: 1.4;
-        box-sizing: border-box;
-      }
-      p { margin: 0; padding: 0; }
-    </style>
-  `;
-
-  printWindow.document.write(`
+  // Crear el documento HTML completo para imprimir
+  const htmlCompleto = `
     <!DOCTYPE html>
     <html>
       <head>
         <meta charset="UTF-8">
         <title>Ticket</title>
-        ${styles}
+        <style>
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          
+          html, body {
+            width: 80mm;
+            height: auto;
+            margin: 0;
+            padding: 0;
+            background: white;
+          }
+          
+          body {
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            line-height: 1.3;
+            width: 80mm;
+            text-align: left;
+          }
+          
+          .ticket {
+            width: 80mm;
+            padding: 3mm;
+            margin: 0;
+            background: white;
+            font-size: 10px;
+            text-align: left;
+          }
+          
+          p {
+            margin: 0;
+            padding: 0;
+            line-height: 1.3;
+          }
+          
+          @media print {
+            * {
+              margin: 0;
+              padding: 0;
+            }
+            body {
+              width: 80mm;
+              margin: 0;
+              padding: 0;
+            }
+            .ticket {
+              width: 80mm;
+              margin: 0;
+              padding: 3mm;
+            }
+          }
+        </style>
       </head>
       <body>
         <div class="ticket">
-          ${ticketRef.value.innerHTML}
+          ${ticketHTML}
         </div>
       </body>
     </html>
-  `);
+  `;
+
+  // Abrir ventana de impresión
+  const printWindow = window.open("", "", "width=400,height=600");
+  if (!printWindow) {
+    console.error("No se pudo abrir la ventana de impresión");
+    return;
+  }
+
+  // Escribir el HTML en la ventana
+  printWindow.document.write(htmlCompleto);
   printWindow.document.close();
 
+  // Esperar a que se renderice y luego abrir el diálogo de impresión
   setTimeout(() => {
+    printWindow.focus();
     printWindow.print();
-  }, 250);
+
+    // Cerrar la ventana después de imprimir
+    setTimeout(() => {
+      printWindow.close();
+    }, 500);
+  }, 300);
 };
 
 const descargarPDF = async () => {

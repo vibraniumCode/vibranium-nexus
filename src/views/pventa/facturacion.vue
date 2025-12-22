@@ -232,7 +232,7 @@
               </svg>
               <span class="ml-2">Ver Todos</span>
             </button>
-            <button
+            <!--<button
               @click="imprimirTodos"
               class="flex justify-center items-center px-4 py-2 bg-purple-600 text-white rounded-sm font-medium hover:bg-purple-700 transition"
             >
@@ -248,7 +248,7 @@
                 />
               </svg>
               <span class="ml-2">Imprimir Todos</span>
-            </button>
+            </button>-->
           </div>
 
           <!-- Modal para ver todos los tickets -->
@@ -316,16 +316,6 @@
               class="bg-white rounded-lg p-6 max-h-[80vh] overflow-y-auto"
               @click.stop
             >
-              <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold">Imprimir Comprobante</h3>
-                <button
-                  @click="mostrarTicketIndividual = false"
-                  class="text-gray-500 hover:text-gray-700 text-2xl"
-                >
-                  ×
-                </button>
-              </div>
-
               <!-- ✅ TICKET INDIVIDUAL -->
               <component
                 :is="obtenerComponenteTicket()"
@@ -400,7 +390,7 @@ const parametros = reactive({
   MargenLitros: { label: "Margen Litros", value: 2 },
   ImporteMin: { label: "Importe Mínimo", value: null },
   ImporteMax: { label: "Importe Máximo", value: null },
-  PrecioPorLitro: { label: "Precio por Litro", value: null },
+  //PrecioPorLitro: { label: "Precio por Litro", value: null },
 });
 
 // Configuración de columnas para TableLayout
@@ -453,13 +443,13 @@ const handleSelectCliente = (cliente: any) => {
 };
 
 // Cuando selecciona un combustible -> asigna precio por litro
-watch(selectedCombustible, (nuevo) => {
-  if (nuevo) {
-    parametros.PrecioPorLitro.value = nuevo.precio || 0;
-  } else {
-    parametros.PrecioPorLitro.value = null;
-  }
-});
+//watch(selectedCombustible, (nuevo) => {
+// if (nuevo) {
+//  parametros.PrecioPorLitro.value = nuevo.precio || 0;
+//} else {
+// parametros.PrecioPorLitro.value = null;
+//}
+//});
 
 // Ejecutar SP de cálculo
 const calcularComprobantes = async () => {
