@@ -74,7 +74,7 @@
             <li>
               <router-link
                 to="/"
-                class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-indigo-600 hover:bg-indigo-400/50 focus:bg-indigo-400/50 text-white"
+                class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm lg:text-[80%] rounded-lg focus:outline-hidden bg-indigo-600 hover:bg-indigo-400/50 focus:bg-indigo-400/50 text-white"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -82,6 +82,7 @@
                   viewBox="0 -960 960 960"
                   width="20px"
                   fill="#999999"
+                  class="lg:w-4 lg:h-4"
                 >
                   <path
                     d="M96-576v-288h288v288H96Zm72-72h144v-144H168v144ZM96-96v-288h288v288H96Zm72-72h144v-144H168v144Zm408-408v-288h288v288H576Zm72-72h144v-144H648v144ZM576-96v-288h288v288H576Zm72-72h144v-144H648v144ZM312-648Zm0 336Zm336-336Zm0 336Z"
@@ -96,7 +97,7 @@
               <button
                 @click="toggleAccordion('entidades')"
                 type="button"
-                class="w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200 transition"
+                class="w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm lg:text-[80%] rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200 transition"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -138,7 +139,7 @@
                   <li>
                     <router-link
                       to="/empresas"
-                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
+                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm lg:text-[80%] rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -158,7 +159,7 @@
                   <li>
                     <router-link
                       to="/clientes"
-                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
+                      class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm lg:text-[80%] rounded-lg focus:outline-hidden bg-neutral-800 hover:bg-neutral-700 focus:bg-neutral-700 text-neutral-200"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

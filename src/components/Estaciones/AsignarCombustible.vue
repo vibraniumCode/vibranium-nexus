@@ -30,7 +30,11 @@
           class="border border-gray-300 rounded-md text-sm p-2 flex-1 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
           <option disabled :value="null">Seleccionar combustible</option>
-          <option v-for="comb in tcombustibles" :key="comb.id" :value="comb.id">
+          <option
+            v-for="comb in tcombustibles"
+            :key="comb.idTC"
+            :value="comb.idTC"
+          >
             {{ comb.txtDesc }}
           </option>
         </select>

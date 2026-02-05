@@ -1,15 +1,9 @@
 <template>
-  <div class="flex flex-col items-center gap-4">
-    <!-- Vista previa del ticket -->
+  <div class="w-full flex justify-center mb-10">
     <div
       ref="ticketRef"
-      class="w-80 bg-white p-4 font-mono text-xs text-black mx-auto"
-      style="
-        font-family: 'Courier New', monospace;
-        line-height: 1.4;
-        width: 80mm;
-        box-sizing: border-box;
-      "
+      class="bg-white p-4 font-mono text-xs text-black"
+      style="width: 80mm; max-width: 80mm"
     >
       <!-- Encabezado -->
       <div
@@ -49,7 +43,7 @@
         </p>
         <p class="text-center font-bold text-lg">{{ empresa.nombre }}</p>
       </div>
-
+      <h1>asdkanskdn</h1>
       <!-- ✅ ARREGLADO #1: DETALLE DE LITROS - FORMATO EXACTO "50 X 122.34" -->
       <div v-if="detalleImporteGeneralArray.length > 0" class="">
         <div v-if="detalleImporteGeneralArray.length > 0" class="">
@@ -132,16 +126,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Botones de acción - FUERA DEL TICKET -->
-    <div class="flex gap-2">
-      <button
-        @click="imprimirTicket"
-        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-      >
-        Imprimir
-      </button>
-    </div>
   </div>
 </template>
 
@@ -215,7 +199,7 @@ const props = withDefaults(
     descuento: 0,
     porcentajeIVA: 21,
     fecha: () => new Date(),
-  }
+  },
 );
 
 const ticketRef = ref<HTMLElement>();
@@ -227,7 +211,7 @@ const DLitros = props.items?.reduce((sum, item) => sum + item.cantidad, 0) || 0;
 const pneto =
   props.detalleImporteGeneral?.reduce(
     (sum, det) => det.PrecioFinalPorLitro,
-    0
+    0,
   ) || 0;
 
 const detalleImporteGeneralArray = computed(() => {
@@ -264,7 +248,7 @@ const impuestoIva = computed(() => {
 // ✅ NUEVO: TODOS LOS IMPUESTOS MENOS ITC
 const impuestosOtros = computed(() => {
   return detalleImpuestosArray.value.filter(
-    (imp) => imp.Tipo !== "ITC" && imp.Tipo !== "IVA"
+    (imp) => imp.Tipo !== "ITC" && imp.Tipo !== "IVA",
   );
 });
 
@@ -273,7 +257,7 @@ const subtotal = computed(() => {
   if (detalleImporteGeneralArray.value.length > 0) {
     return detalleImporteGeneralArray.value.reduce(
       (sum, item) => sum + item.TotalFinal,
-      0
+      0,
     );
   }
   // Si no, usar items
@@ -289,7 +273,7 @@ const subtotalConDescuento = computed(() => {
 const iva = computed(() => {
   return (
     Math.round(
-      ((subtotalConDescuento.value * props.porcentajeIVA) / 100) * 100
+      ((subtotalConDescuento.value * props.porcentajeIVA) / 100) * 100,
     ) / 100
   );
 });
@@ -305,66 +289,101 @@ const formatoMoneda = (valor: number) => {
 const imprimirTicket = () => {
   if (!ticketRef.value) return;
 
-  const printWindow = window.open("", "", "width=400,height=800");
-  if (!printWindow) return;
+  // Obtener solo el HTML del ticket
+  const ticketHTML = ticketRef.value.innerHTML;
 
-  const styles = `
-    <style>
-      @media print {
-        * {
-          margin: 0;
-          padding: 0;
-        }
-        body {
-          width: 80mm;
-          margin: 0;
-          padding: 0;
-        }
-        .ticket {
-          width: 80mm;
-          margin: 0;
-          padding: 0;
-          page-break-after: auto;
-        }
-      }
-      body {
-        font-family: 'Courier New', monospace;
-        margin: 0;
-        padding: 0;
-        background: white;
-      }
-      .ticket {
-        width: 80mm;
-        margin: 0;
-        padding: 4mm;
-        font-size: 11px;
-        line-height: 1.4;
-        box-sizing: border-box;
-      }
-      p { margin: 0; padding: 0; }
-    </style>
-  `;
-
-  printWindow.document.write(`
+  // Crear el documento HTML completo para imprimir
+  const htmlCompleto = `
     <!DOCTYPE html>
     <html>
       <head>
         <meta charset="UTF-8">
         <title>Ticket</title>
-        ${styles}
+        <style>
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          
+          html, body {
+            width: 80mm;
+            height: auto;
+            margin: 0;
+            padding: 0;
+            background: white;
+          }
+          
+          body {
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            line-height: 1.3;
+            width: 80mm;
+            text-align: left;
+          }
+          
+          .ticket {
+            width: 80mm;
+            padding: 3mm;
+            margin: 0;
+            background: white;
+            font-size: 10px;
+            text-align: left;
+          }
+          
+          p {
+            margin: 0;
+            padding: 0;
+            line-height: 1.3;
+          }
+          
+          @media print {
+            * {
+              margin: 0;
+              padding: 0;
+            }
+            body {
+              width: 80mm;
+              margin: 0;
+              padding: 0;
+            }
+            .ticket {
+              width: 80mm;
+              margin: 0;
+              padding: 3mm;
+            }
+          }
+        </style>
       </head>
       <body>
         <div class="ticket">
-          ${ticketRef.value.innerHTML}
+          ${ticketHTML}
         </div>
       </body>
     </html>
-  `);
+  `;
+
+  // Abrir ventana de impresión
+  const printWindow = window.open("", "", "width=400,height=600");
+  if (!printWindow) {
+    console.error("No se pudo abrir la ventana de impresión");
+    return;
+  }
+
+  // Escribir el HTML en la ventana
+  printWindow.document.write(htmlCompleto);
   printWindow.document.close();
 
+  // Esperar a que se renderice y luego abrir el diálogo de impresión
   setTimeout(() => {
+    printWindow.focus();
     printWindow.print();
-  }, 250);
+
+    // Cerrar la ventana después de imprimir
+    setTimeout(() => {
+      printWindow.close();
+    }, 500);
+  }, 300);
 };
 
 const descargarPDF = async () => {

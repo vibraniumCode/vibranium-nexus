@@ -36,9 +36,9 @@
       </div>
     </div>
     <!-- Contenedor con scroll horizontal y vertical -->
-    <div class="max-h-[500px] overflow-y-auto overflow-x-auto">
+    <div class="">
       <!-- Tabla -->
-      <div class="overflow-y-auto max-h-[500px]">
+      <div class="">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead
             class="sticky top-0 z-10 text-sm uppercase bg-neutral-800 text-neutral-400"

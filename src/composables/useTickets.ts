@@ -5,6 +5,7 @@ interface Comprobante {
   nroComprobante: number;
   litros: number;
   importe: number;
+  fechaFactura: string;
 }
 
 interface Resumen {
@@ -23,10 +24,16 @@ interface GenerarTicketsParams {
   margenLitros: number;
   importeMinimo: number;
   importeMaximo: number;
+  fechaDesde: string | Date;
+  fechaHasta: string | Date;
   idCombustible: number;
 }
 
 const apiUrl = "https://vibranium-nexus-backend.onrender.com/api";
+
+const convertirStringADate = (fechaString: string): Date => {
+  return new Date(fechaString + 'T00:00:00Z');
+};
 
 export const useTickets = () => {
   const loading = ref(false);
@@ -40,13 +47,24 @@ export const useTickets = () => {
     try {
       loading.value = true;
       error.value = null;
-      console.log("Generando tickets con params:", params)
+
+      const paramsFormateados = {
+        ...params,
+        fechaDesde: convertirStringADate(params.fechaDesde),
+        fechaHasta: convertirStringADate(params.fechaHasta)
+      };
+
+      console.log("Generando tickets con params:", paramsFormateados)
+
       const { data } = await axios.post<TicketsResponse>(
         `${apiUrl}/tickets/${idEmpresa}`,
-        params
+        paramsFormateados
       );
 
       tickets.value = data;
+
+      console.log("Respuesta de la API:", data);
+
       return {
         success: true,
         data: data,
