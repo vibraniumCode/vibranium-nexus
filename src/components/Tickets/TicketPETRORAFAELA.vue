@@ -1,15 +1,9 @@
 <template>
-  <div class="flex flex-col items-center gap-4">
-    <!-- Vista previa del ticket -->
+  <div class="w-full flex justify-center mb-10">
     <div
       ref="ticketRef"
-      class="w-80 bg-white p-4 font-mono text-xs text-black mx-auto"
-      style="
-        font-family: 'Courier New', monospace;
-        line-height: 1.4;
-        width: 80mm;
-        box-sizing: border-box;
-      "
+      class="bg-white p-4 font-mono text-xs text-black"
+      style="width: 80mm; max-width: 80mm"
     >
       <!-- Encabezado -->
       <div
@@ -49,7 +43,7 @@
         </p>
         <p class="text-center font-bold text-lg">{{ empresa.nombre }}</p>
       </div>
-
+      <h1>asdkanskdn</h1>
       <!-- ✅ ARREGLADO #1: DETALLE DE LITROS - FORMATO EXACTO "50 X 122.34" -->
       <div v-if="detalleImporteGeneralArray.length > 0" class="">
         <div v-if="detalleImporteGeneralArray.length > 0" class="">
@@ -205,7 +199,7 @@ const props = withDefaults(
     descuento: 0,
     porcentajeIVA: 21,
     fecha: () => new Date(),
-  }
+  },
 );
 
 const ticketRef = ref<HTMLElement>();
@@ -217,7 +211,7 @@ const DLitros = props.items?.reduce((sum, item) => sum + item.cantidad, 0) || 0;
 const pneto =
   props.detalleImporteGeneral?.reduce(
     (sum, det) => det.PrecioFinalPorLitro,
-    0
+    0,
   ) || 0;
 
 const detalleImporteGeneralArray = computed(() => {
@@ -254,7 +248,7 @@ const impuestoIva = computed(() => {
 // ✅ NUEVO: TODOS LOS IMPUESTOS MENOS ITC
 const impuestosOtros = computed(() => {
   return detalleImpuestosArray.value.filter(
-    (imp) => imp.Tipo !== "ITC" && imp.Tipo !== "IVA"
+    (imp) => imp.Tipo !== "ITC" && imp.Tipo !== "IVA",
   );
 });
 
@@ -263,7 +257,7 @@ const subtotal = computed(() => {
   if (detalleImporteGeneralArray.value.length > 0) {
     return detalleImporteGeneralArray.value.reduce(
       (sum, item) => sum + item.TotalFinal,
-      0
+      0,
     );
   }
   // Si no, usar items
@@ -279,7 +273,7 @@ const subtotalConDescuento = computed(() => {
 const iva = computed(() => {
   return (
     Math.round(
-      ((subtotalConDescuento.value * props.porcentajeIVA) / 100) * 100
+      ((subtotalConDescuento.value * props.porcentajeIVA) / 100) * 100,
     ) / 100
   );
 });

@@ -1,9 +1,9 @@
 <template>
-  <div class="bg-white rounded-md shadow p-5 flex flex-col gap-3 w-full">
+  <div class="bg-white rounded-md shadow p-5 lg:p-3 flex flex-col gap-3 w-full">
     <!-- Header -->
     <div class="flex items-center justify-between">
       <h3 class="text-sm font-medium text-gray-500">Ventas del día</h3>
-      <div class="p-2">
+      <div class="p-2 lg:p-0">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="30px"
@@ -19,7 +19,7 @@
     </div>
 
     <!-- Total -->
-    <div class="text-3xl font-bold text-gray-900">
+    <div class="text-3xl lg:text-2xl font-bold text-gray-900">
       $ {{ formatNumber(totalHoy) }}
     </div>
 

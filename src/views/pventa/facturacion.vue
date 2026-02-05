@@ -32,6 +32,29 @@
             @select="handleSelectEmpresa"
             label="Estación"
           />
+
+          <div class="flex flex-col">
+            <label class="text-sm font-medium text-gray-700 mb-1">
+              Fecha Desde
+            </label>
+            <input
+              id="fechaDesde"
+              type="date"
+              v-model="fechaDesde"
+              class="px-3 py-2 border text-sm text-gray-600 border-gray-400 hover:border-indigo-600 focus:outline-none focus:ring-0"
+            />
+          </div>
+          <div class="flex flex-col">
+            <label class="text-sm font-medium text-gray-700 mb-1">
+              Fecha Hasta
+            </label>
+            <input
+              id="fechaHasta"
+              type="date"
+              v-model="fechaHasta"
+              class="px-3 py-2 border text-sm text-gray-600 border-gray-400 hover:border-indigo-600 focus:outline-none focus:ring-0"
+            />
+          </div>
           <Dropdown
             v-model="selectedCliente"
             :users="clientes"
@@ -40,17 +63,6 @@
             @select="handleSelectCliente"
             label="Cliente"
           />
-          <div class="flex flex-col">
-            <label class="text-sm font-medium text-gray-700 mb-1">
-              Fecha de emisión
-            </label>
-            <input
-              id="fechaEmision"
-              type="date"
-              v-model="fechaEmision"
-              class="px-3 py-2 border text-sm text-gray-600 border-gray-400 hover:border-indigo-600 focus:outline-none focus:ring-0"
-            />
-          </div>
         </div>
 
         <!-- Sección Combustibles -->
@@ -216,7 +228,7 @@
           <!-- Botones principales -->
           <div class="mt-6 flex gap-3">
             <button
-              @click="mostrarTicket = true"
+              @click="verTodosTickets"
               class="flex justify-center items-center px-4 py-2 bg-green-600 text-white rounded-sm font-medium hover:bg-green-700 transition"
             >
               <svg
@@ -259,7 +271,7 @@
             @click="mostrarTicket = false"
           >
             <div
-              class="bg-white rounded-lg p-6 max-h-[80vh] overflow-y-auto w-[90%]"
+              class="bg-white rounded-lg p-6 h-[80vh] overflow-y-scroll w-[90%]"
               @click.stop
             >
               <div class="flex justify-between items-center mb-4">
@@ -275,7 +287,7 @@
               </div>
 
               <!-- ✅ MOSTRAR TODOS LOS TICKETS -->
-              <div class="space-y-8">
+              <div class="space-y-8 flex flex-col items-start">
                 <component
                   :is="obtenerComponenteTicket()"
                   v-for="ticket in resultado"
@@ -301,6 +313,13 @@
                   "
                   :metodo-pago="'Efectivo'"
                   :fecha="new Date(fechaEmision)"
+                  :detalle-importe-general="
+                    obtenerDetalleDelTicket(ticket.NroComprobante)
+                      .detalleImporteGeneral
+                  "
+                  :detalle-final="
+                    obtenerDetalleDelTicket(ticket.NroComprobante).detalleFinal
+                  "
                 />
               </div>
             </div>
@@ -379,7 +398,8 @@ import { useTicketDetalle } from "@/composables/useTicketImpuesto";
 const selectedEmpresa = ref<any>(null);
 const selectedCliente = ref<any>(null);
 const selectedCombustible = ref<any>(null);
-const fechaEmision = ref<string>("");
+const fechaDesde = ref<string>("");
+const fechaHasta = ref<string>("");
 const resultado = ref<any[]>([]);
 const resumen = ref<any | null>(null);
 
@@ -398,6 +418,7 @@ const columnasResultado = [
   { key: "NroComprobante", label: "Ticket" },
   { key: "Litros", label: "Litros" },
   { key: "Importe", label: "Importe" },
+  { key: "FechaFactura", label: "Fecha" },
 ];
 
 // Controla si el margen es editable
@@ -459,6 +480,8 @@ const calcularComprobantes = async () => {
     !parametros.LitrosPromedio.value ||
     !parametros.ImporteMin.value ||
     !parametros.ImporteMax.value ||
+    !fechaDesde.value ||
+    !fechaHasta.value ||
     !selectedCombustible.value ||
     !selectedEmpresa.value
   ) {
@@ -476,6 +499,8 @@ const calcularComprobantes = async () => {
     margenLitros: parametros.MargenLitros.value,
     importeMinimo: parametros.ImporteMin.value,
     importeMaximo: parametros.ImporteMax.value,
+    fechaDesde: fechaDesde.value,
+    fechaHasta: fechaHasta.value,
     idCombustible: idComb,
   });
 
@@ -498,7 +523,7 @@ const obtenerDetalleImpuesto = async (ticket: any) => {
     litros,
     idCombustible,
     totalFinal,
-    selectedEmpresa.value.id
+    selectedEmpresa.value.id,
   );
 
   if (resp.success) {
@@ -569,6 +594,16 @@ const obtenerComponenteTicket = () => {
 
   // Por defecto
   return TicketPETRORAFAELA;
+};
+
+const verTodosTickets = async () => {
+  for (const t of resultado.value) {
+    if (!detallesPorTicket.value.has(t.NroComprobante)) {
+      await obtenerDetalleImpuesto(t);
+    }
+  }
+
+  mostrarTicket.value = true;
 };
 </script>
 

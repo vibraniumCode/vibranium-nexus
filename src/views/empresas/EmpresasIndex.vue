@@ -4,13 +4,13 @@
       <!-- Header -->
       <div class="flex items-center justify-between mb-4 mt-2">
         <h1
-          class="text-3xl font-semibold text-gray-900 border-l-4 border-indigo-600 pl-3"
+          class="text-3xl lg:text-2xl font-semibold text-gray-900 border-l-4 border-indigo-600 pl-3"
         >
           Empresa <span class="text-sm text-gray-500 ml-2">Estaciones</span>
         </h1>
         <button
           @click="$emit('add-new')"
-          class="inline-flex items-center px-4 py-2 bg-neutral-800 text-white text-sm font-medium rounded-sm hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
+          class="inline-flex items-center px-4 py-2 bg-neutral-800 text-white text-sm font-medium lg:font-normal rounded-sm hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -24,7 +24,7 @@
             />
           </svg>
 
-          <span class="ml-4 hover:text-indigo-200">
+          <span class="ml-4 lg:ml-2 hover:text-indigo-200">
             <router-link to="/empresas/crear">
               Agregar nueva estacion
             </router-link>
@@ -33,7 +33,7 @@
       </div>
 
       <!-- Dashboard Card -->
-      <div class="h-full w-full mb-6 bg-white p-6 font-sans">
+      <div class="h-full w-full mb-6 bg-white p-6 lg:p-3 font-sans">
         <div class="flex justify-between">
           <div
             class="flexw-[50%] max-w-md flex-col w-full justify-between rounded-sm bg-neutral-800 p-8 text-white ring-1 ring-slate-300 xl:p-4"
@@ -56,7 +56,7 @@
                 </svg>
               </div>
               <p class="flex items-baseline gap-x-1">
-                <span class="text-6xl font-bold tracking-tight">
+                <span class="text-6xl lg:text-5xl font-bold tracking-tight">
                   {{ empresas.length }}
                 </span>
               </p>
@@ -65,7 +65,7 @@
           <div class="flex items-end gap-4">
             <button
               @click="openCombustibleModal"
-              class="inline-flex items-center px-4 py-2 bg-neutral-800 text-white text-sm font-medium rounded-sm hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
+              class="inline-flex items-center px-4 py-2 bg-neutral-800 text-white text-sm font-medium lg:font-normal rounded-sm hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -78,11 +78,11 @@
                   d="M160-120v-640q0-33 23.5-56.5T240-840h240q33 0 56.5 23.5T560-760v280h40q33 0 56.5 23.5T680-400v180q0 17 11.5 28.5T720-180q17 0 28.5-11.5T760-220v-288q-9 5-19 6.5t-21 1.5q-42 0-71-29t-29-71q0-32 17.5-57.5T684-694l-84-84 42-42 148 144q15 15 22.5 35t7.5 41v380q0 42-29 71t-71 29q-42 0-71-29t-29-71v-200h-60v300H160Zm80-440h240v-200H240v200Zm480 0q17 0 28.5-11.5T760-600q0-17-11.5-28.5T720-640q-17 0-28.5 11.5T680-600q0 17 11.5 28.5T720-560ZM240-200h240v-280H240v280Zm240 0H240h240Z"
                 />
               </svg>
-              <span class="ml-4">Combustible</span>
+              <span class="ml-4 lg:ml-2">Combustible</span>
             </button>
             <button
               @click="openImpuestosModal"
-              class="inline-flex items-center px-4 py-2 bg-neutral-800 text-white text-sm font-medium rounded-sm hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
+              class="inline-flex items-center px-4 py-2 bg-neutral-800 text-white text-sm font-medium lg:font-normal rounded-sm hover:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -95,7 +95,7 @@
                   d="M200-280v-280h80v280h-80Zm240 0v-280h80v280h-80ZM80-120v-80h800v80H80Zm600-160v-280h80v280h-80ZM80-640v-80l400-200 400 200v80H80Zm178-80h444-444Zm0 0h444L480-830 258-720Z"
                 />
               </svg>
-              <span class="ml-4">Impuestos</span>
+              <span class="ml-4 lg:ml-2">Impuestos</span>
             </button>
           </div>
         </div>

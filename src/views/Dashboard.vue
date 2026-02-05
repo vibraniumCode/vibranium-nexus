@@ -1,13 +1,13 @@
 <template>
   <div class="h-full w-full flex flex-col">
     <div class="flex-1 bg-gray-200 p-2">
-      <div class="h-full w-full p-6 font-sans rounded-lg">
-        <div class="flex items-center justify-between mb-4 mt-2">
+      <div class="h-full w-full p-6 lg:p-2 font-sans rounded-lg">
+        <div class="flex items-center justify-between mb-4 mt-2 lg:mt-0">
           <div
             class="flex-col w-full justify-between rounded-md ring-1 ring-slate-300"
           >
             <div
-              class="flex h-72 w-full flex-col justify-between rounded-md bg-indigo-600 p-8 text-white relative overflow-hidden shadow"
+              class="flex h-72 lg:h-42 w-full flex-col justify-between rounded-md bg-indigo-600 p-8 lg:p-3 text-white relative overflow-hidden shadow"
             >
               <div class="absolute inset-0"></div>
 
@@ -27,20 +27,20 @@
                         d="M216-600h528v-96H216v96Zm0 0v-96 96Zm0 504q-29.7 0-50.85-21.15Q144-138.3 144-168v-528q0-29 21.5-50.5T216-768h72v-96h72v96h240v-96h72v96h72q29 0 50.5 21.5T816-696v210q-17-7-35.03-11-18.04-4-36.97-6v-25H216v360h250q5 20 13.5 37.5T499-96H216Zm503.77 48Q640-48 584-104.23q-56-56.22-56-136Q528-320 584.23-376q56.22-56 136-56Q800-432 856-375.77q56 56.22 56 136Q912-160 855.77-104q-56.22 56-136 56ZM775-151l34-34-65-65v-86h-48v106l79 79Z"
                       />
                     </svg>
-                    <span>{{ fecha }} - {{ hora }}</span>
+                    <span class="lg:text-[70%]">{{ fecha }} - {{ hora }}</span>
                   </div>
                 </div>
                 <div class="flex space-x-2 items-center">
-                  <p class="text-white text-4xl">
+                  <p class="text-white text-4xl lg:text-2xl">
                     Bienvenido a Nexus, {{ userNombre }}
                   </p>
                 </div>
-                <p class="text-white text-base mt-2">
+                <p class="text-white text-base mt-2 lg:mt-0">
                   Esto es lo que esta pasando con tu sistema.
                 </p>
               </div>
               <img src="@/assets/descargar.svg" alt="Overlay Pattern"
-              class="absolute bottom-0 right-0 w-100 h-68 z-0"
+              class="absolute bottom-0 right-0 w-100 h-68 z-0 lg:w-50 lg:h-40 "
             </div>
           </div>
         </div>
@@ -53,7 +53,7 @@
           />
         </div>
         <div>
-          <div class="flex space-x-4">
+          <div class="flex space-x-2">
             <div class="bg-white place-items-center p-4 rounded-md shadow">
               <div class="bg-orange-400 rounded-md p-2">
                 <svg
@@ -69,7 +69,7 @@
                 </svg>
               </div>
               <p class="text-gray-600 mt-2 font-semibold">{{ clientes }}</p>
-              <p class="text-gray-600 font-semibold">Clientes</p>
+              <p class="text-gray-600 font-semibold lg:text-[90%]">Clientes</p>
             </div>
             <div class="bg-white place-items-center p-4 rounded-md shadow">
               <div class="bg-red-400 rounded-md p-2">
@@ -86,7 +86,9 @@
                 </svg>
               </div>
               <p class="text-gray-600 mt-2 font-semibold">{{ estaciones }}</p>
-              <p class="text-gray-600 font-semibold">Estaciones</p>
+              <p class="text-gray-600 font-semibold lg:text-[90%]">
+                Estaciones
+              </p>
             </div>
             <div class="bg-white place-items-center p-4 rounded-md shadow">
               <div class="bg-green-400 rounded-md p-2">
@@ -103,7 +105,7 @@
                 </svg>
               </div>
               <p class="text-gray-600 mt-2 font-semibold">{{ combustibles }}</p>
-              <p class="text-gray-600 font-semibold">Tipo CB</p>
+              <p class="text-gray-600 font-semibold lg:text-[90%]">Tipo CB</p>
             </div>
             <div class="bg-white place-items-center p-4 rounded-md shadow">
               <div class="bg-blue-400 rounded-md p-2">
@@ -120,7 +122,7 @@
                 </svg>
               </div>
               <p class="text-gray-600 mt-2 font-semibold">{{ impuestos }}</p>
-              <p class="text-gray-600 font-semibold">Tipo Imp</p>
+              <p class="text-gray-600 font-semibold lg:text-[90%]">Tipo Imp</p>
             </div>
             <div class="bg-white place-items-center p-4 rounded-md shadow">
               <div class="bg-indigo-600 rounded-md p-2">
@@ -139,7 +141,9 @@
               <p class="text-gray-600 mt-2 font-semibold">
                 Nº {{ ultimaFactura }}
               </p>
-              <p class="text-gray-600 font-semibold">Ult Factura</p>
+              <p class="text-gray-600 font-semibold lg:text-[90%]">
+                Ult Factura
+              </p>
             </div>
           </div>
         </div>
