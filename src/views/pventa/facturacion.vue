@@ -483,7 +483,8 @@ const calcularComprobantes = async () => {
     !fechaDesde.value ||
     !fechaHasta.value ||
     !selectedCombustible.value ||
-    !selectedEmpresa.value
+    !selectedEmpresa.value ||
+    !selectedCliente.value
   ) {
     error.value = "Por favor completa todos los parámetros";
     return;
@@ -502,6 +503,7 @@ const calcularComprobantes = async () => {
     fechaDesde: fechaDesde.value,
     fechaHasta: fechaHasta.value,
     idCombustible: idComb,
+    idCliente: selectedCliente.value.id, // ✅ AGREGAR ID DE CLIENTE
   });
 
   if (response.success && response.data) {

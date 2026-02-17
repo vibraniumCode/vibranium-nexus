@@ -13,7 +13,8 @@ export const useInforme = () => {
   // ✅ RECIBE STRING EN FORMATO YYYY-MM-DD O DD/MM/YYYY
   const generarInformes = async (
     fechaDesde: string,
-    fechaHasta: string
+    fechaHasta: string,
+    idCliente: number,
   ) => {
     try {
       loading.value = true;
@@ -29,9 +30,12 @@ export const useInforme = () => {
       const formatoFechaDesde = formatearFecha(fechaDesde);
       const formatoFechaHasta = formatearFecha(fechaHasta);
       console.log("Fechas formateadas:", formatoFechaDesde, formatoFechaHasta);
+      console.log("ID Cliente:", idCliente);
       const { data } = await axios.post(`${apiUrl}/informes`, {
         fechaDesde: formatoFechaDesde,
         fechaHasta: formatoFechaHasta,
+        idCliente,
+
       });
 
       console.log("Informes generados:", data);

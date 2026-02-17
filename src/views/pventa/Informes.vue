@@ -9,7 +9,6 @@
           Informes
         </h1>
       </div>
-
       <!-- Dashboard Card -->
       <div class="h-full w-full mb-6 bg-white p-6 font-sans">
         <div class="flex justify-between">
@@ -36,7 +35,14 @@
                 class="px-3 py-2 border text-sm text-gray-600 border-gray-400 hover:border-indigo-600 focus:outline-none focus:ring-0"
               />
             </div>
-
+            <Dropdown
+              v-model="selectedCliente"
+              :users="clientes"
+              labelKey="nombre"
+              valueKey="id"
+              @select="handleSelectCliente"
+              label="Cliente"
+            />
             <div class="flex justify-end mt-6 space-x-4">
               <div>
                 <button
@@ -83,12 +89,16 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import TableLayout from "@/components/common/TableLayout.vue";
+import Dropdown from "@/components/common/Dropdown.vue";
 import { empresaColumns, empresaFormFields } from "@/constants/empresaConfig";
 import { useInforme } from "@/composables/useInforme";
+import { useClientes } from "@/composables/useClientes";
 
 // Composables
 const { generarInformes, loading, error, informes, descargarPDF } =
   useInforme();
+
+const { clientes, fetchClientes } = useClientes();
 
 // Configuración de columnas para TableLayout
 const columnasResultado = [
@@ -103,9 +113,16 @@ const columnasResultado = [
 const expandedRow = ref<number | null>(null);
 const fechaDesde = ref<string>("");
 const fechaHasta = ref<string>("");
+const idCliente = ref<number | null>(null);
+const selectedCliente = ref<any>(null);
 
 const handleToggleExpand = (index: number | null) => {
   expandedRow.value = index;
+};
+
+// Cuando selecciona un cliente
+const handleSelectCliente = (cliente: any) => {
+  selectedCliente.value = cliente;
 };
 
 // Wrapper para validar y llamar al composable sin pasar el event
@@ -117,12 +134,20 @@ const handleGenerar = async () => {
   }
 
   // Llamada al composable con los strings de fecha del input (YYYY-MM-DD)
-  await generarInformes(fechaDesde.value, fechaHasta.value);
+  await generarInformes(
+    fechaDesde.value,
+    fechaHasta.value,
+    selectedCliente.value?.id || null,
+  );
 };
 
 // Lifecycle
 onMounted(async () => {
   // Si quieres auto-generar en mount deja la llamada; actualmente uso ejemplos fijos
   // await generarInformes("10/12/2025", "15/12/2025");
+});
+
+onMounted(() => {
+  fetchClientes("CTA");
 });
 </script>

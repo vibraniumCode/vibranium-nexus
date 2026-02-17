@@ -27,11 +27,15 @@ interface GenerarTicketsParams {
   fechaDesde: string | Date;
   fechaHasta: string | Date;
   idCombustible: number;
+  idCliente: number;
 }
 
 const apiUrl = "https://vibranium-nexus-backend.onrender.com/api";
 
-const convertirStringADate = (fechaString: string): Date => {
+const convertirStringADate = (fechaString: string | Date): Date => {
+  if (fechaString instanceof Date) {
+    return fechaString;
+  }
   return new Date(fechaString + 'T00:00:00Z');
 };
 
